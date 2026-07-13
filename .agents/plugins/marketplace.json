@@ -1,0 +1,20 @@
+{
+  "name": "agent-consent-patterns",
+  "interface": {
+    "displayName": "Agent Consent Patterns"
+  },
+  "plugins": [
+    {
+      "name": "consent-ux",
+      "source": {
+        "source": "local",
+        "path": "./plugins/agent-consent-patterns"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "UX / Design"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "consent-ux",
+  "version": "0.1.0",
+  "description": "Best practices for AI agent consent UX: 12 named patterns and 10 principles for permission grants, action approval, standing authority, and trust surfaces.",
+  "author": "Charles Wu",
+  "license": "MIT",
+  "skills": "./skills/",
+  "displayName": "Agent Consent Patterns",
+  "shortDescription": "12 UX patterns for AI agent permissions, consent, and human-in-the-loop control",
+  "category": "UX / Design",
+  "capabilities": ["consent-ux", "permission-design", "accessibility-review"],
+  "websiteURL": "https://github.com/mrchaarlie/agent-consent-patterns"
+}
