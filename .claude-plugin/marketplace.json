@@ -10,7 +10,7 @@
   },
   "plugins": [
     {
-      "name": "agent-consent-patterns",
+      "name": "consent-ux",
       "source": "./plugins/agent-consent-patterns",
       "description": "A skill that teaches your agent the 12 agent-consent UX patterns and 10 design principles, so it applies them when building or reviewing consent flows, approval dialogs, permission settings, and activity logs.",
       "version": "0.1.0",

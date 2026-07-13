@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { CodeBlock } from "@/components/code-block";
 import { Lvl } from "@/components/lvl";
 import { CATEGORIES, CATEGORY_BLURB, PATTERNS } from "@/lib/patterns";
 
 const REPO = "https://github.com/mrchaarlie/agent-consent-patterns";
+const NPM_PACKAGE = "https://www.npmjs.com/package/@agentconsent/react";
+const SKILL_SOURCE = `${REPO}/blob/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md`;
 
 export default function HomePage() {
   return (
@@ -134,12 +137,21 @@ export default function HomePage() {
                 an opinion.
               </Lvl>
             </p>
-            <a
-              href={REPO}
-              className="mt-3 inline-block text-sm text-ink underline underline-offset-4 hover:text-ink-muted"
-            >
-              View the source →
-            </a>
+            <CodeBlock code="npm install @agentconsent/react" />
+            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+              <a
+                href={REPO}
+                className="inline-block text-sm text-ink underline underline-offset-4 hover:text-ink-muted"
+              >
+                View the source →
+              </a>
+              <a
+                href={NPM_PACKAGE}
+                className="inline-block text-sm text-ink underline underline-offset-4 hover:text-ink-muted"
+              >
+                View on npm →
+              </a>
+            </div>
           </li>
 
           <li className="rounded-lg border border-line bg-surface-raised p-5">
@@ -162,11 +174,17 @@ export default function HomePage() {
                 consent flows.
               </Lvl>
             </p>
+            <CodeBlock
+              code={
+                "/plugin marketplace add mrchaarlie/agent-consent-patterns\n" +
+                "/plugin install consent-ux@agent-consent-patterns"
+              }
+            />
             <a
-              href={`${REPO}#a-distilled-best-practices-skill-for-coding-agents`}
+              href={SKILL_SOURCE}
               className="mt-3 inline-block text-sm text-ink underline underline-offset-4 hover:text-ink-muted"
             >
-              Install the skill →
+              View the skill source →
             </a>
           </li>
         </ul>

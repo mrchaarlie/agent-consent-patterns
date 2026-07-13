@@ -49,7 +49,7 @@ No canonical reference for these flows exists. This project is that reference.
 
    ```
    /plugin marketplace add mrchaarlie/agent-consent-patterns
-   /plugin install agent-consent-patterns@agent-consent-patterns
+   /plugin install consent-ux@agent-consent-patterns
    ```
 
 ## Agent mode

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Analytics } from "@/components/analytics";
 import { ReadingLevelSwitch } from "@/components/reading-level";
 import "./globals.css";
 
@@ -61,6 +62,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: READING_LEVEL_INIT }} />
       </head>
       <body className="flex min-h-dvh flex-col">
+        <Analytics />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-surface-raised focus:px-4 focus:py-2"

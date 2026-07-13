@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Agent Consent Patterns: ink field, bold A, agent-blue accent -->
+  <rect width="32" height="32" rx="7" fill="#1a1a18"/>
+  <path
+    fill="#fdfdfc"
+    d="M16 6.5 25 25.5h-4.1l-1.85-4.4H12.95L11.1 25.5H7L16 6.5Zm-2.35 11.3h4.7L16 12.1l-2.35 5.7Z"
+  />
+  <rect x="24.25" y="7.5" width="2.5" height="17" rx="1.25" fill="#3d4f9e"/>
+</svg>
