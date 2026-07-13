@@ -37,7 +37,6 @@ jobs:
       - name: Build site
         run: pnpm --filter @agentconsent/site build
         env:
-          # Optional: set this repo secret to enable GA4 on the deployed site.
           NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
 
       - uses: actions/upload-pages-artifact@v3
