@@ -174,7 +174,9 @@ export default function HomePage() {
                 consent flows.
               </Lvl>
             </p>
+            <p className="mt-4 eyebrow">Claude Code &amp; Codex</p>
             <CodeBlock
+              className="mt-1.5"
               code={
                 "/plugin marketplace add mrchaarlie/agent-consent-patterns\n" +
                 "/plugin install consent-ux@agent-consent-patterns"

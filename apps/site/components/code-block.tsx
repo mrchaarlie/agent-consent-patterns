@@ -3,7 +3,13 @@
 import { useState } from "react";
 
 /** A copyable command/code block. `code` is both the rendered text and what gets copied. */
-export function CodeBlock({ code }: { code: string }) {
+export function CodeBlock({
+  code,
+  className = "mt-4",
+}: {
+  code: string;
+  className?: string;
+}) {
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -17,7 +23,7 @@ export function CodeBlock({ code }: { code: string }) {
   }
 
   return (
-    <div className="group relative mt-4">
+    <div className={`group relative ${className}`}>
       <pre
         tabIndex={0}
         className="overflow-x-auto rounded-lg border border-line bg-surface-sunken p-3 pr-11 font-mono text-xs leading-relaxed text-ink"
