@@ -1,0 +1,295 @@
+import { AuthorityBoundaryDemo } from "@/components/authority-boundary-demo";
+import { AuthorityBoundaryAnatomy } from "@/components/authority-boundary-anatomy";
+
+<p data-lvl="caveman" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Little yeses pile up one by one until nobody remembers what the machine may do alone. Build one wall with everything written on it: this it may do by itself, this it must ask about, this it may never do. One wall. One look.</p>
+
+<p data-lvl="human" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Standing authority accretes one prompt at a time until nobody can say what the agent is actually allowed to do unattended. Give it a single home: one surface that answers, per capability, what the agent may do on its own and what it must always ask about.</p>
+
+<p data-lvl="academic" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Consolidate the agent's accreted standing authority into one authoritative policy surface: every capability assigned an explicit autonomy level (automatic / ask-first / never), the aggregate tallied, and irreversible actions structurally barred from full autonomy. That is the difference between having permissions and having a boundary.</p>
+
+## Problem
+
+<div data-lvl="caveman">
+
+Every little yes made sense on its own. "Yes, file those." "Sure, remember that." "Always allow." But they came a dozen different days apart, and nothing ever gathers them in one place. So the question that matters, *what can this thing do without me?*, has no answer. The power is real. It just hides, spread across settings pages, old boxes you swatted, and choices nobody can count.
+
+You can't check what you can't see. You can't take back what you can't find. The machine's leash needs one hook: a single wall showing all its standing power, ready to move in one look.
+
+</div>
+
+<div data-lvl="human">
+
+Every standing grant an agent accumulates was reasonable when it was made. "Yes, you can archive these." "Sure, remember that." "Allow always." But those decisions happened in a dozen different contexts, days or weeks apart, and nothing ever gathers them in one place. So the question that matters most about an agent, *what can this thing do without me?*, has no answer surface. The authority is real. It is just invisible, distributed across settings pages, past prompts, and remembered choices no one can list.
+
+You can't review what you can't see, and you can't revoke what you can't find. An agent's autonomy needs a boundary the user can actually look at: a single place where the full extent of standing authority is legible, and adjustable, in one sitting.
+
+</div>
+
+<div data-lvl="academic">
+
+Standing authority is accreted, not designed. Each grant was individually reasonable, made in its own context, under its own task pressure, and the accretion process has no aggregation step. The user's effective policy is therefore the union of decisions no one has ever seen together. The question that matters most for an autonomous system, *what is its unattended capability set?*, is unanswerable not because the answer is secret but because it has no representation. Locally rational grants compose into a globally unknown policy; this is emergent policy, with the emphasis on *emergent* meaning "nobody chose it."
+
+The consequences compound. Review is impossible without enumeration, revocation is impossible without review, and the intersection bound (the rule that an agent's effective authority stays within its principal's) can't even be checked against an authority set nobody can state. Per-prompt consent mechanisms ([Consent Memory](/patterns/consent-memory/), [Progressive Scope](/patterns/progressive-scope/)) are write operations; without a surface that reads, aggregates, and edits what they wrote, the system is append-only, and append-only authority only grows.
+
+</div>
+
+## Solution
+
+<div data-lvl="caveman">
+
+Give the machine's power one home. List every single thing it can do, and put each thing on a clear rung:
+
+- **By itself.** No asking. Save this rung for the small and the fixable.
+- **Ask first.** It may want to, but every time, it must ask. This is the safe resting rung.
+- **Never.** Not allowed. At all. Ever.
+
+A running tally at the top counts how much sits on each rung: "2 by itself · 3 ask first · 1 never." So the *amount* of loose power is a number you can read, not a feeling you have to reconstruct. Some things refuse the top rung entirely: burn-it-forever simply *cannot* be set to "by itself." The wall itself says no.
+
+</div>
+
+<div data-lvl="human">
+
+Give the agent's authority one home. List every capability, and put each on an explicit level: the user can see the whole boundary at once and move any capability across it.
+
+- **Automatic.** The agent may do this unattended. Reserve it for the reversible and the low-stakes.
+- **Ask first.** The agent may propose it, but every instance goes through a confirmation. This is the safe resting level.
+- **Never.** The agent may not do this at all, full stop.
+
+A running summary tallies how much is automatic versus gated, so the *amount* of standing authority is a number the user can see, not something they'd have to reconstruct. A capability can also forbid a level: permanent deletion simply can't be set to Automatic, so the surface refuses to grant standing authority to the irreversible.
+
+</div>
+
+<div data-lvl="academic">
+
+Materialize the policy as a total function from capabilities to autonomy levels: every capability, explicitly assigned, in one surface.
+
+- **Automatic.** Unattended execution, correctly reserved for the reversible and low-stakes. This level is where habituated grants want to drift, so its cost must stay visible.
+- **Ask first.** Propose-and-confirm, the per-instance gate. The safe resting level, and the correct *default*: autonomy should be reached for, not shipped.
+- **Never.** The capability is off the table regardless of prompts, moods, or task pressure, a refusal the agent cannot re-litigate.
+
+Two structural features carry the pattern's weight. The running tally makes the aggregate a first-class datum: "how much of this agent runs unattended" becomes a readable number rather than a reconstruction, which is what makes policy drift observable. Per-capability level bars (`disallow`) encode consequence-class constraints into the surface itself: permanent deletion *cannot* be set to Automatic, so the composition rule from the [Irreversibility Gate](/patterns/irreversibility-gate/), that severity overrides standing authority, is enforced by construction rather than by user restraint. The surface is the read/edit half of the standing-authority system: in-task [Consent Memory](/patterns/consent-memory/) decisions land here for review out of task heat, and numeric thresholds live in the adjacent [Spend & Rate Limits](/patterns/spend-rate-limits/) rather than being shoehorned into levels.
+
+</div>
+
+<AuthorityBoundaryDemo />
+
+<div data-lvl="caveman">
+
+The wall above is the real `AuthorityBoundary` component from `@agentconsent/react`. Move "Send email" to by-itself and watch the tally re-count. Then try to put "Permanently delete" on by-itself. The wall refuses.
+
+</div>
+
+<div data-lvl="human">
+
+The demo is the `AuthorityBoundary` component from `@agentconsent/react`. Move "Send email" to Automatic and watch the summary re-tally; note that "Permanently delete" won't accept Automatic at all.
+
+</div>
+
+<div data-lvl="academic">
+
+The demo is the `AuthorityBoundary` component from `@agentconsent/react`. Moving "Send email" to Automatic re-tallies the summary live; "Permanently delete" rejects Automatic entirely: the `disallow` bar renders the irreversible-actions constraint as a property of the control, not a plea in the documentation.
+
+</div>
+
+## Anatomy
+
+<AuthorityBoundaryAnatomy />
+
+## When to use it
+
+<div data-lvl="caveman">
+
+- **Any machine holding more than a couple of standing yeses.** Once its power is spread across several abilities, you need one wall that shows the whole shape of it.
+- **As the home the little boxes report to.** A choice made in a passing prompt ([Consent Memory](/patterns/consent-memory/)) should land here, where you can look at it later with a cool head.
+- **When different abilities deserve different rungs.** "Read" and "destroy" almost never belong on the same rung, and that's almost always the case.
+
+</div>
+
+<div data-lvl="human">
+
+- **Any agent with more than a couple of standing permissions.** Once autonomy is spread across several capabilities, users need one place to see and shape the whole boundary.
+- **As the home the in-task prompts defer to.** A [Consent Memory](/patterns/consent-memory/) choice made in a prompt should land here, where it can be reviewed later out of the heat of the task.
+- **Where levels genuinely differ by capability.** The pattern earns its keep when "read" and "delete" *should* sit at different authority levels, which is almost always.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Any agent whose standing permission set exceeds a couple of entries.** The aggregation problem is superlinear: each additional grant multiplies the contexts a user would have to reconstruct, so the single-surface requirement arrives early in an agent's life.
+- **As the authoritative store the in-task prompts write to.** [Consent Memory](/patterns/consent-memory/) decisions should materialize here for review out of task heat: the prompt is the transaction, this surface is the ledger, and the pairing is what keeps in-flow consent from becoming append-only.
+- **Where capability heterogeneity is real.** The surface earns its keep exactly when different capabilities warrant different levels: read at Automatic, send at Ask, delete at Never. A capability set homogeneous enough for one global dial doesn't need per-capability policy (and probably isn't an interesting agent).
+
+</div>
+
+## When not to use it
+
+<div data-lvl="caveman">
+
+- **One single yes.** One ability with one grant is a [Scoped Grant](/patterns/scoped-grant/) or a [Connection Card](/patterns/connection-card/), not a whole wall.
+- **A quick mid-task question.** Don't make someone open the big wall to answer one passing box. Catch it in the flow with [Consent Memory](/patterns/consent-memory/) and let it land on the wall afterward.
+- **Number-lines.** "By itself up to $50, ask above that" is a money-fence, not a rung. Put numbers in [Spend & Rate Limits](/patterns/spend-rate-limits/) beside this wall, don't carve them into it.
+
+</div>
+
+<div data-lvl="human">
+
+- **A single permission.** One capability with one grant is a [Scoped Grant](/patterns/scoped-grant/) or a [Connection Card](/patterns/connection-card/), not a boundary surface.
+- **A momentary, in-flow decision.** Don't make the user open a full settings panel to answer one prompt. Capture that inline with [Consent Memory](/patterns/consent-memory/) and let it flow here afterward.
+- **Numeric guardrails.** "Automatic up to $50, ask above" is a spend limit, not a level. Pair this surface with dedicated [Spend & Rate Limits](/patterns/spend-rate-limits/) rather than trying to encode thresholds as authority levels.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Singleton permission sets.** One capability under one grant is [Scoped Grant](/patterns/scoped-grant/) or [Connection Card](/patterns/connection-card/) territory; a boundary surface over a single entry is aggregation with nothing to aggregate.
+- **In-flow decisions.** Forcing a settings excursion to answer one prompt maximizes the interruption the in-task mechanisms exist to minimize; capture inline via [Consent Memory](/patterns/consent-memory/) and let the decision replicate here for later review. The two surfaces differ in elicitation conditions, and that difference is the design.
+- **Numeric guardrails.** Thresholds ("automatic below $50") are policy over a continuous variable; levels are policy over a discrete one. Encoding thresholds as levels either explodes the level set or falsifies the threshold. The quantitative axis belongs to [Spend & Rate Limits](/patterns/spend-rate-limits/), composed alongside, with this surface holding the categorical rules.
+
+</div>
+
+## Real-world examples
+
+<div data-lvl="caveman">
+
+- **Claude Code's permission modes.** Named leash-lengths (plan-only, ask-each-time, auto-accept edits, full bypass) plus per-tool allow and deny rules. The leash is visible while the machine works, and you can shorten it mid-run.
+- **ChatGPT agent mode.** Different kinds of acts sit on different rungs in one product: plain browsing runs alone, big acts ask first, and on sensitive sites the machine drops to watched-only. Not one big dial: different rungs for different dangers.
+- **Your phone's per-app permission page, and cloud IAM.** Each app's abilities set to Never / Ask / While Using / Always: the household version of this wall. AWS's "permission boundaries" are the plumbing version: a hard outer cap a role can never exceed, no matter what other rules say.
+
+</div>
+
+<div data-lvl="human">
+
+- **Claude Code permission modes.** Named operating levels (plan-only, ask-per-action, auto-accept edits, full bypass) plus per-tool allow/deny rules. The boundary is explicit, inspectable, and adjustable mid-session, and the mode name is always visible while the agent works.
+- **ChatGPT agent mode.** Sensitivity-tiered autonomy in one product: routine browsing runs autonomously, consequential actions require confirmation, and on sensitive sites the agent drops to a supervised watch mode. Different categories of action live at different standing levels, not one global dial.
+- **Mobile OS permission screens and cloud IAM.** The per-app settings page (each capability set to Never / Ask / While Using / Always) is the household-name version of a per-category boundary; AWS IAM permission boundaries are the infrastructure version. A hard cap on what a role can ever do, regardless of what other policies grant.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Claude Code permission modes.** Named operating levels (plan-only through full bypass) crossed with per-tool allow/deny rules, coarse mode plus fine-grained policy, inspectable and adjustable mid-session, with the current mode persistently visible during execution. The visible-mode detail matters: the boundary is part of the working context, not a settings page the user must remember exists.
+- **ChatGPT agent mode.** Sensitivity-tiered autonomy: routine browsing autonomous, consequential actions confirmed, sensitive sites demoted to supervised watch mode. The tiers are category-level policy. The same structure as this pattern's levels, assigned by the product's own consequence classification rather than user configuration, which trades user control for safe defaults.
+- **Mobile OS permission screens and cloud IAM.** Per-app capability pages (Never / Ask / While Using / Always) are the consumer-scale precedent, complete with the ladder structure. AWS IAM permission boundaries are the enforcement-layer analogue worth studying: an outer cap that dominates all other policy attachments. The intersection bound implemented as infrastructure, where this pattern implements its user-facing rendering.
+
+</div>
+
+*Annotated screenshots of these flows are being collected. Products are credited, annotations follow the site-wide callout conventions, and any screenshot is removed on request. See [About](/about/).*
+
+## Accessibility
+
+<div data-lvl="caveman">
+
+- The whole wall is one named region, so a screen reader announces it as a single place with a title.
+- **Each ability's rung-picker is a true radio group.** Every row has its own spoken name ("Authority for Send email"), so the three rungs are a clean pick-one control, not a mystery cluster of buttons.
+- **The tally speaks politely.** Move any ability and the count updates without yanking focus, so a non-seeing user always knows how much loose power is in force.
+- **Barred rungs are truly barred.** A forbidden rung (by-itself on a forever-delete) is a genuinely disabled radio, announced as unavailable, not a grayed picture a screen reader would still offer.
+- Rungs are carried by **words** (Automatic / Ask first / Never) and layout, on top of any color, and each ability's touch-level is a text badge. The wall never needs color to be read.
+
+</div>
+
+<div data-lvl="human">
+
+- The surface is a `role="group"` labelled by its title, so assistive tech announces the whole boundary as one named region.
+- **Each capability's level is a real radio group.** Every row is a `fieldset` with a screen-reader legend naming the capability ("Authority for Send email"), so the three levels are an independent, labelled single-choice control, not an ambiguous cluster of buttons.
+- **The summary is a polite live region.** Changing any capability's level updates the tally without moving focus, so a non-visual user always knows how much standing authority is in force.
+- **Forbidden levels are genuinely disabled.** A barred level (e.g. Automatic on a permanent delete) is a `disabled` radio, announced as unavailable, not a styled-inert label a screen reader would still offer as selectable.
+- Levels are conveyed with **text** (Automatic / Ask first / Never) and layout, in addition to color, and the access of each capability is a text badge. The boundary never depends on color to be read.
+
+</div>
+
+<div data-lvl="academic">
+
+- The surface is a `role="group"` named by its title. The boundary is one addressable region, so "the agent's authority" has a location in the accessibility tree as well as in the visual layout.
+- **Each capability's level is a native radio group** under a `fieldset` whose legend names the capability ("Authority for Send email"): N independent single-choice controls, each with its own accessible question. The policy's structure (a function from capabilities to levels) is reproduced in the markup's structure.
+- **The summary is a polite live region**: level changes announce the new tally without focus movement, so the aggregate (the pattern's key datum) is continuously available non-visually, not just recomputable by traversing every row.
+- **Forbidden levels are `disabled` radios**, announced as unavailable. The structural bar must be structural for assistive tech too. A styled-inert label still offered as selectable would make the safety property visual-only.
+- Levels ride on **text** (Automatic / Ask first / Never) and layout with color as reinforcement, and capability access classes are text badges. The entire boundary survives every non-chromatic rendering (WCAG 1.4.1).
+
+</div>
+
+## Anti-patterns
+
+<div data-lvl="caveman">
+
+- **Power scattered everywhere.** Yeses spread across five settings pages and a trail of old boxes, with no wall that sums them. If you can't see the whole leash in one look, there is no leash.
+- **By-itself as the factory setting.** Shipping abilities pre-set to "by itself" for convenience makes the biggest give the resting state. Rest on "ask first"; make autonomy a reach.
+- **No "never" rung.** A wall that can only widen (everything either by-itself or ask) is not a wall. Some things you must be able to take off the table entirely.
+- **By-itself for the forever-acts.** Letting burn-forever or money-moving sit on the by-itself rung hands loose power to exactly the acts that most need a per-time gate. The wall itself must refuse.
+- **A tally that lies.** A count that counts what's *listed* instead of what's *in force*, or skips the abilities riding on defaults, understates the real power. Count what's actually granted.
+- **A wall that climbs.** Treating "by itself" as *new* power instead of a lid on power you already had. A machine running alone is still fenced by what its human may do. The wall can only shrink that space, never grow past it.
+
+</div>
+
+<div data-lvl="human">
+
+- **Scattered authority.** Permissions spread across five settings pages and a history of prompts, with no surface that sums them up. If the user can't see the whole boundary in one place, they don't really have one.
+- **Automatic as the default.** Shipping capabilities pre-set to Automatic "for convenience" makes the powerful choice the resting state. Default to Ask first; make the user reach for autonomy.
+- **No "never."** A boundary that can only widen (where every capability is Automatic or Ask, with no way to take something off the table) isn't a boundary. Some things the user must be able to forbid outright.
+- **Autonomy for the irreversible.** Letting a permanent-delete or money-moving capability be set to Automatic hands standing authority to exactly the actions that most deserve a per-instance gate. Forbid it structurally.
+- **A summary that lies.** A tally that counts what's *listed* rather than what's *in force*, or that omits the capabilities defaulting to a level, understates the real authority. Count what's actually granted.
+- **A boundary that escalates.** Treating Automatic as *new* power rather than a ceiling on rights the user already holds. An agent running unattended is still bounded by what its principal may do. The boundary can only narrow that intersection, never widen past it.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Scattered authority.** Policy distributed across settings pages and prompt history, with no aggregating surface, is the problem statement shipped as the product. A boundary that cannot be seen whole cannot be reasoned about whole, and unreasonable-about authority fails every downstream property (review, revocation, the intersection check).
+- **Automatic as the default.** Pre-setting capabilities to Automatic makes maximum autonomy the zero-action state and converts inertia into standing power. Ask-first is the correct resting level; autonomy must be an opt-in per capability, because a default is a decision made for every user who never visits the page.
+- **No "never."** A level set without an absolute prohibition can only express degrees of yes. Some capabilities the principal must be able to remove from the space of possible outcomes entirely, including from re-litigation by prompt, which "ask first" still permits.
+- **Autonomy for the irreversible.** An Automatic-eligible permanent delete grants unattended standing authority to the consequence class that most demands per-instance gating. The severity-overrides-authority composition rule, violated. The bar must be structural (`disallow`), because documentation-level prohibitions don't survive convenience.
+- **A summary that lies.** A tally over what's listed rather than what's in force, or one omitting default-level capabilities, understates effective authority, and an understated aggregate is worse than none: it manufactures false confidence in exactly the number the surface exists to make true.
+- **A boundary that escalates.** Reading Automatic as a grant of new power rather than a ceiling on delegated power inverts the model: the boundary partitions the *principal's own* authority by supervision level, and effective agent authority remains within (agent's grant ∩ principal's rights). A surface that can widen past the principal is a privilege-escalation mechanism with a settings UI.
+
+</div>
+
+## Code
+
+```tsx
+import { AuthorityBoundary } from "@agentconsent/react";
+import "@agentconsent/react/theme.css";
+
+<AuthorityBoundary.Root
+  value={levels}                        // { [id]: "auto" | "ask" | "never" }
+  onValueChange={setLevels}
+>
+  <AuthorityBoundary.Header>
+    <AuthorityBoundary.Icon>⚖</AuthorityBoundary.Icon>
+    <AuthorityBoundary.Title>
+      What can Inbox Assistant do on its own?
+    </AuthorityBoundary.Title>
+  </AuthorityBoundary.Header>
+
+  <AuthorityBoundary.Summary>
+    {({ auto, ask, never }) =>
+      `${auto} automatic · ${ask} ask first · ${never} off-limits`}
+  </AuthorityBoundary.Summary>
+
+  <AuthorityBoundary.List>
+    <AuthorityBoundary.Capability
+      id="read-inbox"
+      access="read"
+      label="Read your inbox"
+      description="Scan messages to draft replies."
+    />
+    <AuthorityBoundary.Capability
+      id="send-email"
+      access="write"
+      label="Send email"
+      description="Send a message you have not reviewed."
+    />
+    <AuthorityBoundary.Capability
+      id="delete-thread"
+      access="delete"
+      label="Permanently delete"
+      description="Irreversibly remove a conversation."
+      disallow={["auto"]}        // standing autonomy barred for the irreversible
+    />
+  </AuthorityBoundary.List>
+</AuthorityBoundary.Root>
+```
+
+The level map (`value` / `defaultValue`) is the single source of truth: give
+every capability an entry so the summary counts what's actually in force. Use
+`disallow` to bar a level a capability should never hold. All parts are unstyled
+primitives with `data-acp` attributes; skip `theme.css` and style them yourself,
+or override the `--acp-*` tokens to retheme.

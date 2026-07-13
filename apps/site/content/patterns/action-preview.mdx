@@ -1,0 +1,259 @@
+import { ActionPreviewDemo } from "@/components/action-preview-demo";
+import { ActionPreviewAnatomy } from "@/components/action-preview-anatomy";
+
+<p data-lvl="caveman" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Before the machine throws the spear, it must show you the spear: who it flies at, what's tied to it, what it costs. You look, then you say throw or don't.</p>
+
+<p data-lvl="human" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Show exactly what the agent is about to do (recipient, content, amount) and collect an explicit decision before anything executes.</p>
+
+<p data-lvl="academic" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Render the pending action as structured, verbatim parameters and bind execution to explicit approval of that exact rendering. This closes the abstraction gap between the category a confirmation names and the specific action the agent will perform.</p>
+
+## Problem
+
+<div data-lvl="caveman">
+
+The machine says it's ready: send the letter, file the complaint, buy the thing. A box pops up: "Helper wants to send a letter. Allow?" That question names a *kind* of thing, not the one *exact* thing the machine is about to do.
+
+The gap between "a letter" and "this letter" hides every disaster: the wrong name on it, a number the machine made up, words that were only ever practice. You can't catch what you never saw.
+
+</div>
+
+<div data-lvl="human">
+
+An agent announces it's ready to act: send the email, file the ticket, place the order. A generic confirmation ("Assistant wants to send an email. Allow?") asks the user to approve a *category* of action while the agent performs a *specific* one. That gap is where every consequential mistake lives: the wrong recipient, the hallucinated figure, the draft tone that was never meant to leave the room. Users can't catch what they were never shown.
+
+</div>
+
+<div data-lvl="academic">
+
+The generic confirmation commits a type error: it collects approval over a category ("send an email") while the agent executes a token, one specific action with specific parameters. The delta between category and token is precisely where agent failure concentrates: mis-resolved recipients, hallucinated figures, tone that inference produced and no one endorsed. A reviewer shown only the category is structurally incapable of catching parameter-level error: the confirmation gathers assent without transferring the information assent is supposed to be conditioned on. This is the site's first principle in negative form: consent requires legibility, and a dialog that names the class but not the instance is illegible by construction. The failure is also asymmetric in a way that matters for agents specifically: with a human driving the UI, the parameters were at least typed by the person confirming; with an agent, every parameter is a model output, so the review step is the *only* point where human judgment touches the actual values before they become effects in the world.
+
+</div>
+
+## Solution
+
+<div data-lvl="caveman">
+
+Before anything happens, put the whole act on the table as plain facts: each piece gets a name tag and its *exact* value. Long parts, like the letter's whole body, can be unfolded and read. The buttons say the act out loud: not "OK," but "Send email" and "Don't send."
+
+The card is a promise. What's on it is exactly what saying yes will do: nothing more, nothing edited after.
+
+</div>
+
+<div data-lvl="human">
+
+Before execution, render the action itself as structured facts: each consequential parameter as a labeled field with its verbatim value, long content available for inspection, and approve/reject controls that state the action in their labels. The preview is the contract: what's on the card is exactly what approval executes, and nothing else.
+
+</div>
+
+<div data-lvl="academic">
+
+Interpose a rendering of the action itself between intent and execution: each consequential parameter as a labeled field carrying its verbatim value, long-form content inspectable behind a disclosure rather than paraphrased, and decision controls whose labels state the action ("Send email" / "Don't send"), not the assent ("OK"). The load-bearing property is the contract semantics: the preview *is* the action, and approval executes exactly the previewed parameter set. That bijection is what turns the surface from a UI nicety into a consent mechanism: it gives approval a referent. It also imposes a real engineering obligation upstream: the execution path must be parameterized by the previewed values, not re-derived post-approval, or the contract silently breaks (see the mutating-preview anti-pattern below). Consequence weighting composes here rather than duplicating: the preview presents facts, and the [Irreversibility Gate](/patterns/irreversibility-gate/) scales the commitment friction on top of them.
+
+</div>
+
+<ActionPreviewDemo />
+
+<div data-lvl="caveman">
+
+The card above is the real `ActionPreview` component from `@agentconsent/react`. Flip the `consequence` prop and watch the yes-button get heavier when the act can't be taken back.
+
+</div>
+
+<div data-lvl="human">
+
+The demo is the `ActionPreview` component from `@agentconsent/react`, headless primitives with the default theme. Toggle the `consequence` prop to see the approve action re-weight itself for an irreversible send.
+
+</div>
+
+<div data-lvl="academic">
+
+The demo is the `ActionPreview` component from `@agentconsent/react`, headless primitives under the default theme. The `consequence` prop re-weights the approve action for irreversible sends: label and emphasis shift, a live instance of friction scaling with consequence rather than with importance.
+
+</div>
+
+## Anatomy
+
+<ActionPreviewAnatomy />
+
+## When to use it
+
+<div data-lvl="caveman">
+
+- **Acts other people will see.** Letters sent, money moved, records changed where the tribe can see them.
+- **When the machine picked the details.** If it chose the person, the amount, or the words, you're checking its *judgment*, not just giving it leave.
+- **The first time it does a new kind of act**, before you've built standing trust with it (that's [Consent Memory](/patterns/consent-memory/)).
+
+</div>
+
+<div data-lvl="human">
+
+- **Consequential, externally visible actions.** Messages sent, money moved, records created or changed in systems other people see.
+- **When parameters came from inference.** If the agent chose the recipient, amount, or wording itself (rather than echoing explicit user input), the user is reviewing the agent's judgment, not just its permission.
+- **First executions of a new kind of action**, before any standing authority (see Consent Memory) has been established.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Externally visible, consequential effects.** Messages, payments, records mutated in systems other principals observe. External visibility is the criterion because it marks where reversal stops being unilateral.
+- **Inference-derived parameters.** When recipient, amount, or wording came from the model rather than echoing explicit user input, review shifts from authorization to judgment-verification: the user is auditing an inference, and the preview is the only surface where that audit can happen.
+- **First executions of a novel action class**, before standing authority exists. The first instance is where the preview earns the trust that [Consent Memory](/patterns/consent-memory/) later converts into durable permission; skipping it front-runs the trust it would have built.
+
+</div>
+
+## When not to use it
+
+<div data-lvl="caveman">
+
+- **Small, takeable-back things.** Reading, searching, drafting without sending. Making you approve those trains your hand to click yes without your eyes, and then the click that mattered goes through too.
+- **Big stacks of acts.** Ten cards in a row isn't judging, it's grinding. That's [Batch Approval](/patterns/batch-approval/).
+- **As a blame-shield.** If the real goal is "the user *did* click yes," the pattern is being used against its purpose. A card you can't truly judge is just a trap with nice type.
+
+</div>
+
+<div data-lvl="human">
+
+- **Trivially reversible, low-stakes actions.** Reading, searching, drafting without sending. Previewing these breeds approval fatigue and trains users to click through the previews that matter.
+- **High-volume queues.** Ten previews in a row is not consent, it's a grind: reach for Batch Approval instead.
+- **As a liability shield.** If the real goal is "the user technically clicked yes," the pattern is being used against its purpose. A preview the user can't meaningfully evaluate is an anti-pattern regardless of its anatomy.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Reversible, low-stakes operations.** Reads, searches, unsent drafts. Previewing these spends the reviewer's finite vigilance on non-decisions; the habituation it trains then defeats the preview that mattered. Friction is a budget, and this pattern draws on it.
+- **High-volume queues.** Serial previews degrade into rhythm, and rhythm is the opposite of review; sustained throughput belongs to [Batch Approval](/patterns/batch-approval/), which is designed to keep triage meaningful at volume.
+- **As a liability shield.** Deploying the preview so that "the user clicked yes" becomes a defensible record, even when the rendering is too dense, too fast, or too paraphrased to evaluate, is consent theater: it inverts the mechanism's purpose while keeping its form. The evaluability of the preview, not its existence, is what carries the consent.
+
+</div>
+
+## Real-world examples
+
+<div data-lvl="caveman">
+
+- **Claude Code.** Before it changes anything, it shows the exact command it will run or the exact file change, then waits for your yes or no. What it showed is what it does, nothing else.
+- **ChatGPT agent mode.** Stops before the big moves: buying, submitting, sending. It shows you the actual thing it's about to do, not just "may I act?"
+- **AI email helpers.** Gemini in Gmail writes the whole reply and puts it in front of you; the send happens only when *your* finger presses send. Show-then-send is this pattern on the most common risky act there is.
+
+</div>
+
+<div data-lvl="human">
+
+- **Claude Code.** Every mutating tool call is rendered concretely before it runs (the exact shell command, the exact file diff) with approve/deny as the gate. The preview *is* the contract: what was shown is what executes.
+- **ChatGPT agent mode.** Pauses before consequential actions (purchases, form submissions, sending) and asks for explicit confirmation showing what it is about to do, rather than approving the category of action.
+- **AI email assistants.** Gemini in Gmail and most agentic email clients stage the drafted reply in full for review; the send happens only on the user's own click. The draft-then-review loop is this pattern applied to the most common consequential action there is.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Claude Code.** Mutating tool calls render concretely (exact shell command, exact diff) behind an approve/deny gate, and the approved rendering is what executes. It also demonstrates the composition story: permission modes and allowlists (standing authority) determine *which* actions still preview, so the preview budget is spent only where policy hasn't already decided.
+- **ChatGPT agent mode.** Confirmation before purchases, submissions, and sends displays the pending action's specifics rather than its category, the category/token distinction adopted at product scale. That matters because the surrounding automation makes the preview the sole human checkpoint in an otherwise autonomous run.
+- **AI email assistants.** Gemini in Gmail stages the full drafted reply; send fires only on the user's own activation. Draft-then-review is the preview contract in its oldest form, and its weakness at volume (reviewing every drafted reply) is exactly the fatigue boundary where [Batch Approval](/patterns/batch-approval/) takes over.
+
+</div>
+
+*Annotated screenshots of these flows are being collected. Products are credited, annotations follow the site-wide callout conventions, and any screenshot is removed on request; see [About](/about/).*
+
+## Accessibility
+
+<div data-lvl="caveman">
+
+- **The in-page card** is a labeled group: a screen reader says the whole ask ("Send email to Dana Ito, group") when you reach it. It never yanks your focus away from what you were doing.
+- **The pop-up version** (`asModal`) traps focus properly, says its name, and rests the cursor on **reject**. Saying yes must always be a deliberate move, never the place your hand was already sitting.
+- **Escape means no.** Closing the box is a real "no," through the same path as the no-button. There is no third "just make it go away" that leaves the act hanging.
+- The fact rows are a definition list, so each label stays glued to its value when read aloud.
+- The "unfold the letter" control is a real button that says whether it's open; folded content is truly hidden, not just squished.
+- The danger-weighting never rides on color alone: the can't-take-back version changes the button's *words* ("Send now"), not just its paint.
+
+</div>
+
+<div data-lvl="human">
+
+- **Inline mode** renders a `role="group"` labeled by the action title, so screen readers announce the full context ("Send email to Dana Ito, group") when entering the card. It never steals focus: an agent proposing an action must not interrupt what the user is doing.
+- **Modal mode** (`asModal`) is a Radix `AlertDialog`: focus is trapped, `role="alertdialog"` is named by the title, and initial focus lands on the **reject** action. Approval must always be a deliberate movement, never the resting default.
+- **Escape rejects.** In modal mode, dismissal is an explicit "no", routed through `onReject` like the button. There is no third "just make it go away" state that leaves the action pending.
+- Field rows are a definition list (`<dl>`), so label–value pairs stay associated for assistive tech.
+- The content disclosure is a real `<button>` with `aria-expanded` and `aria-controls`; collapsed content is `hidden`, not clipped.
+- Consequence weighting never relies on color alone: the irreversible variant changes the button label ("Send now"), not just its palette.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Inline mode** is a `role="group"` named by the action title: full context announced on entry ("Send email to Dana Ito, group"), no focus seizure. A proposal must not preempt the user's current activity; interruption asymmetry between modalities is itself an accessibility defect.
+- **Modal mode** (`asModal`) is a Radix `AlertDialog`: trapped focus, `role="alertdialog"` named by title, initial focus on **reject**. Resting focus is a default, and defaults are policy: approval must cost a deliberate movement in every modality.
+- **Escape rejects**, routed through `onReject` identically to the button. A dismissal state distinct from rejection would leave the action pending-but-unowned; the modal has exactly two exits, both explicit.
+- Parameter rows are a `<dl>`: label–value association held in markup, so the facts survive linearization in the order and pairing the contract depends on.
+- The content disclosure is a native `<button>` with `aria-expanded`/`aria-controls`, and collapsed content is `hidden`: removed from the tree, not visually clipped over live text. Verbatim inspection must be available to assistive tech, not merely to sighted scrolling.
+- Consequence weighting is multi-channel: the irreversible variant changes the accessible name ("Send now") and not just the palette. The gravity of the act survives every rendering.
+
+</div>
+
+## Anti-patterns
+
+<div data-lvl="caveman">
+
+- **The kind-of-thing question.** "Allow Helper to send email?" says yes to a whole species of act and shows none of this act's facts. This is the exact thing the pattern exists to kill; don't rebuild it with prettier letters.
+- **The smoothed-over value.** "To: Dana and 2 others" hides exactly the part most worth checking. Fold long things, never blur them.
+- **Yes under the finger.** If Enter-means-yes is the resting state, the card is a formality. The cheapest twitch must be the careful one.
+- **The switcheroo.** If the machine edits the act after you said yes, even a little, the promise is broken. Any change means a new card, a new yes.
+- **Scary no.** Making "don't do this" sound like breaking something ("Discard agent's work?") punishes care and herds people toward yes.
+
+</div>
+
+<div data-lvl="human">
+
+- **The category confirmation.** "Allow Assistant to send email?" approves a class of action and shows none of its facts. This is the pattern's reason to exist; don't rebuild it with nicer typography.
+- **Summarized values.** "To: Dana and 2 others" hides exactly the parameter most worth checking. Truncate long values behind a disclosure, never behind a paraphrase.
+- **Default-focused approve.** Enter-to-approve as the resting state turns the preview into a formality. The cheapest gesture must be the cautious one.
+- **The mutating preview.** If the agent revises the action after approval, even trivially, the contract is broken. Any change to the previewed facts requires a new preview.
+- **Scary rejection.** Making "don't do this" feel destructive ("Discard agent's work?") punishes caution and biases users toward approval.
+
+</div>
+
+<div data-lvl="academic">
+
+- **The category confirmation.** Approving the class while executing the token is the original sin this pattern corrects; reproducing it with better typography changes presentation, not the information content of the assent.
+- **Summarized values.** "To: Dana and 2 others" substitutes a paraphrase for the parameter most worth auditing. Summarization re-opens the abstraction gap inside the surface built to close it: length is handled by disclosure, never by lossy compression of decision-relevant values.
+- **Default-focused approve.** Enter-to-approve as resting state converts review into throughput; the mechanism's value is exactly the deliberateness the default erases. Cheapest gesture = cautious gesture is the invariant.
+- **The mutating preview.** Post-approval revision, even trivial, severs the preview–execution bijection, and with it the meaning of every approval the surface will ever collect. Changed facts require a fresh preview; anything else is consent to a document that no longer exists.
+- **Scary rejection.** Pricing refusal as destruction ("Discard agent's work?") violates declining-is-always-safe and biases the decision channel toward approval, a calibration error imposed on the user. Rejection must read as the cheap, restorative path it is.
+
+</div>
+
+## Code
+
+```tsx
+import { ActionPreview } from "@agentconsent/react";
+import "@agentconsent/react/theme.css";
+
+<ActionPreview.Root
+  consequence="reversible"        // or "irreversible"
+  onApprove={() => execute(action)}
+  onReject={() => cancel(action)}
+>
+  <ActionPreview.Header>
+    <ActionPreview.Icon>✉</ActionPreview.Icon>
+    <ActionPreview.Title>Send email to Dana Ito</ActionPreview.Title>
+  </ActionPreview.Header>
+
+  <ActionPreview.Fields>
+    <ActionPreview.Field label="To">dana@northwindcap.com</ActionPreview.Field>
+    <ActionPreview.Field label="Subject">Q3 board deck, final</ActionPreview.Field>
+  </ActionPreview.Fields>
+
+  <ActionPreview.Content label="Message body">
+    {action.body}
+  </ActionPreview.Content>
+
+  <ActionPreview.Source agent="Inbox Assistant" authority="task: board prep" />
+
+  <ActionPreview.Actions>
+    <ActionPreview.Reject>Don't send</ActionPreview.Reject>
+    <ActionPreview.Approve>Send email</ActionPreview.Approve>
+  </ActionPreview.Actions>
+</ActionPreview.Root>
+```
+
+Pass `asModal` with `open`/`onOpenChange` to render as a focus-trapped alert dialog instead of an inline card. All parts are unstyled primitives with `data-acp` attributes; skip `theme.css` and style them yourself, or override the `--acp-*` tokens to retheme.

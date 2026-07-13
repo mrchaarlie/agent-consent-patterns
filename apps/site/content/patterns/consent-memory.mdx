@@ -1,0 +1,300 @@
+import { ConsentMemoryDemo } from "@/components/consent-memory-demo";
+import { ConsentMemoryAnatomy } from "@/components/consent-memory-anatomy";
+
+<p data-lvl="caveman" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">"Always allow" is the button that makes the annoying box go away forever, so tired hands press it without noticing they just gave a forever-yes. Make how-long its own question, and say out loud what each answer buys.</p>
+
+<p data-lvl="human" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">“Always allow” is the fastest way out of a prompt, which is exactly why users reach for it without noticing they just signed a standing grant. Make the durability of a decision a legible choice, with each option’s future spelled out.</p>
+
+<p data-lvl="academic" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Promote duration to a first-class dimension of consent: a graded durability ladder with the ephemeral option as the resting default, per-option consequence disclosure, and standing grants that are visibly heavier to reach, so persistence is chosen, never slipped into.</p>
+
+## Problem
+
+<div data-lvl="caveman">
+
+The machine asks "may I?" at the worst moment to decide how long the yes lasts. You're mid-hunt, and the box is in your way. Between "Allow once" and "Always allow," the move that feels smart is the one that kills the box for good: *Always*. That same button hands over the most power. A trap built into the furniture.
+
+The forever-yes deserved the most thought in the whole flow. It gets the least, made in passing while your mind is on getting back to the hunt. Weeks later the machine does something you don't remember allowing, because you never *felt* yourself allow it. You felt yourself swat a box.
+
+</div>
+
+<div data-lvl="human">
+
+The moment an agent asks permission is the worst moment to decide how long that permission should last. The user is mid-task, focused on the thing they were doing, and the prompt is in the way. Faced with "Allow once / Always allow," the rational move under task focus is the one that makes the interruption stop recurring: *Always*. The button that ends the friction forever is the button that grants the most power.
+
+So the standing grant, the one that should be the most deliberate decision in the whole flow, gets made the most carelessly, as a side effect of wanting to get on with something else. Weeks later the agent does something the user doesn't remember authorizing, because they didn't experience it as authorizing anything. They experienced it as dismissing a dialog.
+
+</div>
+
+<div data-lvl="academic">
+
+The in-task prompt is a hyperbolic-discounting machine: the user, under task focus, weighs the immediate cost (this interruption, and its future recurrences) against a diffuse, delayed cost (whatever the standing grant later permits), and the interface makes the broad grant the action that minimizes the salient cost. "Always allow" is simultaneously the exit from friction and the maximum transfer of authority: an incentive-alignment failure baked into the dialog itself. The decision-theoretic inversion is total: the choice with the longest time horizon is made under the conditions least suited to evaluating time horizons, and the durable consequence is experienced phenomenologically as *dismissing a dialog*, not as authorizing anything. This is why the resulting grants are unaccountable in both senses: the user can neither recall making them nor locate them afterward. The prompt-fatigue literature and the standing-authority principle meet here: friction spent asking the same question repeatedly doesn't just annoy, it actively manufactures the over-grant, because each repetition raises the perceived value of never being asked again. Duration, in other words, is not a modifier on consent; it is the consequential part, and interfaces that render it as an afterthought get exactly the standing grants that afterthoughts produce.
+
+</div>
+
+## Solution
+
+<div data-lvl="caveman">
+
+Make *how long* its own question, not fine print stuck to a yes. Offer a ladder of how-longs. Next to each rung, say plainly what future it buys:
+
+- **Just this once.** The safe rung, already picked. The machine asks again next time; nothing standing is created.
+- **For this sitting.** Less asking, and the window shuts itself when you're done.
+- **Always, but only for Dana.** A forever-yes squeezed to one person, so "always" doesn't mean "everyone."
+- **Always, for anyone.** It exists, but drawn heavy and serious, never the easy quiet way out.
+
+Every rung says plainly what happens next. The confirm button names what it's about to do, so how long the yes lasts stays visible right up to the click.
+
+</div>
+
+<div data-lvl="human">
+
+Treat *duration* as a first-class part of the decision, not a modifier bolted onto a yes. Offer a graded set of durabilities, and make each one state, right next to the choice, the future it signs the user up for.
+
+- **Just this once** is the safe resting default, pre-selected. The agent asks again next time; nothing standing is created.
+- **For this session** trades a little friction for a bounded window that ends on its own.
+- **Scoped standing** ("always, for Dana") is a durable grant deliberately narrowed to a condition, so "always" doesn't have to mean "everything."
+- **Unconditional standing** ("always, for anyone") is available, but drawn with visible weight, never as the quiet, obvious way out.
+
+Every option carries a plain-language consequence line, and the confirm button names what it will do, so the durability stays legible right up to the click.
+
+</div>
+
+<div data-lvl="academic">
+
+Reify duration as the decision's primary axis and structure the option set as a durability ladder whose rungs differ legibly in what they commit:
+
+- **Ephemeral ("just this once").** Pre-selected, so the zero-standing outcome is the resting state and every durable grant requires a deliberate movement away from it. Defaults are policy; this one encodes least privilege on the time axis.
+- **Session-bounded.** A self-expiring window, the expiry principle applied at prompt scale: authority that lapses without requiring the user to remember to revoke it.
+- **Scoped standing ("always, for Dana").** Durability crossed with a narrowing condition, decoupling persistence from breadth so the user can buy freedom-from-prompts without paying in unconditional authority. This rung is the pattern's real contribution: most interfaces offer only the corners of the duration×scope matrix.
+- **Unconditional standing.** Offered honestly (forbidding it just drives workarounds) but rendered with proportional weight, never as the visually cheapest exit.
+
+Each option carries an adjacent consequence line stating the future it creates, and the confirm button re-labels to name the durability being committed: the standing implication has one source of truth and it is legible at the moment of commitment. The ladder presupposes governance downstream: a standing grant created here must surface in an [Authority Boundary](/patterns/authority-boundary/) or [Connection Card](/patterns/connection-card/), or the memory is a write-only store.
+
+</div>
+
+<ConsentMemoryDemo />
+
+<div data-lvl="caveman">
+
+The box above is the real `ConsentMemory` component from `@agentconsent/react`. Notice the forever-rungs are drawn heavier than the once-rung, and the confirm button changes its own words. The interface never lets "always" dress up as "once."
+
+</div>
+
+<div data-lvl="human">
+
+The demo is the `ConsentMemory` component from `@agentconsent/react`. Notice that the standing options read heavier than the default, and the confirm button relabels itself. The interface never lets "always" masquerade as "once."
+
+</div>
+
+<div data-lvl="academic">
+
+The demo is the `ConsentMemory` component from `@agentconsent/react`. The standing options carry visible weight relative to the default, and the confirm button re-labels per selected durability, enforcing the invariant that commitment weight tracks grant durability, with no path where "always" is committed under "once" styling.
+
+</div>
+
+## Anatomy
+
+<ConsentMemoryAnatomy />
+
+## When to use it
+
+<div data-lvl="caveman">
+
+- **Any ask that will come back.** If the same question will knock again and again, tired hands will look for a way to stop it. Give them an honest ladder instead of a hidden "always."
+- **Where a forever-yes truly helps.** This pattern isn't for banning standing grants. It's for making them *chosen*. If remembering the answer is a real kindness, offer it, deliberately.
+- **Next to a place where yeses can be taken back.** A forever-yes is only safe if you can later find it and kill it. Pair this with a [Connection Card](/patterns/connection-card/) so "always" is never a one-way door.
+
+</div>
+
+<div data-lvl="human">
+
+- **Any prompt you expect to repeat.** If the same request will recur, users will want to stop being asked, so give them a legible way to instead of letting them reach for a hidden "always."
+- **Where a standing grant is genuinely useful.** Consent Memory is for cases where remembering the answer is a real convenience; the point is to make it deliberate, not to forbid it.
+- **Alongside a revocation surface.** A standing grant is only safe if it can be seen and undone later. Pair it with a [Connection Card](/patterns/connection-card/) so "always" is never a one-way door.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Any recurring prompt.** Recurrence creates the demand for standing authority whether the interface acknowledges it or not; unacknowledged, the demand routes through the bluntest available instrument (the hidden "always," the global setting, abandonment). The ladder is the pressure-relief valve designed on purpose.
+- **Where durable grants have genuine utility.** The pattern's stance is procedural, not prohibitive: standing authority is legitimate when its creation is deliberate, its scope stated, and its lifecycle governed. Forbidding memory where it's useful just moves the over-grant elsewhere.
+- **Only alongside a revocation surface.** A memory whose entries cannot be enumerated and revoked is a one-way accumulation of authority. The prompt writes; a [Connection Card](/patterns/connection-card/) or [Authority Boundary](/patterns/authority-boundary/) must read and delete. The pair is one system, and shipping the writer without the reader is the write-only-grant anti-pattern at the pattern level.
+
+</div>
+
+## When not to use it
+
+<div data-lvl="caveman">
+
+- **One-off, heavy acts.** Some things should be asked afresh *every* time: money leaving, deleting forever. For those, don't offer to remember at all. That's the [Irreversibility Gate](/patterns/irreversibility-gate/)'s territory.
+- **When the user came to set rules on purpose.** Someone deliberately deciding what the machine may do deserves the full rule-setting room ([Authority Boundary](/patterns/authority-boundary/)), not a rule captured as a side effect of a passing box.
+- **To pre-check "always" because it's good for the numbers.** Defaulting to the forever-yes to cut prompt counts is the exact trap this pattern exists to spring open.
+
+</div>
+
+<div data-lvl="human">
+
+- **Genuinely one-off, high-stakes actions.** If an action should always be confirmed afresh (moving money, irreversible deletion), don't offer to remember the answer at all. That's an [Irreversibility Gate](/patterns/irreversibility-gate/), not a memory prompt.
+- **When the grant belongs in settings.** If the user is deliberately configuring what an agent may do, use the full [Authority Boundary](/patterns/authority-boundary/) surface rather than capturing it as a by-product of an in-task prompt.
+- **To pre-check "always" for engagement.** Defaulting to the standing option because it reduces future prompts is the anti-pattern this exists to prevent.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Actions whose consequence class forbids memory.** For irreversible-tier actions the correct durability set is a singleton: fresh confirmation, every time. Offering to remember is offering to delete the checkpoint. That decision belongs to the [Irreversibility Gate](/patterns/irreversibility-gate/), and severity should override memory in any composition of the two.
+- **Deliberate configuration contexts.** When the user has set out to define agent policy, the in-task prompt is the wrong instrument: it captures one data point under task pressure, where the [Authority Boundary](/patterns/authority-boundary/) surface elicits considered policy. In-prompt memory is for decisions that *happen* to recur, not for policy-making proper.
+- **Engagement-motivated persistence.** Pre-selecting or visually privileging the standing option to suppress future prompt volume is the dark-pattern inversion: it uses the ladder's legitimacy to harvest exactly the careless standing grants the ladder exists to prevent. The metric a durable default optimizes is the product's, not the principal's.
+
+</div>
+
+## Real-world examples
+
+<div data-lvl="caveman">
+
+- **The phone's location question.** "Allow Once / While Using the App / Always": the how-long ladder built right into the phone. And later the phone taps your shoulder: "this app has used your location 43 times in the background." The forever-yes gets looked at again, not just remembered.
+- **Chrome's site permissions.** A one-time yes or a lasting one, per website. Every remembered yes is listed in one place where you can un-remember it.
+- **Claude Code's tool approvals.** "Yes" and "Yes, don't ask again" are separate buttons, the remembered rules are narrow (this project, this tool, this command shape), and you can read and delete them. Forever-yeses that stay visible and killable.
+
+</div>
+
+<div data-lvl="human">
+
+- **iOS location prompts.** "Allow Once / While Using the App / Always" made duration a first-class part of the OS permission dialog. iOS also periodically re-surfaces standing "Always" grants ("app has used your location N times in the background") so the durable choice gets reconsidered, not just remembered.
+- **Chrome site permissions.** One-time versus persistent grants per site, with every remembered decision listed and revocable in site settings. The memory is paired with a place to forget.
+- **Claude Code tool approvals.** The approval prompt distinguishes "Yes" from "Yes, don't ask again," and remembered rules are scoped (per project, per tool, per command pattern) and reviewable with `/permissions`, a shipped example of standing grants that stay legible and undoable.
+
+</div>
+
+<div data-lvl="academic">
+
+- **iOS location prompts.** The OS-level canonicalization of the durability ladder. The rarer half of the design shows up in the periodic "app has used your location N times in the background" re-surfacing: standing grants that trigger their own reconsideration. Re-consent nudges convert memory from a fire-and-forget write into a reviewed lease, which is the expiry principle applied to attention rather than to the grant itself.
+- **Chrome site permissions.** One-time vs. persistent grants per origin, with the full remembered set enumerable and revocable in site settings. The writer/reader pairing ships as one system, with scoping by origin as the narrowing condition.
+- **Claude Code tool approvals.** "Yes" vs. "Yes, don't ask again" splits the durability decision at the prompt, and the remembered rules are scoped per project, tool, and command pattern: the scoped-standing rung, with `/permissions` as the enumeration-and-revocation surface. Notable as an agent-native implementation where the memory's scope grammar (command patterns) is far finer than OAuth-era precedents.
+
+</div>
+
+*Annotated screenshots of these flows are being collected. Products are credited, annotations follow the site-wide callout conventions, and any screenshot is removed on request, see [About](/about/).*
+
+## Accessibility
+
+<div data-lvl="caveman">
+
+- The ask is a labeled form, and the how-long rungs are a true radio group with a spoken heading. A screen reader hears "how long should this apply" as one question with N answers.
+- **Each rung carries its own what-happens.** The consequence sentence is tied to its radio, so it gets spoken the moment you land on the choice, not only if you happen to read further.
+- **The safe rung starts selected.** "Just this once" is pre-checked, so the resting state gives away the least. Reaching a forever-yes always takes a deliberate move.
+- **The confirm button says how long.** It renames itself from "Allow once" to "Allow always." The commitment is *spoken*, not just painted a different color.
+- The heaviness of the forever-rungs is carried by words ("Standing · always") and layout, not just the accent color, so the difference survives for eyes that don't see the color.
+
+</div>
+
+<div data-lvl="human">
+
+- The prompt is a labelled `form`; the durability choices are a genuine radio group in a `fieldset`/`legend`, so assistive tech announces "how long should this apply" as one grouping with N options.
+- **Each option owns its consequence.** The consequence line is associated with its radio via `aria-describedby`, so a screen-reader user hears the standing implication as they land on the choice, not only if they happen to read on.
+- **The safe default is the selected default.** "Just this once" is pre-checked, so the resting state of the control is the least-standing grant; reaching a standing grant always takes a deliberate move.
+- **The confirm names the durability.** The primary button relabels itself from "Allow once" to "Allow always," so the commitment is spoken, not just colored. The persistence is never carried by styling alone.
+- Standing weight is conveyed with a text hint ("Standing · always") and layout, in addition to the accent color, so the distinction survives without color.
+
+</div>
+
+<div data-lvl="academic">
+
+- The prompt is a labelled `form` with the durability choices as a native radio group under `fieldset`/`legend`: "how long should this apply" is announced as one question with N mutually exclusive answers, which is the decision's true structure.
+- **Consequence is bound to option** via `aria-describedby`: the standing implication is announced on landing, not discoverable only by reading past the control. For this pattern the consequence line *is* the content; an unbound one fails the legibility principle specifically for non-visual users.
+- **The resting state is the least-standing grant.** Pre-checking "just this once" means reflexive confirmation commits the ephemeral outcome; every durable grant costs a deliberate selection first. The safe-default rule, applied to the time axis.
+- **The confirm's accessible name carries the durability.** "Allow once" vs "Allow always" makes the final commitment spoken at the point of activation. Persistence encoded only in styling would make the single most consequential bit invisible to assistive tech.
+- Standing weight is multi-channel: the text hint ("Standing · always") and layout carry it alongside the accent color, so the durability gradient survives color-blindness and forced-colors modes (WCAG 1.4.1).
+
+</div>
+
+## Anti-patterns
+
+<div data-lvl="caveman">
+
+- **"Always" as the default or the shiniest button.** Pre-selecting the forever-yes, or making it the big bright one, is exactly how careless forever-yeses get made. The safe rung rests; the big rung must be climbed to.
+- **How-long as tiny print.** A little "□ Don't ask again" tucked under the OK button hides the most important part of the whole decision. How-long is a main question, not a footnote.
+- **Forever-yeses with no exit.** Remembering "always" without a place that shows it and kills it turns one moment's convenience into an invisible permanent power. Every memory needs a forgetting-place.
+- **Fuzzy how-long.** "Remember my choice." For how long? For what? Name the window and the territory. An unnamed "remember" is a blank slab.
+- **Rungs with no price tags.** Listing "Once / Session / Always" without saying what each *does* asks the user to pay a price they can't see.
+
+</div>
+
+<div data-lvl="human">
+
+- **"Always" as the default or the easy path.** Pre-selecting the standing grant, or making it the biggest, brightest button, is exactly how careless standing grants happen. The safe choice is the default; the broad one earns its weight.
+- **Duration as a buried checkbox.** A "□ Don't ask again" tucked under an OK button hides the most consequential part of the decision. Make durability a primary choice, not fine print.
+- **Standing grants with no exit.** Remembering "always" without a surface that shows and revokes it turns a moment's convenience into a permanent, invisible capability. Always pair memory with a way to forget.
+- **Vague durability.** "Remember my choice." For how long, for what? Name the window and the scope; an unspecified "remember" is a blank check.
+- **Consequence-free options.** Listing "Once / Session / Always" without saying what each *does* asks the user to price a decision with no price tag.
+
+</div>
+
+<div data-lvl="academic">
+
+- **"Always" as the default or cheapest path.** Pre-selecting or visually privileging the standing grant is the incentive inversion from the problem statement, rebuilt deliberately: it points inertia (the strongest force in the dialog) at the broadest transfer of authority. Weight must track durability, monotonically.
+- **Duration as a buried checkbox.** "□ Don't ask again" beneath an OK button demotes the decision's dominant term to a modifier, and its unchecked-looking neutrality belies that checking it creates the longest-lived object in the flow. Durability is the primary choice or it is fine print; there is no legible middle.
+- **Standing grants with no exit.** Memory without an enumeration-and-revocation surface accumulates authority monotonically; every convenience compounds into permanent, invisible capability. The write path and the read/delete path are one system: shipping only the write path is how permission debt is minted.
+- **Vague durability.** "Remember my choice" leaves both window and scope unbound: an authorization whose extent the grantor cannot state, which fails the most basic legibility test. The grant must name its when and its what.
+- **Consequence-free options.** A bare "Once / Session / Always" enumerates durabilities without their futures, asking the user to price commitments with no price tags; the consequence line is what makes the ladder a decision rather than a vocabulary list.
+
+</div>
+
+## Code
+
+```tsx
+import { ConsentMemory } from "@agentconsent/react";
+import "@agentconsent/react/theme.css";
+
+<ConsentMemory.Root
+  defaultValue="once"                 // the safe default is pre-selected
+  onAllow={(value) => remember(value)} // "once" | "session" | "scoped" | "always"
+  onDeny={() => dismiss()}
+>
+  <ConsentMemory.Header>
+    <ConsentMemory.Icon>✦</ConsentMemory.Icon>
+    <ConsentMemory.Title>
+      Allow Inbox Assistant to send email?
+    </ConsentMemory.Title>
+  </ConsentMemory.Header>
+
+  <ConsentMemory.Description>
+    The agent drafted a reply to Dana and wants to send it now.
+  </ConsentMemory.Description>
+
+  <ConsentMemory.Options>
+    <ConsentMemory.Option
+      value="once"
+      durability="once"
+      label="Just this once"
+      consequence="The agent asks again next time it wants to send email."
+    />
+    <ConsentMemory.Option
+      value="scoped"
+      durability="scoped"
+      label="Always, for Dana"
+      consequence="The agent can email Dana any time without asking."
+    />
+    <ConsentMemory.Option
+      value="always"
+      durability="always"
+      label="Always, for anyone"
+      consequence="The agent can email any recipient, any time, without asking."
+    />
+  </ConsentMemory.Options>
+
+  <ConsentMemory.Actions>
+    <ConsentMemory.Deny>Not now</ConsentMemory.Deny>
+    <ConsentMemory.Allow>
+      {({ durability }) =>
+        durability === "once" ? "Allow once" : "Allow always"}
+    </ConsentMemory.Allow>
+  </ConsentMemory.Actions>
+</ConsentMemory.Root>
+```
+
+Each `Option` declares its own `durability`, which drives its weight and the
+confirm button's label, so the standing implication has one source of truth.
+Point `defaultValue` at the `once` option to keep the safe choice resting. All
+parts are unstyled primitives with `data-acp` attributes; skip `theme.css` and
+style them yourself, or override the `--acp-*` tokens to retheme.

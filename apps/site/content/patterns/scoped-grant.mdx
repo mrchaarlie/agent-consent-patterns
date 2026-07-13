@@ -1,0 +1,295 @@
+import { ScopedGrantDemo } from "@/components/scoped-grant-demo";
+import { ScopedGrantAnatomy } from "@/components/scoped-grant-anatomy";
+
+<p data-lvl="caveman" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Old way: one ALLOW button hands the machine your whole cave. New way: small buttons, one for look, one for touch, one for destroy. You press each one yourself.</p>
+
+<p data-lvl="human" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Make capability granularity legible at the moment of connection: which resources, and read versus write versus delete, each an individually reviewable permission, not one opaque "allow access".</p>
+
+<p data-lvl="academic" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Decompose the consent grant along two orthogonal axes, resource scope and access level, so each capability is an independently reviewable, independently deniable authorization, restoring least privilege to a flow OAuth flattened into a single opaque assent.</p>
+
+## Problem
+
+<div data-lvl="caveman">
+
+Machine asks: "Can I use your mail? YES or NO?" One button. But "use" is a trick word: it can mean *read one letter*, or it can mean *burn every letter you have*. Same word, same click.
+
+A person doing this by hand only moves so fast. A machine is a strong dog off the leash: whatever you allow, it does fast, everywhere, while you sleep. That one YES button is the only place you set how big a mess it can make. So stop asking one big YES. Ask many small, honest questions instead.
+
+</div>
+
+<div data-lvl="human">
+
+The consent screen inherited from OAuth answers the wrong question. "Inbox Assistant wants to access your Gmail. Allow?" collapses an enormous range of capability into a single toggle. Reading one message in one label and permanently deleting the entire inbox arrive as the same request, worded the same way, granted by the same click. For a human app the blast radius was bounded by a UI a person still had to drive. An agent has no such bound: whatever you grant, it can exercise at machine speed, unattended, across every message the scope touches. The screen that used to be a formality is now the main place a user can set the blast radius, and it still reads like a formality.
+
+</div>
+
+<div data-lvl="academic">
+
+OAuth-style consent inherits a scope model designed for a different threat model. Scopes are opaque strings negotiated between client and authorization server; the consent screen renders them as a single accept/decline decision, and the effective granularity of user authorization collapses to one bit. That was tolerable when the grantee was an application whose actions remained rate-limited and mediated by a human driving its UI. Delegation to an autonomous agent removes that implicit bound: granted capability can now be exercised at machine speed, unattended, across the full extent of the scope, so the variance in consequence hidden inside one scope string (read a single message vs. exfiltrate or destroy a mailbox) becomes the dominant risk term. In least-privilege terms, the flattened grant forces over-provisioning by construction; the user cannot authorize the narrow capability the task needs because the interface offers no vocabulary for it. The consent screen is the one point where the principal can bound the blast radius of the delegation, and the inherited design spends that opportunity on a formality. Once granted, over-broad standing authority also becomes the raw material for confused-deputy failures downstream. See [Injection Flag](/patterns/injection-flag/) for what happens when untrusted content borrows it.
+
+</div>
+
+## Solution
+
+<div data-lvl="caveman">
+
+Break the one big YES into pieces you can actually judge. Show two things the old screen hid:
+
+- **How hard can it touch?** Each piece is marked *look* (read), *change* (write), or *destroy* (delete), in words, not just color. You see right away if this is watching or breaking.
+- **How much of the cave?** Pieces are grouped by what they touch, and the screen names the small patch ("only the Board 2026 pile," "only the Board Decks basket"). The machine gets a corner, not the whole cave.
+
+Each piece is its own switch. *Look* starts on, since looking is smallest. *Change* and *destroy* start off: you turn them on yourself. Pieces the machine truly needs are shown locked, with a label saying so, never snuck in quiet. The button at the bottom counts out loud: "Connect · 2 permissions." You always know how many keys you hand over.
+
+</div>
+
+<div data-lvl="human">
+
+Break the grant into capabilities the user can actually evaluate, and make two dimensions visible that the old screen hid:
+
+- **Access level.** Every capability is tagged read, write, or delete as text and weight, never by color alone. The user sees at a glance whether they are authorizing observation or destruction.
+- **Resource scope.** Capabilities are grouped by the resource they touch, with the narrowing stated ("Board 2026 label only," "Board Decks folder only"). Access is scoped to a resource, not granted against a whole account by default.
+
+Each capability is an individual toggle. Read is the least-privilege default; write and delete are opt-in. Mandatory scopes are shown locked-on and labeled, never bundled in silently. The grant button commits to a count the user can see.
+
+</div>
+
+<div data-lvl="academic">
+
+Restructure the grant as a matrix of discrete capabilities, surfacing the two dimensions the flattened screen suppressed:
+
+- **Access level as an explicit taxonomy.** Every capability carries a read/write/delete classification, conveyed as text and typographic weight rather than color alone (a WCAG 1.4.1 requirement, but also an epistemic one: the classification *is* the consequence summary). The user distinguishes observation from mutation from destruction before granting, which is precisely the distinction the underlying APIs already enforce and the old screen erased.
+- **Resource scope as a stated narrowing.** Capabilities cluster under the resource they govern, with the narrowing made propositional ("Board 2026 label only") rather than implied. This moves the grant from account-level ambient authority toward something closer to a capability in the object-capability sense: authority designated per resource, not conferred wholesale.
+
+Defaults encode least privilege: read-only capabilities are pre-granted, mutating and destructive ones are opt-in, and mandatory scopes are disclosed as locked rather than silently bundled, preserving the invariant that everything granted was visibly enumerated. The commit button carries a live count of what it will grant, making the final act of consent quantified rather than gestural. The pattern deliberately handles only *initial* provisioning; in-task escalation belongs to [Progressive Scope](/patterns/progressive-scope/) and post-grant visibility to [Connection Card](/patterns/connection-card/).
+
+</div>
+
+<ScopedGrantDemo />
+
+<div data-lvl="caveman">
+
+The box above is real: it is the `ScopedGrant` component from `@agentconsent/react`. Press the switches and watch the number on the big button change. The *look* switches are locked on: the machine cannot work blind, and the screen says so instead of hiding it.
+
+</div>
+
+<div data-lvl="human">
+
+The demo is the `ScopedGrant` component from `@agentconsent/react`. Toggle capabilities to watch the grant count change; the read scopes are marked required and cannot be turned off.
+
+</div>
+
+<div data-lvl="academic">
+
+The demo is the `ScopedGrant` component from `@agentconsent/react`. Toggling capabilities updates the grant count in the commit button; the read scopes are declared in `requiredScopes`, rendered locked-on with a text label: the disclosure-over-bundling behavior described above, exercised live.
+
+</div>
+
+## Anatomy
+
+<ScopedGrantAnatomy />
+
+## When to use it
+
+<div data-lvl="caveman">
+
+- **When you hook a machine up to your stuff** (mail, calendar, files, money, code) and it can be touched in more than one way.
+- **When the service already knows the difference** between look, change, and destroy. If the keys come apart, hand them out apart. Don't melt them into one key.
+- **When the machine only needs one corner:** one folder, one pile, one project. Give the corner, not the cave. Smaller territory, smaller mess.
+
+</div>
+
+<div data-lvl="human">
+
+- **Connecting an agent to a service** (email, calendar, files, a payments API, a repo) where the underlying API exposes more than one capability.
+- **When the API distinguishes access levels.** If read, write, and delete are separately grantable, the consent screen should let the user grant them separately rather than flattening to all-or-nothing.
+- **When scope can be narrowed to a resource:** a folder, a label, a project. Per-resource grants turn "access your Drive" into "access this one folder," shrinking the blast radius for free.
+
+</div>
+
+<div data-lvl="academic">
+
+- **At the provisioning boundary of any agent–service connection** (email, calendar, files, payments, repos), where the API's capability surface is non-trivial. The pattern's value scales with the variance in consequence across the capabilities being bundled.
+- **Whenever the authorization server distinguishes access levels.** If read, write, and delete are separately grantable tokens, flattening them at the consent layer discards enforcement granularity the platform already paid for; the UI should preserve, not erase, the API's own privilege lattice.
+- **Whenever scope admits resource-level narrowing:** a folder, a label, a project. Per-resource designation converts ambient account-wide authority into bounded authority, and the blast-radius reduction is obtained at consent time, with no runtime enforcement cost to the integrating product.
+
+</div>
+
+## When not to use it
+
+<div data-lvl="caveman">
+
+- **When there is truly only one key.** If the service can only do one thing, don't build a wall of switches for show. One honest card saying the one thing is better.
+- **When the machine is mid-hunt and needs one more key right now.** Don't drag the user back to the big wall of switches. Ask for just that one key, in the moment. That is a different pattern: [Progressive Scope](/patterns/progressive-scope/).
+- **When the question is "do this one act, yes or no?"** This screen hands out standing keys. Approving one specific throw of the spear (one send, one payment) is [Action Preview](/patterns/action-preview/) and the [Irreversibility Gate](/patterns/irreversibility-gate/).
+
+</div>
+
+<div data-lvl="human">
+
+- **Genuinely all-or-nothing integrations.** If the service exposes a single capability, a granular picker is theater. A Connection Card confirming the one thing is more honest.
+- **Escalation in the middle of a task.** When the agent hits a wall and needs one more permission right now, don't send the user back to the full grant screen. That is Progressive Scope.
+- **Per-action approval.** Scoped Grant sets standing capability; it is not where you approve a specific send or payment. That is Action Preview and the Irreversibility Gate.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Degenerate capability surfaces.** When the service exposes a single capability, a granular picker is consent theater: it manufactures the appearance of choice without its substance, which corrodes trust in the mechanism everywhere else. A [Connection Card](/patterns/connection-card/) stating the one capability is the honest form.
+- **Mid-task escalation.** Re-presenting the full provisioning screen at an in-context escalation point maximizes both friction and approval-fatigue; contextual single-capability escalation is [Progressive Scope](/patterns/progressive-scope/), and conflating the two collapses its incremental-trust model back into up-front consent to hypotheticals.
+- **Per-action authorization.** Scoped Grant establishes standing capability, not per-invocation consent; a specific send or payment needs the concrete-action legibility of [Action Preview](/patterns/action-preview/) and, where irreversible, the proportional friction of the [Irreversibility Gate](/patterns/irreversibility-gate/). Using a capability grant to launder per-action approval inverts the authority model.
+
+</div>
+
+## Real-world examples
+
+<div data-lvl="caveman">
+
+- **Google's permission checkboxes.** For the dangerous stuff, Google now shows each thing as its own checkbox, labeled "Select what this app can access," so you can say yes to the calendar and no to the contacts. The one big Allow became many small choices. That is this pattern.
+- **GitHub App install screen.** Each permission says how hard it can touch (only look, or look and change), and you must pick: *all* your code homes, or *only the ones you point at*. Both questions, how hard and how much, get asked before anything is handed over.
+- **Plaid bank hookup.** After you prove you're you, Plaid asks *which accounts* the app may see. It connects to the whole bank but only gets the accounts you picked.
+
+</div>
+
+<div data-lvl="human">
+
+- **Google's granular OAuth consent.** For sensitive scopes, Google's consent screen presents each requested permission as its own checkbox, labeled "Select what [app] can access," so a user can grant calendar read access while declining contacts. The single Allow button became a per-capability decision, which is exactly this pattern retrofitted onto OAuth.
+- **GitHub App installation.** A GitHub App declares each permission with an access level (read-only vs. read-and-write), and the install screen forces a resource decision: **All repositories** or **Only select repositories**. Access level and resource scope are both legible before anything is granted.
+- **Plaid account linking.** After the user authenticates with their bank, Plaid asks which specific accounts the requesting app may see. The connection is to the institution; the grant is per-account.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Google's granular OAuth consent.** For sensitive scopes Google renders each requested permission as an independent checkbox, per-capability consent retrofitted onto RFC 6749's opaque scope strings. Notably, apps must handle partial grants, which is the structural consequence of granularity: the client can no longer assume the requested scope set equals the granted one.
+- **GitHub App installation.** GitHub Apps declare permissions with explicit access levels (read-only vs. read-and-write) and force a resource-scope decision at install (**All repositories** vs. **Only select repositories**), the same two axes this pattern names, enforced server-side per installation token. The contrast with classic OAuth-app scopes (coarse, account-wide) is an instructive natural experiment in both models coexisting on one platform.
+- **Plaid account linking.** Authentication to the institution and authorization of visibility are separated: the user authenticates once, then designates per-account access. Connection ≠ grant. The designation step is where the scoping happens.
+
+</div>
+
+*Annotated screenshots of these flows are being collected. Products are credited, annotations follow the site-wide callout conventions, and any screenshot is removed on request. See [About](/about/).*
+
+## Accessibility
+
+<div data-lvl="caveman">
+
+- The whole thing is a real form with a name, so a screen reader says what you are connecting the moment you land on it, and a real submit button sends it.
+- Every switch is a real checkbox with a real label. The reader speaks the level, the name, and what it does, all together, every time.
+- Switches are grouped in labeled clusters, so you hear *which pile of stuff* a group touches before you hear the switches.
+- **Danger is never shown by color alone.** The read/write/delete tag is a word. People who can't see red still hear "delete."
+- **Locked switches say "required" in text.** Not just a grey box. The lock is spoken out loud, and the locked thing is still fully described.
+- The count lives inside the button's own label, so a screen-reader user hears exactly how many keys the button hands over before pressing it.
+
+</div>
+
+<div data-lvl="human">
+
+- The grant is a `<form>` labeled by its title, so screen readers announce what is being connected on entry, and the whole thing submits with a real submit button.
+- Each capability is a native `<input type="checkbox">` with an associated `<label>`; its plain-language description is wired with `aria-describedby`, so the level, the name, and the consequence are all announced together.
+- Capabilities are clustered in `<fieldset>`/`<legend>` groups, so assistive tech announces the resource each cluster applies to before its scopes.
+- **Access level is never carried by color alone.** The read/write/delete badge is text; the weighting (and a granted-state emphasis on write and delete) is layered on top of a label that already reads without it.
+- **Required scopes are `disabled` and `checked`**, with a text "required" tag. The lock is announced, not just implied by a greyed box, and the mandatory permission is still fully described.
+- The grant count lives in the button label, so a screen-reader user hears exactly how many permissions the button will grant before activating it.
+
+</div>
+
+<div data-lvl="academic">
+
+- The grant is a `<form>` labeled by its title (`aria-labelledby`), so the accessible name of the region states what is being connected on entry, and commitment happens through a genuine submit, enter-key semantics and all, rather than a click handler on a div.
+- Each capability is a native checkbox whose consequence description is bound via `aria-describedby`: level, name, and consequence arrive as one announcement. This is the legibility principle enforced at the accessibility-tree level. The non-visual rendering of the grant carries the same information as the visual one.
+- `<fieldset>`/`<legend>` clustering makes the resource-scope axis audible: assistive tech announces the governing resource before its scopes, preserving the grouping semantics sighted users get from layout.
+- **Access level never rides on color alone** (WCAG 1.4.1): the read/write/delete badge is text, with weight and granted-state emphasis layered over a label that is complete without them.
+- **Required scopes are `disabled` + `checked` with a text "required" tag**. The mandatory-disclosure invariant, made explicit rather than implied by a greyed affordance, and the locked permission remains fully described.
+- The grant count is part of the button's accessible name, not adjacent text. The quantified commit is announced at the point of activation, where it informs the decision, not after it.
+
+</div>
+
+## Anti-patterns
+
+<div data-lvl="caveman">
+
+- **The one big YES.** "Allow access to your mail." The single switch that could mean anything is the whole reason this pattern exists. Making it prettier does not fix it.
+- **Danger shown only by color.** A red dot on the scary switch fails everyone who can't see red and most people who can. Write the word "delete."
+- **Sneaking keys into the bundle.** Slipping *change* or *destroy* into what looks like a *look-only* grant, or hiding required keys behind "…and 4 more." That is not consent. That is a trick.
+- **Whole cave by default.** Asking for the entire mailbox when the job touches one pile. Start with the smallest corner that works, and let the user make it bigger, never the other way.
+- **All switches pre-flipped on.** Betting the user won't bother flipping them off. Smallest-first means *change* and *destroy* start OFF.
+- **Keys with no words.** A switch with no plain sentence under it makes the user say yes to sounds they can't judge. If you can't say what a key opens, don't ask for it.
+- **Giving the dog more than you have.** Never offer the machine a key that *you yourself* don't hold. The machine's reach must stay inside your reach, always.
+
+</div>
+
+<div data-lvl="human">
+
+- **The all-or-nothing toggle.** "Allow access to your Gmail." The single scope that could mean anything is the pattern's reason to exist; a nicer-looking version of it is still it.
+- **Access level by color only.** A red dot on the dangerous scope fails every user who can't see it and most who can't be bothered to decode it. Say "delete."
+- **Silent bundling.** Slipping write or delete into a grant the user thinks is read-only, or hiding required scopes in a "…and 4 more", converts consent into a trick.
+- **Whole-account default.** Requesting the entire mailbox when the task touches one label. Default to the narrowest resource that works and let the user widen, not the reverse.
+- **Consent by pre-check.** Every optional scope checked by default, betting the user won't uncheck. Least privilege means write and delete start off.
+- **Grant now, explain never.** A picker with no per-scope description makes the user authorize words they can't evaluate. If you can't say what a scope does, don't ask for it.
+- **Escalation past the principal.** Offering (or granting) a scope the *user themselves* doesn't hold. An agent's access is the intersection of its own capabilities and the user's rights; the grant screen must never be a path to more than the user could reach on their own.
+
+</div>
+
+<div data-lvl="academic">
+
+- **The all-or-nothing toggle.** The single opaque scope is the failure mode the pattern exists to correct; restyling it changes the aesthetics of the one-bit channel, not its bandwidth.
+- **Access level by color only.** Encoding the consequence taxonomy in hue alone fails WCAG 1.4.1 and, more fundamentally, moves the decisive information out of the accessible name. The users most likely to be harmed are exactly those the encoding excludes.
+- **Silent bundling.** Any capability granted but not enumerated (write smuggled into an apparently read-only grant, required scopes folded into "…and 4 more") breaks the disclosure invariant; formally the user's consent no longer covers the granted set, which is the definitional boundary between consent and dark pattern.
+- **Whole-account default.** Requesting maximal resource scope when the task needs one label inverts least privilege at the defaults layer, and defaults are where most users' effective policy is set. Narrow-by-default with user widening preserves autonomy; wide-by-default with user narrowing merely permits it.
+- **Consent by pre-check.** Pre-checked optional scopes exploit default-acceptance bias to convert non-decisions into grants. Under least privilege, mutating and destructive capabilities must start unchecked; anything else prices the safe state at the cost of user action.
+- **Grant now, explain never.** Scopes without per-capability descriptions ask the user to authorize an utterance rather than an action, consent without legibility, which the first [principle](/principles/) treats as no consent at all.
+- **Escalation past the principal.** Offering the agent a scope the delegating user does not themselves hold violates the intersection bound: effective agent authority must be ⊆ (agent's grant ∩ principal's rights). A grant screen that can mint authority exceeding the principal's is a confused-deputy factory. The delegation channel becomes a privilege-escalation channel.
+
+</div>
+
+## Code
+
+```tsx
+import { ScopedGrant } from "@agentconsent/react";
+import "@agentconsent/react/theme.css";
+
+<ScopedGrant.Root
+  requiredScopes={["gmail.read"]}         // always granted, shown locked
+  defaultValue={["gmail.read"]}
+  onGrant={(ids) => connect(ids)}
+  onCancel={() => dismiss()}
+>
+  <ScopedGrant.Header>
+    <ScopedGrant.Icon>✦</ScopedGrant.Icon>
+    <ScopedGrant.Title>Connect Inbox Assistant</ScopedGrant.Title>
+  </ScopedGrant.Header>
+
+  <ScopedGrant.Description>
+    Grant only what the task needs. You can change this later.
+  </ScopedGrant.Description>
+
+  <ScopedGrant.Group label="Gmail" resource="“Board 2026” label only">
+    <ScopedGrant.Scope
+      id="gmail.read"
+      access="read"
+      label="Read messages"
+      description="See subjects and bodies of messages in the label."
+    />
+    <ScopedGrant.Scope
+      id="gmail.send"
+      access="write"
+      label="Send replies on your behalf"
+      description="Compose and send email as you, in reply to threads in the label."
+    />
+    <ScopedGrant.Scope
+      id="gmail.delete"
+      access="delete"
+      label="Delete messages"
+      description="Move messages in the label to trash."
+    />
+  </ScopedGrant.Group>
+
+  <ScopedGrant.Actions>
+    <ScopedGrant.Cancel>Don't connect</ScopedGrant.Cancel>
+    <ScopedGrant.Grant>
+      {({ count }) => `Connect · ${count} permissions`}
+    </ScopedGrant.Grant>
+  </ScopedGrant.Actions>
+</ScopedGrant.Root>
+```
+
+Selection is controllable with `value` / `onValueChange`, or uncontrolled via `defaultValue`. Declare mandatory scopes once in `requiredScopes`. They are always in the `onGrant` payload and cannot be toggled off. All parts are unstyled primitives with `data-acp` attributes; skip `theme.css` and style them yourself, or override the `--acp-*` tokens to retheme.

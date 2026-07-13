@@ -1,0 +1,1711 @@
+/**
+ * @agentconsent/react — default theme
+ *
+ * Styles the headless primitives via their data-acp hooks, consuming only
+ * tokens.css variables. Swap this file (or override the tokens) to retheme.
+ */
+
+@import "./tokens.css";
+
+[data-acp="root"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-4);
+  max-width: 30rem;
+  padding: var(--acp-space-5);
+  background: var(--acp-color-surface-raised);
+  color: var(--acp-color-ink);
+  font-family: var(--acp-font-sans);
+  font-size: var(--acp-text-sm);
+  line-height: var(--acp-leading-normal);
+  border-radius: var(--acp-radius-lg);
+  box-shadow: var(--acp-shadow-card);
+}
+
+[data-acp="root"][data-modal] {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100vw - 2rem);
+  box-shadow: var(--acp-shadow-modal);
+  animation: acp-modal-in var(--acp-duration-base) var(--acp-ease);
+}
+
+[data-acp="overlay"] {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 0.45);
+  animation: acp-fade-in var(--acp-duration-base) var(--acp-ease);
+}
+
+@keyframes acp-fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes acp-modal-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 6px));
+  }
+}
+
+[data-acp="header"] {
+  display: flex;
+  align-items: center;
+  gap: var(--acp-space-3);
+}
+
+[data-acp="icon"] {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  background: var(--acp-color-agent-surface);
+  color: var(--acp-color-agent);
+  border-radius: var(--acp-radius-md);
+  font-size: var(--acp-text-base);
+}
+
+[data-acp="title"] {
+  margin: 0;
+  font-size: var(--acp-text-base);
+  font-weight: var(--acp-weight-semibold);
+  line-height: var(--acp-leading-tight);
+}
+
+[data-acp="fields"] {
+  margin: 0;
+  border-top: 1px solid var(--acp-color-line);
+}
+
+[data-acp="field"] {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: var(--acp-space-3);
+  padding: var(--acp-space-2) 0;
+  border-bottom: 1px solid var(--acp-color-line);
+}
+
+[data-acp="field-label"] {
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--acp-color-ink-faint);
+  padding-top: 0.1em;
+}
+
+[data-acp="field-value"] {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+[data-acp="content-toggle"] {
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+[data-acp="content-toggle"]::before {
+  content: "▸ ";
+}
+
+[data-acp="content"][data-expanded] [data-acp="content-toggle"]::before {
+  content: "▾ ";
+}
+
+[data-acp="content-body"] {
+  margin-top: var(--acp-space-2);
+  padding: var(--acp-space-3);
+  background: var(--acp-color-surface-sunken);
+  border-radius: var(--acp-radius-sm);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: var(--acp-text-sm);
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+[data-acp="source"] {
+  display: flex;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="source-agent"] {
+  color: var(--acp-color-agent);
+  font-weight: var(--acp-weight-medium);
+}
+
+[data-acp="source-authority"]::before {
+  content: "· ";
+  color: var(--acp-color-ink-faint);
+}
+
+[data-acp="actions"] {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--acp-space-2);
+  margin-top: var(--acp-space-1);
+}
+
+[data-acp="approve"],
+[data-acp="reject"],
+[data-acp="confirm"],
+[data-acp="cancel"],
+[data-acp="grant"],
+[data-acp="allow-once"],
+[data-acp="allow-always"],
+[data-acp="deny"],
+[data-acp="connection-action"],
+[data-acp="batch-item-approve"],
+[data-acp="batch-item-reject"],
+[data-acp="injection-proceed"],
+[data-acp="injection-dismiss"],
+[data-acp="handoff-continue"],
+[data-acp="handoff-cancel"] {
+  appearance: none;
+  cursor: pointer;
+  font: inherit;
+  font-weight: var(--acp-weight-medium);
+  padding: var(--acp-space-2) var(--acp-space-4);
+  border-radius: var(--acp-radius-md);
+  transition: filter var(--acp-duration-fast) var(--acp-ease),
+    background-color var(--acp-duration-fast) var(--acp-ease);
+}
+
+[data-acp="approve"] {
+  border: 1px solid transparent;
+  background: var(--acp-color-approve);
+  color: var(--acp-color-approve-ink);
+}
+
+[data-acp="approve"][data-consequence="irreversible"] {
+  background: var(--acp-color-danger);
+  color: var(--acp-color-danger-ink);
+}
+
+[data-acp="approve"]:hover {
+  filter: brightness(1.08);
+}
+
+[data-acp="reject"] {
+  border: 1px solid var(--acp-color-line-strong);
+  background: var(--acp-color-reject);
+  color: var(--acp-color-reject-ink);
+}
+
+[data-acp="reject"]:hover {
+  background: var(--acp-color-surface-sunken);
+}
+
+[data-acp="approve"]:focus-visible,
+[data-acp="reject"]:focus-visible,
+[data-acp="confirm"]:focus-visible,
+[data-acp="cancel"]:focus-visible,
+[data-acp="grant"]:focus-visible,
+[data-acp="allow-once"]:focus-visible,
+[data-acp="allow-always"]:focus-visible,
+[data-acp="deny"]:focus-visible,
+[data-acp="connection-action"]:focus-visible,
+[data-acp="scope-checkbox"]:focus-visible,
+[data-acp="confirm-field-input"]:focus-visible,
+[data-acp="content-toggle"]:focus-visible,
+[data-acp="batch-item-approve"]:focus-visible,
+[data-acp="batch-item-reject"]:focus-visible,
+[data-acp="batch-select-all-checkbox"]:focus-visible,
+[data-acp="batch-item-checkbox"]:focus-visible,
+[data-acp="memory-option-radio"]:focus-visible,
+[data-acp="injection-proceed"]:focus-visible,
+[data-acp="injection-dismiss"]:focus-visible,
+[data-acp="handoff-continue"]:focus-visible,
+[data-acp="handoff-cancel"]:focus-visible {
+  outline: 2px solid var(--acp-color-focus);
+  outline-offset: 2px;
+}
+
+/* The segmented authority control hides its radios and styles the labels;
+   the focus ring rides on the label when its radio is focused. */
+[data-acp="authority-radio"]:focus-visible + [data-acp="authority-level-label"] {
+  outline: 2px solid var(--acp-color-focus);
+  outline-offset: 2px;
+}
+
+/* ── Irreversibility Gate ─────────────────────────────────────────── */
+
+[data-acp="gate-icon"] {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--acp-radius-md);
+  font-size: var(--acp-text-base);
+  background: var(--acp-color-agent-surface);
+  color: var(--acp-color-agent);
+}
+
+[data-acp="gate-icon"][data-severity="irreversible"] {
+  background: var(--acp-color-danger-surface);
+  color: var(--acp-color-danger);
+}
+
+[data-acp="gate-description"] {
+  margin: 0;
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="gate-consequences"] {
+  list-style: none;
+  margin: 0;
+  padding: var(--acp-space-3) var(--acp-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-2);
+  background: var(--acp-color-surface-sunken);
+  border-radius: var(--acp-radius-md);
+}
+
+[data-acp="gate-consequence"] {
+  display: flex;
+  align-items: baseline;
+  gap: var(--acp-space-3);
+}
+
+[data-acp="gate-consequence-marker"]::before {
+  content: "—";
+  color: var(--acp-color-ink-faint);
+}
+
+[data-severity="irreversible"] [data-acp="gate-consequence-marker"]::before {
+  content: "✕";
+  color: var(--acp-color-danger);
+  font-size: var(--acp-text-xs);
+}
+
+[data-acp="confirm-field"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-2);
+}
+
+[data-acp="confirm-field-label"] {
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="confirm-field-phrase"] {
+  font-family: var(--acp-font-mono);
+  font-weight: var(--acp-weight-semibold);
+  color: var(--acp-color-ink);
+}
+
+[data-acp="confirm-field-input"] {
+  appearance: none;
+  font: inherit;
+  font-family: var(--acp-font-mono);
+  padding: var(--acp-space-2) var(--acp-space-3);
+  color: var(--acp-color-ink);
+  background: var(--acp-color-surface);
+  border: 1px solid var(--acp-color-line-strong);
+  border-radius: var(--acp-radius-md);
+}
+
+[data-acp="confirm"] {
+  border: 1px solid transparent;
+  background: var(--acp-color-approve);
+  color: var(--acp-color-approve-ink);
+}
+
+[data-acp="confirm"][data-severity="irreversible"] {
+  background: var(--acp-color-danger);
+  color: var(--acp-color-danger-ink);
+}
+
+[data-acp="confirm"]:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+[data-acp="confirm"]:disabled {
+  cursor: not-allowed;
+  background: var(--acp-color-surface-sunken);
+  color: var(--acp-color-ink-faint);
+}
+
+[data-acp="cancel"] {
+  border: 1px solid var(--acp-color-line-strong);
+  background: var(--acp-color-reject);
+  color: var(--acp-color-reject-ink);
+}
+
+[data-acp="cancel"]:hover {
+  background: var(--acp-color-surface-sunken);
+}
+
+/* ── Scoped Grant ─────────────────────────────────────────────────── */
+
+[data-acp="grant-description"] {
+  margin: 0;
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="grant-group"] {
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-1);
+}
+
+[data-acp="grant-group"] + [data-acp="grant-group"] {
+  margin-top: var(--acp-space-3);
+}
+
+[data-acp="grant-group-legend"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+  padding: 0 0 var(--acp-space-2);
+  width: 100%;
+  border-bottom: 1px solid var(--acp-color-line);
+}
+
+[data-acp="grant-group-label"] {
+  font-weight: var(--acp-weight-semibold);
+}
+
+[data-acp="grant-group-resource"] {
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-faint);
+}
+
+[data-acp="grant-group-resource"]::before {
+  content: "· ";
+}
+
+[data-acp="scope"] {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--acp-space-3);
+  padding: var(--acp-space-3) 0;
+  border-bottom: 1px solid var(--acp-color-line);
+}
+
+[data-acp="scope-checkbox"] {
+  margin: 0;
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--acp-color-approve);
+  align-self: start;
+  margin-top: 0.15em;
+}
+
+[data-acp="scope-checkbox"]:disabled {
+  cursor: not-allowed;
+}
+
+[data-acp="scope-body"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-1);
+}
+
+[data-acp="scope-label"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+  cursor: pointer;
+  font-weight: var(--acp-weight-medium);
+}
+
+[data-acp="scope-checkbox"]:disabled + [data-acp="scope-body"] [data-acp="scope-label"] {
+  cursor: not-allowed;
+}
+
+[data-acp="scope-access"],
+[data-acp="request-access"],
+[data-acp="connection-access"],
+[data-acp="authority-access"] {
+  flex-shrink: 0;
+  padding: 0.05em var(--acp-space-2);
+  border-radius: var(--acp-radius-sm);
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  font-weight: var(--acp-weight-medium);
+  letter-spacing: 0.02em;
+  /* read is the default (least privilege) styling */
+  background: var(--acp-color-agent-surface);
+  color: var(--acp-color-agent);
+}
+
+[data-acp="scope-access"][data-access="write"],
+[data-acp="request-access"][data-access="write"],
+[data-acp="connection-access"][data-access="write"],
+[data-acp="authority-access"][data-access="write"] {
+  background: var(--acp-color-untrusted-surface);
+  color: var(--acp-color-untrusted);
+}
+
+[data-acp="scope-access"][data-access="delete"],
+[data-acp="request-access"][data-access="delete"],
+[data-acp="connection-access"][data-access="delete"],
+[data-acp="authority-access"][data-access="delete"] {
+  background: var(--acp-color-danger-surface);
+  color: var(--acp-color-danger);
+}
+
+[data-acp="scope-required-tag"] {
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  font-weight: var(--acp-weight-normal);
+  color: var(--acp-color-ink-faint);
+}
+
+[data-acp="scope-description"] {
+  margin: 0;
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+/* A granted write/delete scope earns a quiet emphasis on its access badge. */
+[data-acp="scope"][data-granted][data-access="delete"] [data-acp="scope-access"],
+[data-acp="scope"][data-granted][data-access="write"] [data-acp="scope-access"] {
+  outline: 1px solid currentColor;
+}
+
+[data-acp="grant"] {
+  border: 1px solid transparent;
+  background: var(--acp-color-approve);
+  color: var(--acp-color-approve-ink);
+}
+
+[data-acp="grant"]:hover {
+  filter: brightness(1.08);
+}
+
+/* ── Progressive Scope ────────────────────────────────────────────── */
+
+[data-acp="root"][data-escalation] {
+  border-left: 3px solid var(--acp-color-agent);
+}
+
+[data-acp="root"][data-escalation][data-access="write"] {
+  border-left-color: var(--acp-color-untrusted);
+}
+
+[data-acp="root"][data-escalation][data-access="delete"] {
+  border-left-color: var(--acp-color-danger);
+}
+
+[data-acp="escalation-reason"] {
+  margin: 0;
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="request"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-1);
+  padding: var(--acp-space-3);
+  background: var(--acp-color-surface-sunken);
+  border-radius: var(--acp-radius-md);
+}
+
+[data-acp="request-head"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+}
+
+[data-acp="request-name"] {
+  font-weight: var(--acp-weight-semibold);
+}
+
+[data-acp="request-description"] {
+  margin: 0;
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="escalation-current"] {
+  display: flex;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="escalation-current-marker"]::before {
+  content: "✓";
+  color: var(--acp-color-approve);
+}
+
+[data-acp="actions"][data-escalation-actions] {
+  flex-wrap: wrap;
+}
+
+/* Deny is the calm, least-escalation resting choice. */
+[data-acp="deny"] {
+  border: 1px solid var(--acp-color-line-strong);
+  background: var(--acp-color-reject);
+  color: var(--acp-color-reject-ink);
+}
+
+[data-acp="deny"]:hover {
+  background: var(--acp-color-surface-sunken);
+}
+
+/* Allow once: the moderate grant — permit just the blocked action. */
+[data-acp="allow-once"] {
+  border: 1px solid transparent;
+  background: var(--acp-color-approve);
+  color: var(--acp-color-approve-ink);
+}
+
+[data-acp="allow-once"]:hover {
+  filter: brightness(1.08);
+}
+
+/* Allow always: the standing escalation — deliberately subordinate to
+   "once" so the UI never nudges toward over-granting. */
+[data-acp="allow-always"] {
+  border: 1px solid var(--acp-color-line-strong);
+  background: transparent;
+  color: var(--acp-color-ink);
+}
+
+[data-acp="allow-always"]:hover {
+  background: var(--acp-color-surface-sunken);
+}
+
+/* ── Connection Card ──────────────────────────────────────────────── */
+
+[data-acp="root"][data-connection] {
+  gap: var(--acp-space-3);
+}
+
+/* A paused or lapsed connection reads dimmer, but stays legible. */
+[data-acp="root"][data-connection][data-status="paused"],
+[data-acp="root"][data-connection][data-status="expired"] {
+  background: var(--acp-color-surface);
+}
+
+[data-acp="header"][data-connection-header] {
+  justify-content: flex-start;
+  gap: var(--acp-space-3);
+}
+
+[data-acp="header"][data-connection-header] [data-acp="title"] {
+  flex: 1;
+}
+
+[data-acp="connection-status"] {
+  flex-shrink: 0;
+  padding: 0.1em var(--acp-space-2);
+  border-radius: var(--acp-radius-sm);
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  font-weight: var(--acp-weight-medium);
+  background: var(--acp-color-surface-sunken);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="connection-status"][data-status="active"] {
+  background: var(--acp-color-agent-surface);
+  color: var(--acp-color-agent);
+}
+
+[data-acp="connection-status"][data-status="needs-reauth"] {
+  background: var(--acp-color-untrusted-surface);
+  color: var(--acp-color-untrusted);
+}
+
+[data-acp="connection-status"][data-status="expired"] {
+  background: var(--acp-color-danger-surface);
+  color: var(--acp-color-danger);
+}
+
+[data-acp="connection-scopes"] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--acp-space-2) var(--acp-space-3);
+}
+
+[data-acp="connection-scope"] {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+}
+
+[data-acp="connection-scope-name"] {
+  font-size: var(--acp-text-sm);
+}
+
+[data-acp="connection-meta"] {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--acp-space-1) var(--acp-space-6);
+}
+
+[data-acp="connection-meta-item"] {
+  display: flex;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+}
+
+[data-acp="connection-meta-label"] {
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--acp-color-ink-faint);
+}
+
+[data-acp="connection-meta-value"] {
+  margin: 0;
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="actions"][data-connection-actions] {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: var(--acp-space-2);
+  padding-top: var(--acp-space-1);
+  border-top: 1px solid var(--acp-color-line);
+}
+
+[data-acp="connection-action"] {
+  padding: var(--acp-space-1) var(--acp-space-3);
+  font-size: var(--acp-text-sm);
+  border: 1px solid var(--acp-color-line-strong);
+  background: transparent;
+  color: var(--acp-color-ink);
+}
+
+[data-acp="connection-action"]:hover {
+  background: var(--acp-color-surface-sunken);
+}
+
+[data-acp="connection-action"][data-tone="danger"] {
+  border-color: var(--acp-color-danger);
+  color: var(--acp-color-danger);
+}
+
+[data-acp="connection-action"][data-tone="danger"]:hover {
+  background: var(--acp-color-danger-surface);
+}
+
+/* ── Batch Approval ───────────────────────────────────────────────── */
+
+[data-acp="root"][data-batch] {
+  max-width: 34rem;
+  gap: var(--acp-space-3);
+}
+
+[data-acp="batch-description"] {
+  margin: 0;
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="batch-toolbar"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--acp-space-2) var(--acp-space-3);
+  padding: var(--acp-space-2) var(--acp-space-3);
+  background: var(--acp-color-surface-sunken);
+  border-radius: var(--acp-radius-md);
+}
+
+[data-acp="batch-select-all"] {
+  display: flex;
+  align-items: center;
+  gap: var(--acp-space-2);
+}
+
+[data-acp="batch-select-all-checkbox"] {
+  margin: 0;
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--acp-color-approve);
+}
+
+[data-acp="batch-select-all-checkbox"]:disabled {
+  cursor: not-allowed;
+}
+
+[data-acp="batch-select-all-label"] {
+  cursor: pointer;
+  font-weight: var(--acp-weight-medium);
+}
+
+[data-acp="batch-selection-count"] {
+  margin-right: auto;
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+/* The batch buttons reuse the approve/reject base; make them compact. */
+[data-acp="approve"][data-batch-action],
+[data-acp="reject"][data-batch-action] {
+  padding: var(--acp-space-1) var(--acp-space-3);
+  font-size: var(--acp-text-sm);
+}
+
+[data-acp="approve"][data-batch-action]:disabled,
+[data-acp="reject"][data-batch-action]:disabled {
+  cursor: not-allowed;
+  background: var(--acp-color-surface);
+  border-color: var(--acp-color-line);
+  color: var(--acp-color-ink-faint);
+  filter: none;
+}
+
+[data-acp="batch-list"] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+[data-acp="batch-item"] {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--acp-space-3);
+  padding: var(--acp-space-3) var(--acp-space-1);
+  border-bottom: 1px solid var(--acp-color-line);
+}
+
+[data-acp="batch-item"]:last-child {
+  border-bottom: none;
+}
+
+[data-acp="batch-item"][data-selected] {
+  background: var(--acp-color-agent-surface);
+  border-radius: var(--acp-radius-sm);
+}
+
+/* A must-review item breaks the queue's rhythm on purpose. */
+[data-acp="batch-item"][data-review] {
+  border-left: 3px solid var(--acp-color-danger);
+  padding-left: var(--acp-space-3);
+}
+
+[data-acp="batch-item-select"] {
+  display: grid;
+  place-items: center;
+  min-width: 1.05rem;
+}
+
+[data-acp="batch-item-checkbox"] {
+  margin: 0;
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--acp-color-approve);
+}
+
+[data-acp="batch-item-flag"] {
+  writing-mode: horizontal-tb;
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  font-weight: var(--acp-weight-medium);
+  color: var(--acp-color-danger);
+  white-space: nowrap;
+}
+
+[data-acp="batch-item-body"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-1);
+  min-width: 0;
+}
+
+[data-acp="batch-item-title"] {
+  font-weight: var(--acp-weight-medium);
+  cursor: pointer;
+}
+
+[data-acp="batch-item"][data-review] [data-acp="batch-item-title"] {
+  cursor: default;
+}
+
+[data-acp="batch-item-detail"] {
+  margin: 0;
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="batch-item-actions"] {
+  display: flex;
+  gap: var(--acp-space-1);
+}
+
+[data-acp="batch-item-approve"],
+[data-acp="batch-item-reject"] {
+  padding: var(--acp-space-1) var(--acp-space-2);
+  font-size: var(--acp-text-xs);
+  border-radius: var(--acp-radius-sm);
+  border: 1px solid var(--acp-color-line-strong);
+  background: transparent;
+  color: var(--acp-color-ink);
+}
+
+[data-acp="batch-item-approve"]:hover,
+[data-acp="batch-item-reject"]:hover {
+  background: var(--acp-color-surface-sunken);
+}
+
+[data-acp="batch-item-approve"] {
+  border-color: var(--acp-color-approve);
+  color: var(--acp-color-approve);
+}
+
+[data-acp="batch-item-approve"]:hover {
+  background: var(--acp-color-agent-surface);
+}
+
+/* ── Consent Memory ───────────────────────────────────────────────── */
+
+[data-acp="memory-description"] {
+  margin: 0;
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="memory-options"] {
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-2);
+}
+
+[data-acp="memory-options-legend"] {
+  padding: 0 0 var(--acp-space-1);
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--acp-color-ink-faint);
+}
+
+[data-acp="memory-option"] {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--acp-space-3);
+  padding: var(--acp-space-3);
+  border: 1px solid var(--acp-color-line);
+  border-radius: var(--acp-radius-md);
+}
+
+[data-acp="memory-option"][data-selected] {
+  border-color: var(--acp-color-line-strong);
+  background: var(--acp-color-surface-sunken);
+}
+
+/* A standing "always" grant is drawn with the untrusted accent — a deliberate,
+   legible weight so the heaviest choice never looks like the lightest. */
+[data-acp="memory-option"][data-durability="always"][data-selected] {
+  border-color: var(--acp-color-untrusted);
+  background: var(--acp-color-untrusted-surface);
+}
+
+[data-acp="memory-option-radio"] {
+  margin: 0;
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--acp-color-approve);
+  align-self: start;
+  margin-top: 0.15em;
+}
+
+[data-acp="memory-option-body"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-1);
+  min-width: 0;
+}
+
+[data-acp="memory-option-label"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+  cursor: pointer;
+}
+
+[data-acp="memory-option-name"] {
+  font-weight: var(--acp-weight-medium);
+}
+
+[data-acp="memory-option-hint"] {
+  flex-shrink: 0;
+  padding: 0.05em var(--acp-space-2);
+  border-radius: var(--acp-radius-sm);
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  font-weight: var(--acp-weight-medium);
+  letter-spacing: 0.02em;
+  background: var(--acp-color-agent-surface);
+  color: var(--acp-color-agent);
+}
+
+[data-acp="memory-option-hint"][data-durability="always"],
+[data-acp="memory-option-hint"][data-durability="scoped"] {
+  background: var(--acp-color-untrusted-surface);
+  color: var(--acp-color-untrusted);
+}
+
+[data-acp="memory-option-consequence"] {
+  margin: 0;
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+/* The confirm reuses the allow-once base; make it fill the standing weight of
+   the choice, so "Allow always" is never a quieter button than "Allow once". */
+[data-acp="allow-once"][data-memory-allow][data-durability="always"] {
+  background: var(--acp-color-untrusted);
+  color: var(--acp-color-danger-ink);
+}
+
+/* ── Authority Boundary ───────────────────────────────────────────── */
+
+[data-acp="root"][data-authority] {
+  max-width: 34rem;
+  gap: var(--acp-space-3);
+}
+
+[data-acp="authority-description"] {
+  margin: 0;
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="authority-summary"] {
+  margin: 0;
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="authority-list"] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+[data-acp="authority-capability"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--acp-space-2) var(--acp-space-4);
+  padding: var(--acp-space-3) 0;
+  border-bottom: 1px solid var(--acp-color-line);
+}
+
+[data-acp="authority-capability"]:last-child {
+  border-bottom: none;
+}
+
+/* An "automatic" capability carries a quiet standing accent; "never" reads
+   struck-through-calm, never alarming. */
+[data-acp="authority-capability"][data-level="auto"] {
+  border-left: 3px solid var(--acp-color-agent);
+  padding-left: var(--acp-space-3);
+}
+
+[data-acp="authority-capability"][data-level="auto"][data-access="write"] {
+  border-left-color: var(--acp-color-untrusted);
+}
+
+[data-acp="authority-capability"][data-level="auto"][data-access="delete"] {
+  border-left-color: var(--acp-color-danger);
+}
+
+[data-acp="authority-capability-body"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-1);
+  min-width: 12rem;
+  flex: 1;
+}
+
+[data-acp="authority-capability-head"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+}
+
+[data-acp="authority-capability-name"] {
+  font-weight: var(--acp-weight-medium);
+}
+
+[data-acp="authority-capability-description"] {
+  margin: 0;
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+/* Segmented control: a bordered track of three label-buttons. */
+[data-acp="authority-control"] {
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: inline-flex;
+  flex-shrink: 0;
+  border: 1px solid var(--acp-color-line-strong);
+  border-radius: var(--acp-radius-md);
+  overflow: hidden;
+}
+
+[data-acp="authority-control-legend"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+[data-acp="authority-radio"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+[data-acp="authority-level-label"] {
+  padding: var(--acp-space-1) var(--acp-space-3);
+  font-size: var(--acp-text-sm);
+  font-weight: var(--acp-weight-medium);
+  color: var(--acp-color-ink-muted);
+  background: var(--acp-color-surface);
+  cursor: pointer;
+  border-left: 1px solid var(--acp-color-line);
+}
+
+[data-acp="authority-level-label"]:first-of-type {
+  border-left: none;
+}
+
+[data-acp="authority-level-label"]:hover {
+  background: var(--acp-color-surface-sunken);
+}
+
+/* Selected segment, tinted by what it means. */
+[data-acp="authority-radio"][data-level="auto"]:checked
+  + [data-acp="authority-level-label"] {
+  background: var(--acp-color-agent);
+  color: var(--acp-color-approve-ink);
+}
+
+[data-acp="authority-radio"][data-level="ask"]:checked
+  + [data-acp="authority-level-label"] {
+  background: var(--acp-color-surface-sunken);
+  color: var(--acp-color-ink);
+}
+
+[data-acp="authority-radio"][data-level="never"]:checked
+  + [data-acp="authority-level-label"] {
+  background: var(--acp-color-danger);
+  color: var(--acp-color-danger-ink);
+}
+
+[data-acp="authority-radio"]:disabled + [data-acp="authority-level-label"] {
+  color: var(--acp-color-ink-faint);
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+[data-acp="authority-radio"]:disabled:hover
+  + [data-acp="authority-level-label"] {
+  background: var(--acp-color-surface);
+}
+
+/* ── Spend & Rate Limits ──────────────────────────────────────────── */
+
+[data-acp="root"][data-limits] {
+  max-width: 34rem;
+  gap: var(--acp-space-3);
+}
+
+[data-acp="limits-description"] {
+  margin: 0;
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="limits-summary"] {
+  margin: 0;
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="limits-list"] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+[data-acp="limits-limit"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--acp-space-3) var(--acp-space-4);
+  padding: var(--acp-space-4) 0;
+  border-bottom: 1px solid var(--acp-color-line);
+}
+
+[data-acp="limits-limit"]:last-child {
+  border-bottom: none;
+}
+
+/* A reached cap carries a quiet danger accent; a near-cap limit an amber one.
+   Color is redundant — the readout and status line say it in words. */
+[data-acp="limits-limit"][data-state="warning"] {
+  border-left: 3px solid var(--acp-color-untrusted);
+  padding-left: var(--acp-space-3);
+}
+
+[data-acp="limits-limit"][data-state="reached"] {
+  border-left: 3px solid var(--acp-color-danger);
+  padding-left: var(--acp-space-3);
+}
+
+[data-acp="limits-limit-body"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-2);
+  min-width: 14rem;
+  flex: 1;
+}
+
+[data-acp="limits-limit-head"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+}
+
+[data-acp="limits-kind"] {
+  flex-shrink: 0;
+  padding: 0.05em var(--acp-space-2);
+  border-radius: var(--acp-radius-sm);
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  font-weight: var(--acp-weight-medium);
+  letter-spacing: 0.02em;
+  background: var(--acp-color-agent-surface);
+  color: var(--acp-color-agent);
+}
+
+[data-acp="limits-kind"][data-kind="spend"] {
+  background: var(--acp-color-untrusted-surface);
+  color: var(--acp-color-untrusted);
+}
+
+[data-acp="limits-limit-name"] {
+  font-weight: var(--acp-weight-medium);
+}
+
+[data-acp="limits-limit-description"] {
+  margin: 0;
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+/* Meter: a track with a fill sized to usage, plus a text readout that carries
+   the real numbers (the bar is decorative and aria-hidden). */
+[data-acp="limits-meter"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-1);
+}
+
+[data-acp="limits-meter-track"] {
+  display: block;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--acp-color-surface-sunken);
+  overflow: hidden;
+}
+
+[data-acp="limits-meter-fill"] {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--acp-color-agent);
+}
+
+[data-acp="limits-meter-fill"][data-state="warning"] {
+  background: var(--acp-color-untrusted);
+}
+
+[data-acp="limits-meter-fill"][data-state="reached"] {
+  background: var(--acp-color-danger);
+}
+
+[data-acp="limits-meter-readout"] {
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="limits-status"] {
+  margin: 0;
+  font-size: var(--acp-text-xs);
+  font-weight: var(--acp-weight-medium);
+  color: var(--acp-color-untrusted);
+}
+
+[data-acp="limits-status"][data-state="reached"] {
+  color: var(--acp-color-danger);
+}
+
+/* Cap editor: a labelled number input with unit + period adornments. */
+[data-acp="limits-cap"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-1);
+  flex-shrink: 0;
+}
+
+[data-acp="limits-cap-label"] {
+  font-size: var(--acp-text-xs);
+  font-weight: var(--acp-weight-medium);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="limits-cap-field"] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--acp-space-1);
+  font-size: var(--acp-text-sm);
+  color: var(--acp-color-ink);
+}
+
+[data-acp="limits-cap-input"] {
+  width: 5rem;
+  padding: var(--acp-space-1) var(--acp-space-2);
+  font: inherit;
+  color: var(--acp-color-ink);
+  background: var(--acp-color-surface);
+  border: 1px solid var(--acp-color-line-strong);
+  border-radius: var(--acp-radius-md);
+}
+
+[data-acp="limits-cap-input"]:focus-visible {
+  outline: 2px solid var(--acp-color-focus);
+  outline-offset: 1px;
+}
+
+[data-acp="limits-cap-unit"],
+[data-acp="limits-cap-period"] {
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+  white-space: nowrap;
+}
+
+/* ── Injection Flag ───────────────────────────────────────────────── */
+
+/* A caution surface — the whole card carries the untrusted accent so it never
+   reads like a routine, trusted prompt. */
+[data-acp="root"][data-injection] {
+  border: 1px solid var(--acp-color-untrusted);
+}
+
+[data-acp="root"][data-injection] [data-acp="icon"] {
+  background: var(--acp-color-untrusted-surface);
+  color: var(--acp-color-untrusted);
+}
+
+[data-acp="injection-description"] {
+  margin: 0;
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="injection-source"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+  font-size: var(--acp-text-xs);
+}
+
+[data-acp="injection-source-label"] {
+  font-family: var(--acp-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--acp-color-ink-faint);
+}
+
+[data-acp="injection-origin"] {
+  font-weight: var(--acp-weight-medium);
+  color: var(--acp-color-untrusted);
+}
+
+[data-acp="injection-location"] {
+  font-family: var(--acp-font-mono);
+  color: var(--acp-color-ink-muted);
+  overflow-wrap: anywhere;
+}
+
+[data-acp="injection-quote-figure"] {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-1);
+}
+
+[data-acp="injection-quote-label"] {
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+/* The verbatim instruction, visually fenced with an untrusted left rule so it
+   reads as quoted foreign text, not as the agent's own words. */
+[data-acp="injection-quote"] {
+  margin: 0;
+  padding: var(--acp-space-3);
+  background: var(--acp-color-untrusted-surface);
+  border-left: 3px solid var(--acp-color-untrusted);
+  border-radius: var(--acp-radius-sm);
+  color: var(--acp-color-ink);
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-sm);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+[data-acp="injection-consequence"] {
+  margin: 0;
+  font-weight: var(--acp-weight-medium);
+}
+
+/* Dismiss (ignore the instruction) is the safe, emphasised default; Proceed
+   (follow it) is subordinate and danger-tinted so the UI never nudges toward
+   obeying untrusted content. */
+[data-acp="injection-dismiss"] {
+  border: 1px solid transparent;
+  background: var(--acp-color-agent);
+  color: var(--acp-color-approve-ink);
+}
+
+[data-acp="injection-dismiss"]:hover {
+  filter: brightness(1.08);
+}
+
+[data-acp="injection-proceed"] {
+  border: 1px solid var(--acp-color-danger);
+  background: transparent;
+  color: var(--acp-color-danger);
+}
+
+[data-acp="injection-proceed"]:hover {
+  background: var(--acp-color-danger-surface);
+}
+
+/* ── Action Receipt ───────────────────────────────────────────────── */
+
+[data-acp="root"][data-receipt] {
+  gap: var(--acp-space-3);
+}
+
+/* A failed or undone receipt reads dimmer, but stays legible. */
+[data-acp="root"][data-receipt][data-outcome="undone"],
+[data-acp="root"][data-receipt][data-outcome="failed"] {
+  background: var(--acp-color-surface);
+}
+
+[data-acp="header"][data-receipt-header] {
+  justify-content: flex-start;
+  gap: var(--acp-space-3);
+}
+
+[data-acp="header"][data-receipt-header] [data-acp="title"] {
+  flex: 1;
+  font-weight: var(--acp-weight-semibold);
+}
+
+[data-acp="receipt-outcome"] {
+  flex-shrink: 0;
+  padding: 0.1em var(--acp-space-2);
+  border-radius: var(--acp-radius-sm);
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  font-weight: var(--acp-weight-medium);
+  background: var(--acp-color-surface-sunken);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="receipt-outcome"][data-outcome="completed"] {
+  background: var(--acp-color-agent-surface);
+  color: var(--acp-color-agent);
+}
+
+[data-acp="receipt-outcome"][data-outcome="failed"] {
+  background: var(--acp-color-danger-surface);
+  color: var(--acp-color-danger);
+}
+
+[data-acp="receipt-details"] {
+  margin: 0;
+  border-top: 1px solid var(--acp-color-line);
+}
+
+[data-acp="receipt-detail"] {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: var(--acp-space-3);
+  padding: var(--acp-space-2) 0;
+  border-bottom: 1px solid var(--acp-color-line);
+}
+
+[data-acp="receipt-detail-label"] {
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--acp-color-ink-faint);
+  padding-top: 0.1em;
+}
+
+[data-acp="receipt-detail-value"] {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The authority line — the receipt's distinct part — reads as a quiet standing
+   fact, tinted with the agent accent to tie it to who acted. */
+[data-acp="receipt-authority"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+  padding: var(--acp-space-2) var(--acp-space-3);
+  background: var(--acp-color-agent-surface);
+  border-radius: var(--acp-radius-md);
+  font-size: var(--acp-text-xs);
+}
+
+[data-acp="receipt-authority-label"] {
+  font-family: var(--acp-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  /* ink-muted, not ink-faint: the agent-surface tint drops ink-faint just under
+     WCAG AA (4.44:1) — caught only by the real-browser contrast pass. */
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="receipt-authority-grant"] {
+  font-weight: var(--acp-weight-medium);
+  color: var(--acp-color-agent);
+}
+
+[data-acp="receipt-authority-via"]::before {
+  content: "· ";
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="receipt-authority-via"] {
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="receipt-meta"] {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--acp-space-1) var(--acp-space-6);
+}
+
+[data-acp="receipt-meta-item"] {
+  display: flex;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+}
+
+[data-acp="receipt-meta-label"] {
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--acp-color-ink-faint);
+}
+
+[data-acp="receipt-meta-value"] {
+  margin: 0;
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="actions"][data-receipt-actions] {
+  justify-content: flex-start;
+  padding-top: var(--acp-space-1);
+  border-top: 1px solid var(--acp-color-line);
+}
+
+[data-acp="receipt-undo"] {
+  padding: var(--acp-space-1) var(--acp-space-3);
+  font-size: var(--acp-text-sm);
+  border: 1px solid var(--acp-color-line-strong);
+  border-radius: var(--acp-radius-md);
+  background: transparent;
+  color: var(--acp-color-ink);
+  cursor: pointer;
+}
+
+[data-acp="receipt-undo"]:hover {
+  background: var(--acp-color-surface-sunken);
+}
+
+[data-acp="receipt-undo"]:focus-visible {
+  outline: 2px solid var(--acp-color-focus);
+  outline-offset: 2px;
+}
+
+[data-acp="receipt-undo-note"] {
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  color: var(--acp-color-ink-faint);
+}
+
+/* ── Credential Handoff ───────────────────────────────────────────── */
+
+[data-acp="root"][data-handoff] {
+  gap: var(--acp-space-3);
+}
+
+[data-acp="handoff-description"] {
+  margin: 0;
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="handoff-handler"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--acp-space-2);
+  padding: var(--acp-space-3);
+  background: var(--acp-color-surface-sunken);
+  border-radius: var(--acp-radius-md);
+}
+
+[data-acp="handoff-handler-kind"] {
+  flex-shrink: 0;
+  padding: 0.05em var(--acp-space-2);
+  border-radius: var(--acp-radius-sm);
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  font-weight: var(--acp-weight-medium);
+  letter-spacing: 0.02em;
+  background: var(--acp-color-agent-surface);
+  color: var(--acp-color-agent);
+}
+
+[data-acp="handoff-handler-name"] {
+  font-weight: var(--acp-weight-medium);
+}
+
+/* The exclusion boundary — the pattern's heart. A fenced note with an agent
+   accent, calm rather than alarming: the secret simply isn't the agent's to see. */
+[data-acp="handoff-boundary"] {
+  padding: var(--acp-space-3);
+  background: var(--acp-color-agent-surface);
+  border-left: 3px solid var(--acp-color-agent);
+  border-radius: var(--acp-radius-sm);
+  color: var(--acp-color-ink);
+  font-weight: var(--acp-weight-medium);
+}
+
+[data-acp="handoff-returns-legend"] {
+  margin: 0 0 var(--acp-space-1);
+  font-family: var(--acp-font-mono);
+  font-size: var(--acp-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="handoff-returns-list"] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--acp-space-1);
+}
+
+[data-acp="handoff-return"] {
+  position: relative;
+  padding-left: var(--acp-space-4);
+  font-size: var(--acp-text-sm);
+  color: var(--acp-color-ink-muted);
+}
+
+[data-acp="handoff-return"]::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--acp-color-approve);
+}
+
+[data-acp="handoff-continue"] {
+  border: 1px solid transparent;
+  background: var(--acp-color-agent);
+  color: var(--acp-color-approve-ink);
+}
+
+[data-acp="handoff-continue"]:hover {
+  filter: brightness(1.08);
+}
+
+[data-acp="handoff-cancel"] {
+  border: 1px solid var(--acp-color-line-strong);
+  background: transparent;
+  color: var(--acp-color-ink);
+}
+
+[data-acp="handoff-cancel"]:hover {
+  background: var(--acp-color-surface-sunken);
+}

@@ -1,0 +1,74 @@
+{
+  "name": "@agentconsent/react",
+  "version": "0.1.0",
+  "description": "Headless React components for AI agent consent UX patterns",
+  "license": "MIT",
+  "homepage": "https://agentconsent.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrchaarlie/agent-consent-patterns.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/mrchaarlie/agent-consent-patterns/issues"
+  },
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./tokens.css": "./src/tokens.css",
+    "./theme.css": "./src/theme.css"
+  },
+  "files": [
+    "dist",
+    "src/tokens.css",
+    "src/theme.css"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "keywords": [
+    "react",
+    "ai",
+    "agent",
+    "consent",
+    "permissions",
+    "human-in-the-loop",
+    "headless",
+    "accessibility"
+  ],
+  "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.1.18"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "axe-core": "^4.12.1",
+    "jsdom": "^29.1.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tsup": "^8.5.1",
+    "vitest": "^4.1.9"
+  }
+}

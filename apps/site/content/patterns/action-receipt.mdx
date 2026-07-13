@@ -1,0 +1,274 @@
+import { ActionReceiptDemo } from "@/components/action-receipt-demo";
+import { ActionReceiptAnatomy } from "@/components/action-receipt-anatomy";
+
+<p data-lvl="caveman" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">After the machine acts, it leaves a mark on the cave wall: what it did, to what, who said yes, and when, with an undo-rope tied on wherever the act can still be pulled back.</p>
+
+<p data-lvl="human" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Consent doesn't end when the user clicks approve, and for a standing grant, there was no click at all. After the agent acts, the user needs a durable record: what it did, on exactly what, under what authority, and when, with a way to take it back where the action allows.</p>
+
+<p data-lvl="academic" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Close the consent loop post-hoc: every consequential action leaves a durable record binding the concrete effect to the authority that permitted it, with reversal offered exactly where it can be honored, because a grant whose exercise is unobservable is a grant that cannot be governed.</p>
+
+## Problem
+
+<div data-lvl="caveman">
+
+Every pattern so far happens *before* the machine acts. But the yes is a moment, and the act lives on after it. Where did the money go? For a standing yes, an "always allow" or a runs-by-itself rung, there was no asking moment at all. The thing just happened while you weren't looking.
+
+With no mark to look at, your yes rots into hope. You can't spot a mistake, question a call, or pull back what shouldn't have happened, because the machine never says what it did or why it was allowed. The mark is the other half of the yes: power you can't watch is power you don't really hold.
+
+</div>
+
+<div data-lvl="human">
+
+Every consent pattern so far happens *before* the agent acts. But approval is a moment, and the action has a life after it. Where did the money go? Which messages got sent? And for anything an agent did under a standing grant, a Consent Memory "always" or an Automatic authority level, there was no approval moment at all; the action simply happened.
+
+If that action leaves no trace the user can review, consent quietly degrades into trust-and-hope. The user can't notice a mistake, can't question a borderline call, and can't reverse something that shouldn't have happened, because there's no surface that says *this is what I did, and here's why I was allowed to*. Auditability here is the other half of consent: a grant the user can't see being exercised is a grant they can't really govern.
+
+</div>
+
+<div data-lvl="academic">
+
+The preceding patterns are all ex-ante mechanisms, and ex-ante consent has a structural blind spot: the action's life after approval. For prompted actions the gap is one of verification: did what was approved actually happen, to the approved parameters? For actions under standing authority the gap is total: a [Consent Memory](/patterns/consent-memory/) "always" or an Automatic [Authority Boundary](/patterns/authority-boundary/) level means the exercise had *no* user-facing moment at all, and standing grants are precisely the ones that accumulate the most exercises per unit of user attention. Without an exercise record, the consent system is open-loop: the user set policy, the agent acts under it, and no signal returns to inform whether the policy is producing the intended behavior. Every governance verb (notice the mistake, question the borderline call, reverse the wrongful act, tighten the over-broad grant) takes the record as its object; absent one, they are all undefined. Auditability is the feedback path that makes standing delegation governable at all; without it, consent is trust-and-hope with a settings page. The receipt is also where authority becomes *accountable*: binding each action to the grant that permitted it is what makes overreach distinguishable from authorized behavior. That's the difference between an audit trail and a diary.
+
+</div>
+
+## Solution
+
+<div data-lvl="caveman">
+
+Give every act that matters a mark on the wall: lasting, findable, readable.
+
+- **Say what happened, exactly.** The act in past tense, a worked-or-didn't badge, and the hard facts: who, how much, which file. The same facts you'd have approved, now kept.
+- **Name who said yes.** Tie the act to the grant or rule that allowed it. This is the mark's special job: answering *why were you allowed?* It matters most for acts that never asked.
+- **Tie on the undo-rope where it's real.** A pull-back-able act gets a working undo. A gone-for-good act says so honestly, instead of dangling a rope tied to nothing.
+
+</div>
+
+<div data-lvl="human">
+
+Give every consequential action a receipt: a durable, reviewable record.
+
+- **State what happened, exactly.** The action in the past tense, an outcome badge, and the concrete details (recipient, amount, file). These are the same facts the user would have approved, now preserved.
+- **Name the authority.** Tie the action back to the grant, approval, or standing rule that permitted it. This is the receipt's distinct job: answering *why were you allowed to do this?*, which matters most for actions taken with no prompt.
+- **Offer undo where the action allows.** A reversible action gets a real undo: consent extended past approval into the power to take it back. An irreversible one says so honestly, rather than dangling a button it can't honour.
+
+</div>
+
+<div data-lvl="academic">
+
+Emit a durable record per consequential action, with three fields doing distinct governance work:
+
+- **The effect, verbatim.** Past-tense action, outcome state (completed / undone / failed), and the concrete parameters: the same facts an [Action Preview](/patterns/action-preview/) would have shown, now preserved as what *did* happen. Preview and receipt are the same rendering at two tenses, which is what lets a user check one against the other.
+- **The authority, named.** The grant, in-the-moment approval, or standing rule under which the action was permitted, with enough specificity to locate it ("always-allow · set Jul 2"). This is the receipt's differentiating field: it converts the log from a record of events into a record of *exercises of delegated authority*, auditable against the policy that authorized them; it matters most exactly where no prompt ever appeared.
+- **Reversal, honestly scoped.** Reversible actions carry a live undo: consent extended past approval into recourse. Irreversible ones state so plainly rather than rendering a control that can't be honored. The undo-after rather than confirm-before trade is the pattern's quiet economics: for reversible actions, a receipt with a working undo buys back most of the safety a pre-confirmation would have cost in fatigue (Gmail's undo-send is the canonical proof).
+
+Receipts also compose upstream: the [Connection Card](/patterns/connection-card/)'s "last used" line is a receipt pointer, and a pattern of receipts contradicting expectations is the signal that should send a user back to the [Authority Boundary](/patterns/authority-boundary/) to tighten it.
+
+</div>
+
+<ActionReceiptDemo />
+
+<div data-lvl="caveman">
+
+The mark above is the real `ActionReceipt` component from `@agentconsent/react`. Pull the undo-rope: the send comes back and the mark flips to Undone. Then, honestly, it offers no second pull.
+
+</div>
+
+<div data-lvl="human">
+
+The demo is the `ActionReceipt` component from `@agentconsent/react`. Undo recalls the send and flips the receipt to its Undone state. After that, it offers no second undo.
+
+</div>
+
+<div data-lvl="academic">
+
+The demo is the `ActionReceipt` component from `@agentconsent/react`. Undo recalls the send and transitions the receipt to Undone, after which no second undo is offered: the reversal affordance tracks the action's actual state machine, not a static layout.
+
+</div>
+
+## Anatomy
+
+<ActionReceiptAnatomy />
+
+## When to use it
+
+<div data-lvl="caveman">
+
+- **After any act that matters**, whether you said yes in the moment or a standing yes covered it. The less you were there at the start, the more the mark matters at the end.
+- **As the landing place after an [Action Preview](/patterns/action-preview/).** The preview asks; the mark records. Same facts, before and after.
+- **Anywhere the machine runs while you're away.** A runs-by-itself rung, a budget being eaten down: both need marks on the wall, so you can read what happened while you weren't watching.
+
+</div>
+
+<div data-lvl="human">
+
+- **After any consequential action**, whether it was approved in the moment or taken under standing authority. The less a user was involved up front, the more a receipt matters.
+- **As the landing surface after an [Action Preview](/patterns/action-preview/).** The preview approves; the receipt records the same facts, before and after.
+- **Anywhere autonomy runs unattended.** An [Authority Boundary](/patterns/authority-boundary/) set to Automatic, or a [Spend & Rate Limits](/patterns/spend-rate-limits/) budget being drawn down, needs receipts so the user can review what happened while they weren't looking.
+
+</div>
+
+<div data-lvl="academic">
+
+- **After every consequential action, with intensity inverse to upfront involvement.** The receipt's marginal value is highest where ex-ante consent was thinnest: the standing-grant action nobody clicked for needs the record more than the one that just cleared a preview.
+- **As the preview's closing bracket.** [Action Preview](/patterns/action-preview/) approves the parameters; the receipt records them executed. The before/after symmetry is itself an integrity check: any divergence between approved facts and receipted facts is the mutating-preview contract violation, made detectable.
+- **Wherever autonomy runs unattended.** Automatic authority levels and [Spend & Rate Limits](/patterns/spend-rate-limits/) draw-down are consent exercised without contemporaneous observation; receipts are the deferred-observation channel that makes "review what happened while I was away" a supported operation rather than an archaeology project.
+
+</div>
+
+## When not to use it
+
+<div data-lvl="caveman">
+
+- **Tiny harmless things.** Marking every glance and keystroke buries the marks that matter. Save the wall for acts with real teeth.
+- **Instead of asking first.** A mark isn't a license to skip a needed ask. "We'll write it down" isn't a yes for a big act that should've been confirmed first.
+- **When the undo-rope is fake.** Never show a pull-back for something already gone. Say "can't be undone" and mean it.
+
+</div>
+
+<div data-lvl="human">
+
+- **Trivial, inconsequential actions.** A receipt for every read or every keystroke is noise that buries the actions that matter. Reserve it for acts with a real effect.
+- **As a substitute for asking first.** A receipt is not permission to skip a needed [Action Preview](/patterns/action-preview/) or [Irreversibility Gate](/patterns/irreversibility-gate/). "We'll log it" is not consent for a high-stakes act that should have been confirmed.
+- **When you can't actually honour the undo.** Don't show an undo affordance for something already gone; mark it plainly as irreversible instead.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Trivial actions.** Receipting every read and keystroke is signal-burial: the audit trail's usefulness is inversely proportional to its noise floor, and a log nobody can scan protects nobody. The consequence threshold that warrants a preview roughly marks what warrants a receipt.
+- **As a substitute for ex-ante consent.** "We'll log it" converts a consent requirement into a liability record. The audit trail as permission-to-skip is auditability turned against its purpose. Receipts complement the [Action Preview](/patterns/action-preview/) and [Irreversibility Gate](/patterns/irreversibility-gate/); for actions above the confirmation threshold they never replace them, because recourse after an irreversible act is definitionally empty.
+- **When reversal can't be honored.** An undo affordance on an already-gone action is a false claim about the action's state machine. The receipt's honesty about irreversibility is load-bearing. It is what keeps users' mental model of *which* actions have recourse calibrated, which feeds back into how much upfront scrutiny they give each class.
+
+</div>
+
+## Real-world examples
+
+<div data-lvl="caveman">
+
+- **Gmail's undo send.** The classic: the letter goes, and the mark appears with a live pull-back window. No asking beforehand, full power afterward. The trade this whole pattern is built on.
+- **ChatGPT agent's activity view.** A step-by-step trail of everything the machine did during a run, when something goes wrong, you can walk the trail back to where.
+- **Bank and card apps.** The transaction screen (what, when, how much, with dispute and reversal paths attached) is the mark-on-the-wall people already trust with their money. Stripe's event log is the same wall for builders.
+
+</div>
+
+<div data-lvl="human">
+
+- **Gmail's undo send.** The archetype: the action goes through, and the receipt arrives as a toast with a live reversal window. No pre-confirmation friction, full post-hoc control. The trade this pattern formalizes.
+- **ChatGPT agent's activity view.** A step-by-step log of everything the agent did during a run, so when something goes wrong the user can trace exactly where. The agent-native version of the receipt, at run granularity.
+- **Banking and card apps.** The transaction detail screen (what, when, how much, with dispute and reversal paths attached) is the receipt anatomy users already trust with their money; Stripe's dashboard event log is the same surface for developers.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Gmail's undo send.** The archetype of the confirm-before → undo-after trade: zero pre-send friction, a live reversal window post-hoc. Mechanically it's a delayed commit dressed as an undo, which is the deeper lesson: reversibility can be *engineered* (by holding the effect briefly) even where the underlying action is final, and every second of engineered reversibility is friction the consent flow doesn't have to charge.
+- **ChatGPT agent's activity view.** Step-level logging of an autonomous run. The receipt at trace granularity, where the object of audit is not one action but the run's whole causal chain. Agent-native receipts trend this direction because unattended runs make "which step went wrong" the operative question.
+- **Banking and card apps.** The transaction detail screen is the receipt anatomy with decades of user trust: effect, timestamp, counterparty, and, critically, dispute and reversal paths attached to the record itself. Recourse co-located with the record, not in a separate support flow, is the design detail worth stealing; Stripe's event log is the developer-facing same surface.
+
+</div>
+
+*Annotated screenshots of these flows are being collected. Products are credited, annotations follow the site-wide callout conventions, and any screenshot is removed on request. See [About](/about/).*
+
+## Accessibility
+
+<div data-lvl="caveman">
+
+- The mark is a real `article` named by what the machine did, so a screen reader announces it as one record, and its **title is not a locked heading**, so marks stack into any log without wrecking the page's heading order.
+- **The outcome is a word, not a color.** Completed / Undone / Failed is written out; the tint is a bonus.
+- **The undo is a real button when it's real, and absent when it isn't.** A gone-forever or already-undone act shows a plain note instead of a dead-looking button, so a screen reader is never offered a pull that can't happen.
+- Facts, who-allowed-it, and when are marked up as label-value lists, so the pairs stay glued together when read aloud.
+
+</div>
+
+<div data-lvl="human">
+
+- The receipt is an `article` labelled by what the agent did, so assistive tech announces it as one named record, and its **title is a non-heading element** with an id, so a receipt drops into an activity log at any depth without breaking heading order.
+- **The outcome is text, not colour.** Completed / Undone / Failed is spelled out; the tint is redundant.
+- **Undo is a real button when it's real, and not there when it isn't.** An irreversible or already-undone action renders an inert note instead of a disabled-looking control, so a screen reader is never offered an action that can't be taken.
+- Details, authority, and timing are marked up as description lists, so their label/value pairing survives without visual layout.
+
+</div>
+
+<div data-lvl="academic">
+
+- The receipt is an `article` named by the past-tense action (one addressable record per exercise, traversable in log context), and its **title is a non-heading element** with an id, so receipts compose into activity logs at any depth without imposing on the host page's heading hierarchy.
+- **Outcome is text**, Completed / Undone / Failed spelled out, tint redundant (WCAG 1.4.1). The outcome is the record's key fact; it cannot ride on hue.
+- **The reversal affordance matches the action's state**: a real button when undo is honorable, an inert note ("Can't be undone", "Undone") when it isn't, never a disabled-styled control. Offering assistive tech an action the system cannot take is the accessibility-tree version of the dangling-undo anti-pattern.
+- Details, authority, and timing are description lists: label/value bindings held in markup, so the record's evidentiary structure survives linearization. An audit record whose fields scramble under a screen reader is not audit-grade.
+
+</div>
+
+## Anti-patterns
+
+<div data-lvl="caveman">
+
+- **The silent success.** Doing a big thing and showing nothing. You find out only when something breaks. If it was worth a yes, it's worth a mark.
+- **A mark with no who-said-yes.** Writing *what* happened but not *under which grant* leaves you unable to tell allowed from overstepped. Name the authority, above all for acts that never asked.
+- **The rope tied to nothing.** An undo that does nothing, errors out, or "reverses" the unreversible is worse than no rope. It promises a pull-back that isn't there.
+- **The unwatchable standing yes.** Letting always-allowed power fire with no trace means you gave power you can never again watch being used. The standing yes needs marks *most of all*.
+- **Foggy summaries.** "Updated your calendar" instead of the exact event, time, and guests. A mark you can't check against the world isn't a record. It's a rumor.
+
+</div>
+
+<div data-lvl="human">
+
+- **The silent success.** Doing something consequential and showing nothing. The user finds out only when something breaks. If it was worth approving, it's worth a receipt.
+- **A receipt with no authority.** Recording *what* happened but not *under what grant* leaves the user unable to tell an authorised action from an overreach. Name the authority, especially for anything done without a prompt.
+- **A dangling undo.** An undo button that does nothing, errors, or "reverses" something already irreversible is worse than no button. It promises control that isn't there.
+- **The unauditable standing grant.** Letting Automatic authority or an always-allow fire with no trace means the user granted power they can now never actually watch being used. Standing authority *most* needs receipts.
+- **Vague summaries.** "Updated your calendar" instead of the exact event, time, and attendees. A receipt that can't be checked against reality isn't a record.
+
+</div>
+
+<div data-lvl="academic">
+
+- **The silent success.** A consequential effect with no record leaves the consent loop open. The failure is discovered, if ever, through its downstream damage rather than its report. The approval threshold and the receipt threshold should be one line: worth confirming implies worth recording.
+- **A receipt with no authority.** An effect log without grant attribution cannot support the audit's central query (*was this authorized?*), so authorized action and overreach render identically. The authority field is what makes the record adjudicable, and it is most essential precisely for the promptless standing-grant exercise.
+- **A dangling undo.** A reversal affordance that no-ops, errors, or gestures at the unreversible asserts recourse that doesn't exist, worse than absence, because users calibrate their upfront scrutiny against believed recourse. False recourse quietly buys risk with counterfeit safety.
+- **The unauditable standing grant.** Automatic authority firing without trace is delegation with the feedback path deleted: the user holds a power they can never observe in use, which means the grant can never be evaluated, tightened, or meaningfully revoked-in-time. Standing authority without receipts is the write-only grant completed at the exercise layer.
+- **Vague summaries.** "Updated your calendar" is a category, not a record; the receipt inherits Action Preview's verbatim standard for the same reason the preview holds it. A record that can't be checked against reality has the form of accountability without its function.
+
+</div>
+
+## Code
+
+```tsx
+import { ActionReceipt } from "@agentconsent/react";
+import "@agentconsent/react/theme.css";
+
+<ActionReceipt.Root
+  outcome="completed"            // "completed" | "undone" | "failed"
+  reversibility="reversible"     // "reversible" | "irreversible" → governs Undo
+>
+  <ActionReceipt.Header>
+    <ActionReceipt.Icon>✉</ActionReceipt.Icon>
+    <ActionReceipt.Title>Sent email to Dana Ito</ActionReceipt.Title>
+    <ActionReceipt.Outcome />
+  </ActionReceipt.Header>
+
+  <ActionReceipt.Details>
+    <ActionReceipt.Detail label="To">dana@northwindcap.com</ActionReceipt.Detail>
+    <ActionReceipt.Detail label="Subject">Q3 board deck</ActionReceipt.Detail>
+  </ActionReceipt.Details>
+
+  <ActionReceipt.Authority
+    grant="Standing grant · Send email"     // what permitted it
+    via="always-allow · set Jul 2"
+  />
+
+  <ActionReceipt.Meta>
+    <ActionReceipt.MetaItem label="When">Jul 9, 2:14 PM</ActionReceipt.MetaItem>
+  </ActionReceipt.Meta>
+
+  <ActionReceipt.Actions>
+    <ActionReceipt.Undo onClick={recall}>Undo send</ActionReceipt.Undo>
+  </ActionReceipt.Actions>
+</ActionReceipt.Root>
+```
+
+`Undo` renders a button only when the receipt is `reversible` and not already
+`undone`; otherwise it's an honest note ("Can't be undone", "Undone"). This is a
+display surface, like Connection Card it takes no decision callbacks; wire
+`Undo` to your own handler. All parts are unstyled primitives with `data-acp`
+attributes; skip `theme.css` and style them yourself, or override the `--acp-*`
+tokens to retheme.

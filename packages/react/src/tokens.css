@@ -1,0 +1,145 @@
+/**
+ * @agentconsent/react — design tokens
+ *
+ * Every themable value in the component library resolves to one of these
+ * custom properties. Override them (globally or per-subtree) to retheme;
+ * theme.css consumes only these variables. Namespace: --acp-*.
+ *
+ * Dark mode: automatic via prefers-color-scheme, with explicit
+ * [data-theme="light" | "dark"] overrides winning in both directions.
+ * data-theme works on any element, so a subtree (e.g. a demo frame) can
+ * be themed independently of the page.
+ */
+
+:root,
+[data-theme="light"] {
+  /* ── Color: neutrals ─────────────────────────────────────────── */
+  --acp-color-surface: #fdfdfc;
+  --acp-color-surface-raised: #f4f4f2;
+  --acp-color-surface-sunken: #ececea;
+  --acp-color-ink: #1a1a18;
+  --acp-color-ink-muted: #5f5f5a;
+  --acp-color-ink-faint: #6f6f69;
+  --acp-color-line: #d9d9d5;
+  --acp-color-line-strong: #b0b0aa;
+
+  /* ── Color: consent semantics ────────────────────────────────── */
+  /* Approve: affirmative but deliberately not celebratory green    */
+  --acp-color-approve: #1f6f43;
+  --acp-color-approve-ink: #ffffff;
+  /* Reject / cancel: neutral, never alarming — declining is safe   */
+  --acp-color-reject: transparent;
+  --acp-color-reject-ink: #1a1a18;
+  /* Irreversible / destructive consequence                         */
+  --acp-color-danger: #b3261e;
+  --acp-color-danger-ink: #ffffff;
+  --acp-color-danger-surface: #fceeed;
+  /* Untrusted content (injection flag, quoted instructions)        */
+  --acp-color-untrusted: #8a5a00;
+  --acp-color-untrusted-surface: #fdf3e1;
+  /* Agent identity accent (who is asking)                          */
+  --acp-color-agent: #3d4f9e;
+  --acp-color-agent-surface: #eef0fa;
+  /* Focus ring                                                     */
+  --acp-color-focus: #2456d6;
+
+  /* ── Type ────────────────────────────────────────────────────── */
+  --acp-font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+  --acp-font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+    monospace;
+  --acp-text-xs: 0.75rem;
+  --acp-text-sm: 0.875rem;
+  --acp-text-base: 1rem;
+  --acp-text-lg: 1.125rem;
+  --acp-leading-tight: 1.3;
+  --acp-leading-normal: 1.55;
+  --acp-weight-normal: 400;
+  --acp-weight-medium: 500;
+  --acp-weight-semibold: 600;
+
+  /* ── Space (4px base) ────────────────────────────────────────── */
+  --acp-space-1: 0.25rem;
+  --acp-space-2: 0.5rem;
+  --acp-space-3: 0.75rem;
+  --acp-space-4: 1rem;
+  --acp-space-5: 1.25rem;
+  --acp-space-6: 1.5rem;
+  --acp-space-8: 2rem;
+
+  /* ── Radius ──────────────────────────────────────────────────── */
+  --acp-radius-sm: 4px;
+  --acp-radius-md: 8px;
+  --acp-radius-lg: 12px;
+
+  /* ── Elevation ───────────────────────────────────────────────── */
+  --acp-shadow-card: 0 1px 2px rgb(0 0 0 / 0.06), 0 0 0 1px var(--acp-color-line);
+  --acp-shadow-modal: 0 8px 30px rgb(0 0 0 / 0.18), 0 0 0 1px var(--acp-color-line);
+
+  /* ── Motion ──────────────────────────────────────────────────── */
+  --acp-duration-fast: 120ms;
+  --acp-duration-base: 200ms;
+  --acp-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Dark palette, defined once and applied two ways (media + attribute) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --acp-color-surface: #161615;
+    --acp-color-surface-raised: #1f1f1e;
+    --acp-color-surface-sunken: #101010;
+    --acp-color-ink: #ececea;
+    --acp-color-ink-muted: #a3a39d;
+    --acp-color-ink-faint: #8c8c86;
+    --acp-color-line: #33332f;
+    --acp-color-line-strong: #4d4d47;
+
+    --acp-color-approve: #37a266;
+    --acp-color-approve-ink: #0c1f14;
+    --acp-color-reject-ink: #ececea;
+    --acp-color-danger: #e5655e;
+    --acp-color-danger-ink: #260503;
+    --acp-color-danger-surface: #2c1513;
+    --acp-color-untrusted: #d9a13f;
+    --acp-color-untrusted-surface: #2a2011;
+    --acp-color-agent: #93a4e8;
+    --acp-color-agent-surface: #1c2136;
+    --acp-color-focus: #7da2f5;
+
+    --acp-shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 0 0 1px var(--acp-color-line);
+    --acp-shadow-modal: 0 8px 30px rgb(0 0 0 / 0.55), 0 0 0 1px var(--acp-color-line);
+  }
+}
+
+[data-theme="dark"] {
+  --acp-color-surface: #161615;
+  --acp-color-surface-raised: #1f1f1e;
+  --acp-color-surface-sunken: #101010;
+  --acp-color-ink: #ececea;
+  --acp-color-ink-muted: #a3a39d;
+  --acp-color-ink-faint: #7a7a74;
+  --acp-color-line: #33332f;
+  --acp-color-line-strong: #4d4d47;
+
+  --acp-color-approve: #37a266;
+  --acp-color-approve-ink: #0c1f14;
+  --acp-color-reject-ink: #ececea;
+  --acp-color-danger: #e5655e;
+  --acp-color-danger-ink: #260503;
+  --acp-color-danger-surface: #2c1513;
+  --acp-color-untrusted: #d9a13f;
+  --acp-color-untrusted-surface: #2a2011;
+  --acp-color-agent: #93a4e8;
+  --acp-color-agent-surface: #1c2136;
+  --acp-color-focus: #7da2f5;
+
+  --acp-shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 0 0 1px var(--acp-color-line);
+  --acp-shadow-modal: 0 8px 30px rgb(0 0 0 / 0.55), 0 0 0 1px var(--acp-color-line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --acp-duration-fast: 0ms;
+    --acp-duration-base: 0ms;
+  }
+}

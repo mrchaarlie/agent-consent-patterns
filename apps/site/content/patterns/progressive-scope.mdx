@@ -1,0 +1,281 @@
+import { ProgressiveScopeDemo } from "@/components/progressive-scope-demo";
+import { ProgressiveScopeAnatomy } from "@/components/progressive-scope-anatomy";
+
+<p data-lvl="caveman" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Give the machine one small key to start. When it hits a locked door, it asks for that door's key while you watch. You never say yes to a big pile of maybes.</p>
+
+<p data-lvl="human" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Start minimal and ask for more at the moment of need: in context, tied to the action the agent is blocked on, so the user consents to something concrete instead of a pile of hypotheticals.</p>
+
+<p data-lvl="academic" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Defer capability acquisition to the moment of demonstrated need: escalation requests arrive in context, bound to the blocked action, so consent is evaluated against a concrete task state rather than a set of upfront hypotheticals. Incremental authorization is a trust-building protocol.</p>
+
+## Problem
+
+<div data-lvl="caveman">
+
+The old way: before the machine does anything, it asks for every key it might *ever* need. A big list of maybes, judged all at once, with nothing done yet.
+
+People do one of two things. They say yes to everything, because saying no feels like breaking the tool. Or they walk away, because the list looks scary. Both are bad. Worst part: the one key it truly needs looks just like the forty-nine it never will.
+
+</div>
+
+<div data-lvl="human">
+
+Upfront consent forces a bad trade. To avoid interrupting the user later, products request every permission the agent might conceivably need at connect time, so the user is asked, before any work has happened, to reason about capabilities in the abstract. Faced with a long list of maybes, people do one of two things: rubber-stamp it all (over-granting, because refusing feels like breaking the tool), or bail (under-adopting, because the ask looks alarming). Either way the grant is made in the worst possible context: no task in front of them, no way to judge whether a scope is actually warranted. The permission the agent needs and the fifty it doesn't arrive looking identical.
+
+</div>
+
+<div data-lvl="academic">
+
+Upfront consent optimizes for interruption-avoidance at the cost of decision quality. Requesting the union of all conceivable capabilities at connect time asks the user to evaluate authority in the abstract, with zero task context and zero behavioral evidence about the agent: the epistemically worst possible position from which to judge whether a scope is warranted. The empirical outcomes are bimodal: rubber-stamping (over-granting, because refusal is priced as abandoning the tool) or abandonment (under-adoption, because the request set signals risk). Both are failures of the same mechanism: the request carries no signal distinguishing the capability the task requires from the forty-nine it doesn't, so the user cannot perform the discrimination the consent model assumes they will. Upfront maximalism also front-loads standing authority before any trust has been earned, inverting the natural order of a principal–agent relationship, where delegation normally widens with demonstrated competence. The result is a population of standing grants far broader than exercised need: latent authority that only becomes visible when something abuses it.
+
+</div>
+
+## Solution
+
+<div data-lvl="caveman">
+
+Give the small key first. Let the machine work. When it hits a locked door, it stops and asks right there, in front of the door. The ask carries everything you need to judge it:
+
+- **The one key**: one new power, and how hard it can touch (look, change, or destroy). Not the whole ring again.
+- **The reason**: tied to the stuck job. "To answer the trader, it must send a letter," not "the helper wants more access."
+- **What it already holds**: so the ask reads as one small step up, not a mystery.
+
+Then you pick how far the yes goes: this door only, forever, or no. The "forever" button is smaller than the "just this once" button, on purpose. The lazy path must never be the big give.
+
+</div>
+
+<div data-lvl="human">
+
+Grant what the task needs now, and let the agent come back for more when it actually hits a wall. The escalation request appears in context, at the moment of need, and carries everything required to judge it:
+
+- **The specific capability**: exactly one new scope, with its access level, not a re-grant of everything.
+- **The reason, tied to the blocked action**: "to reply to the vendor, it needs to send email," not "the assistant would like more access."
+- **The standing grant it builds on**: what the agent already has, so the ask reads as one additive step.
+
+The decision is about breadth: allow the capability for just this blocked action, escalate it into the standing grant, or refuse. "Allow always" is styled subordinate to "allow once" on purpose. The interface should never make over-granting the path of least resistance.
+
+</div>
+
+<div data-lvl="academic">
+
+Invert the acquisition order: provision the minimal viable grant, and surface escalation at the point of demonstrated need. The request is a structured object, not a plea, carrying the three facts a rational evaluation requires:
+
+- **The capability delta**: exactly one scope with its access level. Requesting a delta rather than re-presenting the grant keeps the decision's information content proportional to its consequence.
+- **A reason bound to the blocked action**: the justification names the concrete task state ("to reply to the vendor, it needs to send email"), making the request falsifiable: the user can check the claim against the visible task, which is precisely what an abstract "needs more access" forbids.
+- **The standing grant it extends**: establishing the base authority so the ask reads as one additive step and the cumulative grant stays legible.
+
+The decision axis is breadth: once, always, or refuse. Subordinating "always" to "once" is a deliberate choice-architecture inversion: the durable grant must be the deliberate act, never the default-shaped one. The once/always split is the minimal in-context form of the duration ladder that [Consent Memory](/patterns/consent-memory/) generalizes, and repeated escalations accumulate into the standing surface [Authority Boundary](/patterns/authority-boundary/) governs. Deferral also converts consent from a one-shot contract into a repeated game: each honored boundary is evidence, and authority tracks earned trust rather than preceding it.
+
+</div>
+
+<ProgressiveScopeDemo />
+
+<div data-lvl="caveman">
+
+The box above is the real `ProgressiveScope` component from `@agentconsent/react`. Change the `access` prop and watch the badge and stripe shift from *look* to *change* to *destroy*. The ask gets visually heavier as the key gets more dangerous.
+
+</div>
+
+<div data-lvl="human">
+
+The demo is the `ProgressiveScope` component from `@agentconsent/react`. Change the `access` prop to re-weight the request; the accent and badge shift from read to write to delete.
+
+</div>
+
+<div data-lvl="academic">
+
+The demo is the `ProgressiveScope` component from `@agentconsent/react`. The `access` prop re-weights the request: badge text and accent shift across read/write/delete, so the visual gravity of the ask tracks the consequence class of the requested capability, a small case of friction proportional to consequence.
+
+</div>
+
+## Anatomy
+
+<ProgressiveScopeAnatomy />
+
+## When to use it
+
+<div data-lvl="caveman">
+
+- **Keys used rarely.** A door opened once a month should not sit on the first-day key ring everyone stares at.
+- **Dangerous keys**: change, destroy, spend. Judge those against a real door, not an imaginary one.
+- **Getting people to start.** A small first ask gets them in the door. The machine earns trust before asking for the big keys.
+
+</div>
+
+<div data-lvl="human">
+
+- **Capabilities the agent needs rarely or conditionally**: the escalation it might need once a month shouldn't be in the upfront grant everyone sees.
+- **High-consequence scopes** (write, delete, spend) that deserve a decision made against a real action rather than a hypothetical one.
+- **Adoption-sensitive onboarding**, where a short initial ask gets people in and trust is earned before the bigger permissions are requested.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Low-frequency or conditional capabilities**: anything whose exercise probability is well below 1 per session. Placing rare capabilities in the upfront grant taxes every user's attention to serve an occasional need; deferral prices the interruption only when the need is real.
+- **High-consequence scopes** (write, delete, spend), where the value of contextual evidence is greatest: a destructive capability judged against a visible blocked action is a categorically better-informed decision than the same capability judged against a hypothetical.
+- **Adoption-sensitive onboarding.** Initial-ask size is a conversion variable; deferral shifts the trust demand from before first value to after it, so the authority curve tracks the trust curve.
+
+</div>
+
+## When not to use it
+
+<div data-lvl="caveman">
+
+- **The key it needs every day.** Making the user wait for the one key that makes the tool work at all is just a speed bump. Hand that one over at the start, with [Scoped Grant](/patterns/scoped-grant/).
+- **Doors hit fifty times an hour.** Asking every time is its own torture. Set a standing rule instead: [Authority Boundary](/patterns/authority-boundary/) or [Spend & Rate Limits](/patterns/spend-rate-limits/).
+- **Saying yes to one act.** This pattern hands over a *key*. Approving one letter or one payment is [Action Preview](/patterns/action-preview/) and the [Irreversibility Gate](/patterns/irreversibility-gate/).
+
+</div>
+
+<div data-lvl="human">
+
+- **Core capabilities the agent needs immediately and always.** Deferring the one scope that makes the product work just adds a speed bump on the happy path. Grant it upfront with Scoped Grant.
+- **Hot loops.** If the agent will hit the same wall dozens of times a session, a per-hit escalation prompt is its own fatigue; reach for a standing [Authority Boundary](/patterns/authority-boundary/) or [Spend & Rate Limits](/patterns/spend-rate-limits/).
+- **Approving a specific action.** Progressive Scope grants a *capability* in context; approving the specific send or payment is Action Preview and the Irreversibility Gate.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Core, always-exercised capabilities.** Deferring a scope with exercise probability ≈ 1 buys no decision-quality improvement and spends interruption on the happy path; that provisioning belongs upfront in [Scoped Grant](/patterns/scoped-grant/).
+- **High-frequency escalation points.** Per-hit prompting in a hot loop reproduces the approval-fatigue failure this pattern exists to avoid, just distributed over time instead of stacked upfront; the correct instrument is standing policy: [Authority Boundary](/patterns/authority-boundary/) for categorical rules, [Spend & Rate Limits](/patterns/spend-rate-limits/) for quantitative ones.
+- **Per-action authorization.** Progressive Scope confers capability; it does not approve invocations. Conflating the two lets a single in-context grant silently authorize an unbounded class of future actions. The specific send or payment needs [Action Preview](/patterns/action-preview/) and, where irreversible, the [Irreversibility Gate](/patterns/irreversibility-gate/).
+
+</div>
+
+## Real-world examples
+
+<div data-lvl="caveman">
+
+- **Your phone asking for the camera.** Phones stopped asking for everything at install long ago. The camera question comes the moment you tap the camera button, with the thing you were doing right there behind the ask. Android even has "Only this time": the once/always split, exactly.
+- **Google letting apps ask later.** An app can hook up as look-only, then ask for send power the first time you actually try to send. The old yeses carry over; you only judge the new key.
+- **Slack apps asking for the new thing only.** When a Slack app needs a power it wasn't installed with, the approval screen lists just the added power, not the whole pile again.
+
+</div>
+
+<div data-lvl="human">
+
+- **iOS and Android runtime permissions.** The mobile OSes abandoned install-time permission walls a decade ago: camera access is requested the moment the user taps the camera feature, in context, with the blocked task visible behind the prompt. Android's "Only this time" adds the once/always split this pattern insists on.
+- **Google OAuth incremental authorization.** Google's OAuth flow supports requesting additional scopes later (`include_granted_scopes`), so an app can connect read-only and ask for send access the first time the user actually tries to send. Prior grants carry over, and the user consents only to the delta.
+- **Slack app scope escalation.** When a Slack app needs a scope it wasn't installed with, it re-requests authorization listing just the added scopes, and the approver sees the increment in context rather than re-reviewing the whole grant.
+
+</div>
+
+<div data-lvl="academic">
+
+- **iOS and Android runtime permissions.** Both OSes migrated from install-time manifests to runtime prompts: one poorly contextualized decision traded for many well-contextualized ones, each evaluated in place at the moment it's needed. Android's "Only this time" adds the once/always breadth axis; its auto-revocation of unused permissions is the expiry principle applied to the same grants.
+- **Google OAuth incremental authorization.** `include_granted_scopes` makes the delta request a first-class protocol feature: prior grants union in, the consent screen shows only the increment, and the app must tolerate partial authorization: the server-side contract that makes UI-level progressive scope honest.
+- **Slack app scope escalation.** Re-authorization lists only the added scopes, so the approver evaluates the increment against the workflow that triggered it. Capability deltas are the unit of review, not grant snapshots.
+
+</div>
+
+*Annotated screenshots of these flows are being collected. Products are credited, annotations follow the site-wide callout conventions, and any screenshot is removed on request. See [About](/about/).*
+
+## Accessibility
+
+<div data-lvl="caveman">
+
+- **The in-page ask** is a labeled group, so a screen reader announces it where it sits. It does not grab you and drag you away from what you were reading.
+- **The pop-up ask** (`asModal`) traps focus properly, says its name, and lands the cursor on **deny** first. The resting place is always the smallest answer, never a yes.
+- **Escape means no.** Pressing Escape goes through the same "no" path as the button. There is no half-yes hiding in a dismissed box.
+- **Danger is words, not just color.** The badge says "Write" or "Delete" out loud; the colored stripe is a bonus, never the only signal.
+- The three answers are plain buttons in a sane order (no, once, always), each with its own clear words. "Just this once" and "always" are never mashed into one vague "Allow."
+
+</div>
+
+<div data-lvl="human">
+
+- **Inline mode** renders a `role="group"` labeled by the request title, so screen readers announce the ask in context without seizing focus. An escalation prompt must not yank the user out of what they were reading.
+- **Modal mode** (`asModal`) is a Radix `AlertDialog`: focus is trapped, `role="alertdialog"` is named by the title, and initial focus lands on **deny**. The least-escalation choice is the resting default, never an allow.
+- **Escape denies**, routed through `onDeny` like the button. There is no ambiguous dismissal that leaves the escalation half-granted.
+- **Access level is text, never color alone**. The request badge reads "Write"/"Delete"; the accent stripe is redundant reinforcement, not the only signal.
+- The three decisions are ordinary buttons in a logical order (deny, then the two grants), each with a distinct label, "just this once" and "always allow" are never collapsed into one ambiguous "Allow".
+
+</div>
+
+<div data-lvl="academic">
+
+- **Inline mode** is a `role="group"` named by the request title: announced in reading order, no focus seizure. The interruption cost of an escalation must not be higher for assistive-tech users than for sighted ones. A prompt that steals focus mid-passage is exactly that asymmetry.
+- **Modal mode** (`asModal`) is a Radix `AlertDialog`, trapped focus, `role="alertdialog"` named by the title, initial focus on **deny**. Resting focus is itself a default, and defaults encode policy: the least-escalation choice is where reflexive activation lands.
+- **Escape routes through `onDeny`**, identical to the explicit button, declining-is-always-safe demands one unambiguous refusal path, with no dismissal state distinct from denial for a grant to linger in.
+- **Access level is text before it is color** (WCAG 1.4.1): the badge reads "Write"/"Delete"; the accent stripe is redundant encoding.
+- The three decisions are native buttons, distinctly labeled, ordered deny → once → always. Collapsing once/always into one "Allow" would erase the breadth axis. The single most consequential bit in the whole exchange.
+
+</div>
+
+## Anti-patterns
+
+<div data-lvl="caveman">
+
+- **Everything upfront.** Asking for the whole key ring on day one is the exact thing this pattern kills. If the first screen lists doors the job hasn't reached, they don't belong there.
+- **The mystery interrupt.** "Helper wants more access. Allow?", no key named, no reason given. Worse than the big list, because now it's also a jump-scare.
+- **Nagging.** Asking again every few minutes for the key you already refused teaches you to say yes just to make it stop. A no should stay a no for the session.
+- **"Always" as the easy button.** Pre-picking or visually favoring "always allow" turns one moment's need into a forever-key by laziness. Make "once" easy and "always" deliberate.
+- **The fake locked door.** Inventing a wall mid-task just to squeeze a big grant out of you is the con-artist version of this pattern. The ask must be a real, current need.
+- **Asking for more than you have.** If the door the machine hit is one *you* can't open either, the honest answer is a hard no. The machine must never climb higher than the person it works for.
+
+</div>
+
+<div data-lvl="human">
+
+- **Upfront everything.** Requesting the union of all capabilities at connect time is the pattern's antithesis. If the grant screen lists scopes the task hasn't reached yet, they don't belong there.
+- **The unexplained interrupt.** "Inbox Assistant wants more access. Allow?". An escalation with no capability named and no reason given is worse than the upfront list, because now it's also a surprise.
+- **Nagging.** Re-prompting for the same denied scope every few minutes trains users to allow it just to make the prompt stop. A denial should stick for the session unless the user re-engages.
+- **Defaulting to always.** Pre-selecting or visually favoring "allow always" turns a momentary need into a permanent grant by inertia. Make "once" the easy answer and "always" the deliberate one.
+- **Escalation as a dark pattern.** Manufacturing a fake "wall" to extract a broad grant mid-task is the abusive version of this pattern. The request must reflect a real, current need.
+- **Escalating beyond the principal.** If the capability the agent hits a wall on exceeds what the *user* may do, the honest response is a hard denial, not an "allow". An agent must never escalate past the authority of the person it acts for.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Upfront everything.** The union-of-all-capabilities connect screen is the pattern's antithesis; every scope listed before the task reaches it is a decision extracted without its context, and the presence of unreached scopes is the audit test.
+- **The unexplained interrupt.** An escalation naming no capability and binding to no action combines the abstract grant's illegibility with an interruption's urgency, strictly worse than the upfront list, since urgency further degrades decision quality.
+- **Nagging.** Re-prompting a denied scope exploits prompt fatigue as an extraction mechanism; the equilibrium of that repeated game is unconditional allowance. Denials must persist for the session absent user re-engagement.
+- **Defaulting to always.** Pre-selecting or visually privileging the durable grant converts inertia into standing authority. The breadth default must sit at the narrow end; anything else is choice architecture working against the principal.
+- **Escalation as a dark pattern.** A manufactured wall (a fake blockage staged to extract a broad grant mid-task) weaponizes exactly the contextual trust this pattern cultivates; the reason's falsifiability (its binding to a checkable task state) is the defense.
+- **Escalating beyond the principal.** A capability exceeding the *user's own* authority must produce a hard denial, not an allow option: effective agent authority is bounded by the intersection of its grant and its principal's rights, and an escalation path that can breach that bound is a confused-deputy vector, not a UX choice.
+
+</div>
+
+## Code
+
+```tsx
+import { ProgressiveScope } from "@agentconsent/react";
+import "@agentconsent/react/theme.css";
+
+<ProgressiveScope.Root
+  access="write"                       // re-weights the request badge + accent
+  onAllowOnce={() => allowForThisAction()}
+  onAllowAlways={() => addToStandingGrant()}
+  onDeny={() => refuse()}
+>
+  <ProgressiveScope.Header>
+    <ProgressiveScope.Icon>✦</ProgressiveScope.Icon>
+    <ProgressiveScope.Title>
+      Inbox Assistant needs to send email
+    </ProgressiveScope.Title>
+  </ProgressiveScope.Header>
+
+  <ProgressiveScope.Reason>
+    To reply to the vendor, it needs to send email. So far it has only drafted.
+  </ProgressiveScope.Reason>
+
+  <ProgressiveScope.Request
+    label="Send email on your behalf"
+    description="Compose and send new email as you, in this thread."
+  />
+
+  <ProgressiveScope.Current>
+    Inbox Assistant can already read this thread.
+  </ProgressiveScope.Current>
+
+  <ProgressiveScope.Actions>
+    <ProgressiveScope.Deny>Not now</ProgressiveScope.Deny>
+    <ProgressiveScope.AllowAlways>Always allow</ProgressiveScope.AllowAlways>
+    <ProgressiveScope.AllowOnce>Just this once</ProgressiveScope.AllowOnce>
+  </ProgressiveScope.Actions>
+</ProgressiveScope.Root>
+```
+
+Pass `asModal` with `open`/`onOpenChange` to render as a focus-trapped alert dialog when the escalation must block the task. The once/always split here is the in-context minimum; the full duration ladder ("for this task", "for an hour") is the Consent Memory pattern. All parts are unstyled primitives with `data-acp` attributes; skip `theme.css` and style them yourself, or override the `--acp-*` tokens to retheme.

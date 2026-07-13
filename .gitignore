@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.next/
+out/
+coverage/
+test-results/
+playwright-report/
+*.tsbuildinfo
+.DS_Store
+.env*.local
+.tokensave/
+# agent workflow memory — never commit publicly
+private/
+CLAUDE.md

@@ -1,0 +1,295 @@
+import { BatchApprovalDemo } from "@/components/batch-approval-demo";
+import { BatchApprovalAnatomy } from "@/components/batch-approval-anatomy";
+
+<p data-lvl="caveman" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">When the machine brings a pile of work, don't make the human say yes to each piece through a tiny door. The hand goes numb and starts stamping. Let the safe pieces pass in one wave, and drag the dangerous piece out of the pile so it must be judged alone.</p>
+
+<p data-lvl="human" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">When an agent proposes a run of actions, approving them one modal at a time breeds fatigue, and fatigue breeds rubber-stamping. Give the queue triage tools, but keep the highest-stakes items out of the group pass.</p>
+
+<p data-lvl="academic" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Reconcile triage throughput with per-item scrutiny: give the queue bulk-selection affordances for homogeneous, low-stakes items while structurally excluding flagged items from every group operation. So the sweep is safe by construction, not by vigilance.</p>
+
+## Problem
+
+<div data-lvl="caveman">
+
+A machine that works in bursts brings work in bursts: six letters to send, eight skins to file, one whole pile to burn. Show these as six separate "Are you sure?" boxes and the human does what every human does with a repeating gate, finds the beat and clicks to it. The fifth box gets the same half-second glance as the first. Which means the one box that *mattered* got a half-second glance too.
+
+The lazy fix (one big "Approve all") cures the numbness by removing the looking. Now the burn-the-pile rides along with the letters, approved by a click that was really aimed at the fifteen harmless things above it. The true problem: **going fast and looking hard pull in opposite directions**, and a good pile must serve both, quick pass for the obvious, hard stop for the dangerous.
+
+</div>
+
+<div data-lvl="human">
+
+An agent that works in bursts produces work in bursts: six replies to send, eight receipts to file, a thread to delete. Present these as six separate "Are you sure?" modals and the user does what anyone does with a repetitive gate, finds the rhythm and clicks through it. The fifth confirmation gets the same half-second glance as the first, which means the one that actually mattered got a half-second glance too.
+
+The naive fix (a single "Approve all") solves the fatigue by removing the review entirely. Now the destructive item rides along with the routine ones, approved by a click that was really aimed at the fifteen emails above it. The real problem is that **triage and scrutiny pull in opposite directions**, and a good queue has to serve both: fast disposal of the obvious, a hard stop on the consequential.
+
+</div>
+
+<div data-lvl="academic">
+
+Bursty agents produce review load in bursts, and both naive responses fail in complementary ways. Serial modals amortize attention across repetitions: review degrades into rhythm, and per-item scrutiny converges on the scrutiny given to the least interesting item, so the destructive proposal receives the routine one's half-second glance. Blanket approval eliminates the fatigue by eliminating the review; the destructive item inherits approval aimed at the fifteen routine items above it, a scope error in what the user's click referred to. The underlying tension is structural: triage optimizes for throughput over a mostly-homogeneous distribution, scrutiny for depth on its tail, and a single uniform mechanism cannot serve both. This is the queue-scale expression of the proportional-friction principle, where [Irreversibility Gate](/patterns/irreversibility-gate/) is its per-item expression. Any design that resolves the tension by relying on the user to *notice* the tail item (rather than by making the tail item structurally unsweepable) has just reintroduced the vigilance dependence the queue was supposed to remove.
+
+</div>
+
+## Solution
+
+<div data-lvl="caveman">
+
+Let the human pick many pieces at once, but make the pile itself *refuse* to hand over the dangerous piece. Safe pieces get a checkbox and can pass in one wave; dangerous pieces are marked, left out of "select all," and can only be settled on their own row.
+
+- **Wave the alike through together.** Pick many routine pieces, approve or reject them in one move, with a running count of exactly how many the move will touch.
+- **Fence the dangerous.** A piece marked *look at me alone* can never be picked in bulk. "Select all" reaches every other piece but not this one, safe because of how the pile is *built*, not because the human remembered to uncheck.
+- **Keep a door on every row.** Every piece, marked or not, has its own approve and reject, so one decision never requires fiddling with the big selection.
+
+</div>
+
+<div data-lvl="human">
+
+Make the queue selectable, and make selection *refuse* the items that need a person. Routine actions get a checkbox and can be swept together; high-stakes actions are flagged, excluded from select-all, and can only be resolved on their own row.
+
+- **Batch what's alike.** Select many routine items and approve or reject them in one action, with a live count of exactly how many the action will touch.
+- **Fence what's dangerous.** An item marked *review individually* is never selectable in bulk. "Select all" reaches every other item but not this one, so the group pass is safe by construction, not by the user remembering to deselect it.
+- **Keep a per-row escape hatch.** Every item, flagged or not, has its own approve and reject, so a single decision never requires touching the selection.
+
+</div>
+
+<div data-lvl="academic">
+
+Partition the queue by stakes and give each partition the mechanism it needs, with the partition enforced in the selection model, not the styling:
+
+- **Bulk operations over the routine partition.** Multi-select with batch approve/reject, and a live count binding every group action to its exact cardinality. The user approves a known *n*, never "whatever happens to be selected."
+- **Structural exclusion for the flagged partition.** *Review individually* items are not selectable at all: select-all's domain simply does not contain them. This is safety by construction rather than by attention. The property holds under fatigue, distraction, and automation bias, which are precisely the conditions the queue exists in. A disabled checkbox would be a weaker claim (a control that exists but resists); no checkbox is the honest model (the operation is undefined on this item).
+- **Per-row resolution everywhere.** Every item retains its own approve/reject, so individual decisions are orthogonal to selection state, and the flagged item's only path to resolution is the deliberate, single-item one.
+
+The flag's assignment policy is the pattern's open edge: it should key on the same severity grading the [Irreversibility Gate](/patterns/irreversibility-gate/) uses, and a flagged item's individual resolution can compose with that gate for the highest tier.
+
+</div>
+
+<BatchApprovalDemo />
+
+<div data-lvl="caveman">
+
+The pile above is the real `BatchApproval` component from `@agentconsent/react`. Hit select-all and sweep the routine pieces, then notice the two marked pieces sitting outside the wave. They only clear when you judge them one by one.
+
+</div>
+
+<div data-lvl="human">
+
+The demo is the `BatchApproval` component from `@agentconsent/react`. Use select-all to sweep the routine items, then notice the two flagged actions sit out of the batch entirely, they'll only clear when you decide them one by one.
+
+</div>
+
+<div data-lvl="academic">
+
+The demo is the `BatchApproval` component from `@agentconsent/react`. Select-all sweeps the routine items while the two flagged actions remain outside the batch's domain entirely, observable directly: the count never includes them, and only per-row decisions clear them.
+
+</div>
+
+## Anatomy
+
+<BatchApprovalAnatomy />
+
+## When to use it
+
+<div data-lvl="caveman">
+
+- **When the machine brings work in piles** (letters to send, files to move, records to change), all arriving together for one look-over.
+- **Piles that are mostly alike with a few odd ones.** The wave earns its keep when most pieces are safe twins; the mark exists for the rare piece that isn't.
+- **Before the acts happen, not after.** This is the gate *in front of* execution. Once the acts have run, the surface you want is the [Action Receipt](/patterns/action-receipt/). The diary, not the gate.
+
+</div>
+
+<div data-lvl="human">
+
+- **Bursty agent output**. A review step over a run of proposed actions (emails to send, files to move, records to update) that arrive together.
+- **Homogeneous queues with a few outliers.** Batch tools earn their keep when most items are alike and safe; the flag exists for the rare item that isn't.
+- **After the fact is too late.** Use this as the gate *before* execution. Once actions have run, the surface you want is an [Action Receipt](/patterns/action-receipt/), not an approval queue.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Bursty proposal streams**. A review checkpoint over a run of actions that arrive as a set and are naturally evaluated as one. The queue is the unit at which agent output actually presents itself; per-item modals impose a serial interface on parallel work.
+- **Homogeneous-with-outliers distributions.** Batch affordances pay for themselves in proportion to the routine mass; the flag pays for itself in proportion to the tail's consequence. Queues that are all tail or all mass each degenerate (see below).
+- **Pre-execution only.** This is a consent gate, so it must sit before effects; the post-hoc record of what ran is [Action Receipt](/patterns/action-receipt/). Blurring the two produces a queue that "approves" faits accomplis, record-keeping cosplaying as consent.
+
+</div>
+
+## When not to use it
+
+<div data-lvl="caveman">
+
+- **One piece.** One proposed act is an [Action Preview](/patterns/action-preview/) or an [Irreversibility Gate](/patterns/irreversibility-gate/), not a pile. Pile-tools on a pile of one are clutter.
+- **A pile where every piece is dangerous.** Mark them all and "select all" becomes a dead button. Drop the pile-tools and show a row of single gates instead.
+- **The same yes, every day, forever.** If the human waves the same *kind* of pile through every session, the fix is a standing rule ([Consent Memory](/patterns/consent-memory/) or an [Authority Boundary](/patterns/authority-boundary/)), not a pile cleared by hand each morning.
+
+</div>
+
+<div data-lvl="human">
+
+- **A single action.** One proposed action is an [Action Preview](/patterns/action-preview/) or an [Irreversibility Gate](/patterns/irreversibility-gate/), not a queue, batch affordances on a queue of one are just clutter.
+- **Uniformly high-stakes queues.** If every item deserves individual review, flagging all of them turns select-all into dead UI. Drop the batch controls and present a list of individual gates instead.
+- **Standing, repeated approvals.** If the user approves the same *kind* of action every session, the fix is a durable rule ([Consent Memory](/patterns/consent-memory/) or an [Authority Boundary](/patterns/authority-boundary/)), not a queue they clear by hand each time.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Cardinality one.** A single proposal is [Action Preview](/patterns/action-preview/) or [Irreversibility Gate](/patterns/irreversibility-gate/) territory; batch chrome on a singleton adds interaction surface with zero triage value.
+- **Uniformly high-stakes queues.** If the flag applies to every item, the selectable set is empty and the batch layer is dead UI. The degenerate case where the partition collapses. Render individual gates; pretending a queue of exceptions is a queue of routine is how exceptions get routinized.
+- **Recurring approval classes.** A queue the user clears identically every session is a standing policy the interface keeps re-litigating by hand; the durable instrument is [Consent Memory](/patterns/consent-memory/) or an [Authority Boundary](/patterns/authority-boundary/). Repeated manual sweeps are also the ideal habituation trainer. The failure this pattern exists to interrupt, rebuilt at session scale.
+
+</div>
+
+## Real-world examples
+
+<div data-lvl="caveman">
+
+- **Pull request review.** The classic pile: a list of every change, a way to walk file by file, and one approval covering the set, with "request changes" as the per-piece door. Every coding machine that opens PRs inherits this pile as its checkpoint.
+- **Coding machines showing their edits.** Claude Code and Cursor lay out a run of proposed file changes as one reviewable set, take all, or open each and judge it. Shell commands stay *outside* the blanket yes: the fence-the-dangerous rule, already shipped.
+- **Deploy gates and grouped updates.** GitHub can hold a deploy until a human approves everything it ships as one gate; Dependabot bundles a pile of routine version bumps into one reviewable lump instead of twenty separate asks.
+
+</div>
+
+<div data-lvl="human">
+
+- **Pull request review.** The canonical batch: an itemized diff, per-file navigation, and one approval that covers the set, with "request changes" as the per-item escape hatch. Every coding agent that opens PRs inherits this surface as its review step.
+- **Coding-agent edit review.** Claude Code and Cursor present a run of proposed file edits as a reviewable set, accept all, or open and decide each diff individually. Shell commands stay outside the blanket accept, which is the fence-the-dangerous-item rule in shipped form.
+- **Deploy approvals and grouped updates.** GitHub Actions environment protection holds a deployment until a human approves everything it ships as one gate; Dependabot's grouped updates turn a pile of routine version bumps into a single reviewable unit instead of twenty separate approvals.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Pull request review.** The most battle-tested batch-consent surface in software: itemized diff, per-file traversal, one approval over the set, per-item escape via "request changes." Its known pathology is equally instructive, LGTM culture is approval fatigue at queue scale, evidence that batch review degrades without a fencing mechanism for the items that deserved more than the sweep.
+- **Coding-agent edit review.** Claude Code and Cursor present edit runs as reviewable sets with accept-all, while shell commands remain outside the blanket accept. A shipped instance of partitioning the queue by consequence class and giving each partition a different consent mechanism.
+- **Deploy approvals and grouped updates.** GitHub Actions environment protection makes the deployment the reviewable unit (one gate covering a coherent set of effects); Dependabot's grouped updates do the converse, aggregating routine bumps into a single decision. Both are batch consent tuned to the actual granularity of user judgment rather than the granularity of the underlying events.
+
+</div>
+
+*Annotated screenshots of these flows are being collected. Products are credited, annotations follow the site-wide callout conventions, and any screenshot is removed on request. See [About](/about/).*
+
+## Accessibility
+
+<div data-lvl="caveman">
+
+- The pile is a labeled group, so a screen reader announces its size ("Agent proposed 6 actions") on the way in.
+- **The select-all box tells the truth about partial picks.** Half-picked shows as half-picked, and it only says "all" when every pickable piece truly is. It never overstates the wave.
+- **The count speaks without grabbing.** Picking or clearing pieces announces the new number politely, so a non-seeing user always knows how big the next wave will be.
+- **Marked pieces have no checkbox at all.** Not a greyed-out one a screen reader might still offer, none. The wave *cannot* reach them, in the markup itself.
+- The wave-buttons say when they're dead (nothing picked) in a way machines can hear, and every row's own approve/reject is a plain labeled button.
+- The danger-mark is **words** ("Review individually"), never just a color or a border.
+
+</div>
+
+<div data-lvl="human">
+
+- The queue is a `role="group"` labelled by its title, so screen readers announce the scope ("Agent proposed 6 actions") on entry.
+- **Select-all reflects mixed state.** The checkbox is `indeterminate` when some, but not all, selectable items are chosen, and `checked` only when the whole eligible set is, so its state never overstates the selection.
+- **The selection count is a polite live region.** Selecting or clearing items announces the new count without stealing focus, so a non-visual user always knows the blast radius of the next batch action.
+- **Flagged items are excluded structurally, not visually.** A must-review item renders no selection checkbox at all (not a styled-disabled control that a screen reader might still offer), and its title is plain text, not a checkbox label.
+- Batch buttons expose their empty-selection state with a real `disabled` attribute plus `aria-disabled`, and every row's own approve/reject is a standard, individually labelled button.
+- The flag is carried as **text** ("Review individually"), never color or a border alone.
+
+</div>
+
+<div data-lvl="academic">
+
+- The queue is a `role="group"` named by its title: scope ("Agent proposed 6 actions") enters the accessible name, so the review's cardinality is announced before any control is reached.
+- **Select-all is tri-state and honest**: `indeterminate` for partial selection, `checked` only when the entire eligible set is chosen. The control's state is a claim about the sweep's extent, and an overstated claim here is an overstated approval later.
+- **The selection count is a polite live region**, updates announce without focus theft, so the blast radius of the next batch action is continuously available non-visually. Count-legibility is the batch analogue of Action Preview's verbatim parameters.
+- **Flagged items are excluded at the markup level**: no selection checkbox exists, rather than a disabled one. The distinction is load-bearing for AT. A disabled control is announced as an inoperable thing that exists, inviting the inference that it might become operable; an absent control makes bulk selection undefined on the item, which is the true semantics.
+- Batch buttons expose empty-selection via real `disabled` plus `aria-disabled`; per-row approve/reject are standard, individually named buttons, so single-item resolution is fully operable without the selection model.
+- The flag rides in **text** ("Review individually"), never color or border alone. The partition the whole pattern turns on must survive every rendering channel (WCAG 1.4.1).
+
+</div>
+
+## Anti-patterns
+
+<div data-lvl="caveman">
+
+- **"Approve all" that truly means all.** A blanket yes that reaches the burn-the-pile is the very thing this pattern kills. If select-all can sweep the piece you'd weep over, the pile is a numbness machine.
+- **Un-pick-to-be-safe.** Making the dangerous piece *picked by default* and trusting the human to uncheck it flips the safe direction backwards. Fence it out; don't bet on the uncheck.
+- **Hiding the number.** A wave-button that won't say how many pieces it touches asks for a yes to an unknown. Show the number. Keep it fresh.
+- **Death by a thousand little boxes.** The opposite sin (forcing a separate yes for every truly harmless, walk-back-able piece) trains the exact numb click the fence was trying to save your eyes for.
+- **The pile as a dump.** If everything lands in the pile, nothing in it gets read. Send the every-day repeats to a standing rule; keep the pile for the truly one-off.
+
+</div>
+
+<div data-lvl="human">
+
+- **"Approve all" that means all.** A blanket approve that reaches the destructive item is the pattern's whole reason to exist. If select-all can sweep the thing you'd regret, the queue is a fatigue machine.
+- **Deselect-to-be-safe.** Making the dangerous item *selected by default* and relying on the user to uncheck it inverts the safe default. Flag it out of the batch instead.
+- **Hiding the count.** A batch action that won't say how many items it will touch asks the user to approve an unknown number. Always show the number, and update it live.
+- **Fatigue by a thousand modals.** The opposite failure (forcing individual confirmation on genuinely routine, reversible items) trains the exact click-through reflex the flag is trying to preserve scrutiny for.
+- **A queue as a dumping ground.** If everything lands here, nothing gets read. Route standing, repeatable approvals to a durable rule and keep the queue for the genuinely one-off.
+
+</div>
+
+<div data-lvl="academic">
+
+- **"Approve all" that means all.** A blanket operation whose domain includes the destructive item reduces the queue to a fatigue amplifier: it aggregates exactly the approvals that shouldn't aggregate. If select-all can reach the regrettable item, the design has delegated safety back to vigilance.
+- **Deselect-to-be-safe.** Default-selecting the dangerous item and relying on the user to opt it out inverts the safe default and monetizes inattention; under fatigue, defaults *are* outcomes. Exclusion must be the item's structural state, not the user's achievement.
+- **Hiding the count.** A batch action without a live cardinality asks for approval over an unbound variable. The queue-level version of approving a category instead of a token. The count is the group action's minimum legible referent.
+- **Fatigue by a thousand modals.** Per-item confirmation of genuinely routine, reversible items trains the click-through reflex and spends the vigilance the flagged item will need. The two failure modes are one budget, and this is the overdraft.
+- **The queue as dumping ground.** Routing standing, repeatable approval classes through the queue converts policy into manual labor and habituation into policy. Recurring classes belong in durable rules ([Consent Memory](/patterns/consent-memory/), [Authority Boundary](/patterns/authority-boundary/)); the queue's value depends on its contents being genuinely undecided.
+
+</div>
+
+## Code
+
+```tsx
+import { BatchApproval } from "@agentconsent/react";
+import "@agentconsent/react/theme.css";
+
+// Declare the queue once, requiresReview items are fenced out of bulk.
+const items = [
+  { id: "reply-dana" },
+  { id: "archive-news" },
+  { id: "delete-thread", requiresReview: true },
+];
+
+<BatchApproval.Root
+  items={items}
+  value={selected}
+  onValueChange={setSelected}
+  onApprove={(ids) => execute(ids)}
+  onReject={(ids) => dismiss(ids)}
+>
+  <BatchApproval.Header>
+    <BatchApproval.Icon>▤</BatchApproval.Icon>
+    <BatchApproval.Title>Agent proposed 3 actions</BatchApproval.Title>
+  </BatchApproval.Header>
+
+  <BatchApproval.Toolbar>
+    <BatchApproval.SelectAll />
+    <BatchApproval.SelectionCount>
+      {({ selectedCount, selectableCount }) =>
+        `${selectedCount} of ${selectableCount} selected`}
+    </BatchApproval.SelectionCount>
+    <BatchApproval.BatchReject>Reject selected</BatchApproval.BatchReject>
+    <BatchApproval.BatchApprove>Approve selected</BatchApproval.BatchApprove>
+  </BatchApproval.Toolbar>
+
+  <BatchApproval.List>
+    {actions.map((action) => (
+      <BatchApproval.Item
+        key={action.id}
+        id={action.id}
+        title={action.title}
+        detail={action.detail}
+      >
+        <BatchApproval.ItemReject>Reject</BatchApproval.ItemReject>
+        <BatchApproval.ItemApprove>Approve</BatchApproval.ItemApprove>
+      </BatchApproval.Item>
+    ))}
+  </BatchApproval.List>
+</BatchApproval.Root>
+```
+
+The root's `items` prop is the single source of truth for what's selectable:
+mark an item `requiresReview` and it drops out of select-all and the batch
+actions automatically. Approving or rejecting ids clears them from the
+selection, so a controlled queue can remove the resolved rows on the callback.
+All parts are unstyled primitives with `data-acp` attributes; skip `theme.css`
+and style them yourself, or override the `--acp-*` tokens to retheme.

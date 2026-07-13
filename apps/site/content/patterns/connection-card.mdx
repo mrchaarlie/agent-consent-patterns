@@ -1,0 +1,271 @@
+import { ConnectionCardDemo } from "@/components/connection-card-demo";
+import { ConnectionCardAnatomy } from "@/components/connection-card-anatomy";
+
+<p data-lvl="caveman" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">You gave the machine keys once. Don't let the keys go invisible. Keep one card that shows: what it holds, when it last used it, and a button to take it back.</p>
+
+<p data-lvl="human" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Keep a standing grant visible after the moment of consent: the tile where a connected agent shows what it can do, when it last did it, and how to pause or revoke it.</p>
+
+<p data-lvl="academic" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Give standing authority a persistent, inspectable representation: a per-connection surface exposing current capability state, lifecycle status, recency of exercise, and reversal affordances. This is the precondition for grants remaining governable after the consent moment has passed.</p>
+
+## Problem
+
+<div data-lvl="caveman">
+
+A yes fades fast. You read the key screen once, then never look again, and the connection sinks into a settings page nobody visits. Months later it can still write in your mail, for a job that ended in spring, and nothing warns you it's still live, still working, still open if that account gets breached. The danger isn't the key you gave. It's the key you forgot. You can't rethink what you can't see, or take back what you don't remember giving.
+
+</div>
+
+<div data-lvl="human">
+
+Consent has a half-life. The Scoped Grant screen gets a careful read at connect time and is never seen again. The connection recedes into a settings page nobody visits, quietly retaining capabilities the user has forgotten about. Months later the agent still holds write access to a mailbox for a task that ended in March. Nothing surfaces that the grant is still live, still in use, still exposed if the integration is breached. The dangerous state isn't the grant; it's the grant that has gone invisible. Users can't reconsider what they can't see, and they can't revoke what they've forgotten exists.
+
+</div>
+
+<div data-lvl="academic">
+
+Consent decays while authority persists: that asymmetry is the problem. The grant screen is evaluated once, at connect time; the authority it confers is durable, exercised indefinitely, and (absent explicit expiry) outlives both the task and the user's memory of granting it. The result is a growing inventory of standing grants with no active representation: write access to a mailbox retained months after the motivating task ended, live attack surface if the integration is compromised, and no signal distinguishing the grant still earning its keep from the one that is pure latent risk. This is the governance gap in the delegation lifecycle: [Scoped Grant](/patterns/scoped-grant/) handles acquisition and [Action Receipt](/patterns/action-receipt/) handles the record of exercise, but between them standing authority needs a *present-tense* representation. A user cannot reconsider what has no surface, and revocation-in-principle (a right buried in an OAuth record) is not revocation-in-practice (an affordance one glance away). Invisible grants also defeat the expiry and data-minimization instincts users do have, because the reconsideration never triggers when nothing prompts it.
+
+</div>
+
+## Solution
+
+<div data-lvl="caveman">
+
+Give every standing key-gift a home you can see: one card per connection that answers the questions you'd ask, if something reminded you to.
+
+- **What keys does it hold now?** Each one listed, marked look, change, or destroy. No digging.
+- **Is it alive?** Working, paused, needs a fresh handshake, or expired, in plain words.
+- **When did it last act?** "Used 2 hours ago, sent 1 letter." This line catches a forgotten key still being turned. It links to the [Action Receipt](/patterns/action-receipt/) trail.
+- **How do I stop it?** A pause button (soft stop, undoable) and a revoke button (takes the keys back). Always one reach away.
+
+</div>
+
+<div data-lvl="human">
+
+Give every standing grant a durable home that answers the questions a user would ask if they remembered to: what can this agent do, is it still active, when did it last act, and how do I stop it. The Connection Card is that surface: a settings tile per connection that shows:
+
+- **Current grant state.** The active capabilities, each with its access level, so the standing permission is legible at a glance rather than buried in an OAuth record.
+- **Status.** Active, paused, needs re-auth, or expired, as text, so a lapsed or paused connection announces itself.
+- **Recency.** When the agent last used the connection, and ideally what it did, linking forward to the [Action Receipt](/patterns/action-receipt/).
+- **Reversal.** Pause (a reversible stop) and revoke (disconnect), so backing out is always one affordance away.
+
+</div>
+
+<div data-lvl="academic">
+
+Materialize each standing grant as a durable, per-connection surface: the settings-tile answer to the four questions governance requires.
+
+- **Current capability state.** The active scopes, each with its access level, rendered as an enumerable list, so the standing permission is legible at a glance rather than reconstructible from an authorization record. This is the same read/write/delete taxonomy the grant was made under; the representation should not degrade between consent and review.
+- **Lifecycle status.** Active, paused, needs re-auth, or expired, as text. Status is where lapses become visible instead of manifesting as silent mid-task failures.
+- **Recency of exercise.** When the connection was last used, and what it did. Last-used is the single highest-value datum on the card: it is what discriminates the earning grant from the latent one, and it links forward to the full exercise record in [Action Receipt](/patterns/action-receipt/).
+- **Reversal affordances.** Pause (reversible suspension) and revoke (termination), co-located with the state they act on. Keeping the cheap, undoable stop adjacent to the permanent one matters: a user hesitant to destroy a connection will still suspend it, and a suspended grant is a governed one.
+
+The card closes the delegation loop begun at [Scoped Grant](/patterns/scoped-grant/): acquisition, standing representation, exercise record, revocation, each phase with its own surface, none invisible.
+
+</div>
+
+<ConnectionCardDemo />
+
+<div data-lvl="caveman">
+
+The card above is the real `ConnectionCard` component from `@agentconsent/react`. Press Pause and watch the status word and the freshness line change; Revoke disconnects. This card only *shows*. You wire the buttons to your own stop-and-revoke machinery.
+
+</div>
+
+<div data-lvl="human">
+
+The demo is the `ConnectionCard` component from `@agentconsent/react`. Pause flips the status badge and the recency line; revoke disconnects. Unlike the decision-flow patterns, the card takes no approve/reject callbacks of its own. You wire its management buttons to your own handlers.
+
+</div>
+
+<div data-lvl="academic">
+
+The demo is the `ConnectionCard` component from `@agentconsent/react`. Pause flips status and recency; revoke disconnects. Architecturally the card is a display surface, not a decision flow: it declares no approve/reject semantics of its own, and its management actions are yours to wire (a consequential revoke composes naturally with the [Irreversibility Gate](/patterns/irreversibility-gate/)).
+
+</div>
+
+## Anatomy
+
+<ConnectionCardAnatomy />
+
+## When to use it
+
+<div data-lvl="caveman">
+
+- **Any long-lived key-gift** you might later want to check, pause, or take back. This card is that key-gift's face in settings.
+- **A wall of connections.** One card each, so you can sweep your eye down the wall and ask "what can still reach my stuff?"
+- **When a connection changes underneath you.** A key expires, a handshake goes stale. That must show up as words on the card, not as the machine mysteriously failing next Tuesday.
+
+</div>
+
+<div data-lvl="human">
+
+- **Any standing agent connection** the user might later want to review, pause, or revoke: the settings-page representation of a grant made through Scoped Grant.
+- **A connections list**, where each integration is one card and the set is scannable for "what does this agent still have access to?"
+- **Surfacing lifecycle changes.** An expired token or a scope that now needs re-consent should show up here as a status, not as a silent failure the user discovers when the agent stops working.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Every standing connection, unconditionally.** If a grant persists beyond the session, it needs a present-tense representation; the card is the settings-page half of the contract [Scoped Grant](/patterns/scoped-grant/) opens.
+- **The connections list as a permission inventory.** One card per integration makes the set scannable for the aggregate question, "what can still reach my data?", which is the question breach response, offboarding, and periodic hygiene all reduce to.
+- **Lifecycle-change surfacing.** Token expiry, scope changes requiring re-consent, and provider-side revocations should manifest as card status transitions, not as silent failures discovered mid-task. The card is where the connection's state machine becomes user-visible.
+
+</div>
+
+## When not to use it
+
+<div data-lvl="caveman">
+
+- **At the moment of handing over keys.** This card shows keys already given; it is not the asking screen. Asking is [Scoped Grant](/patterns/scoped-grant/); asking for one more is [Progressive Scope](/patterns/progressive-scope/).
+- **For a key that dies when the job ends.** A card says "this is standing, worth managing." A key that evaporates by itself doesn't need a house.
+- **As the diary.** The card shows *now* and the last touch, not everything the machine ever did. The full trail is the [Action Receipt](/patterns/action-receipt/).
+
+</div>
+
+<div data-lvl="human">
+
+- **At the moment of granting.** The card reflects an existing grant; it is not the consent screen. Use Scoped Grant to establish access and Progressive Scope to widen it.
+- **For one-off, session-scoped permissions** that expire when the task ends. A card implies a standing grant worth managing; a transient allowance doesn't need a home in settings.
+- **As the audit log.** The card shows *current* state and last use, not the full history of what the agent did. That record is the [Action Receipt](/patterns/action-receipt/).
+
+</div>
+
+<div data-lvl="academic">
+
+- **At acquisition time.** The card reflects authority that already exists; conflating it with the consent screen blurs the grant/review distinction both surfaces depend on. Establishment is [Scoped Grant](/patterns/scoped-grant/), widening is [Progressive Scope](/patterns/progressive-scope/).
+- **For session-scoped allowances.** A card asserts "standing, worth managing"; giving transient permissions settings representation dilutes the inventory with entries that self-expire, and the noise cost lands on the grants that do need review.
+- **As the audit log.** The card is state, not history: current capabilities plus last exercise. The append-only record of what the agent did under the grant is [Action Receipt](/patterns/action-receipt/); the card links to it rather than duplicating it.
+
+</div>
+
+## Real-world examples
+
+<div data-lvl="caveman">
+
+- **Google's "Third-party apps & services" page.** One entry per connection: what the app can reach, when you said yes, and one **Remove access** button. The closest thing already shipped to this card.
+- **GitHub's authorized applications list.** Every connected app with its powers, a revoke button, and the gold: *when it was last used*. That date is how you spot the app that no longer deserves its keys.
+- **Claude's and ChatGPT's connector pages.** Same card, new era: each connected tool listed with what it reaches and a disconnect button. The connections wall is becoming the place where agent keys get managed.
+
+</div>
+
+<div data-lvl="human">
+
+- **Google Account → "Third-party apps & services."** One entry per connection: what the app can access, when access was granted, and a single **Remove access** action. The closest shipped ancestor of this pattern, standing grants made visible and revocable in one place.
+- **GitHub's authorized applications.** Settings → Applications lists every OAuth and GitHub App with its scopes and a revoke action, plus when it was last used. The last-used date is the load-bearing detail: it's what lets a user spot the connection that no longer earns its authority.
+- **Agent-product connector settings.** Claude's and ChatGPT's connector pages carry the same anatomy into agent-native products, each connected tool or MCP server listed with what it reaches and a disconnect control. The connections list is becoming the agent era's permission manager.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Google Account → "Third-party apps & services."** The canonical shipped instance: per-connection entries with granted access, grant date, and a single **Remove access** action, standing grants centralized, inspectable, and revocable. Its main omission relative to this pattern is per-scope management: revocation is whole-connection, so the reversal granularity is coarser than the grant granularity.
+- **GitHub's authorized applications.** Scopes, revocation, and, decisively, last-used dates per application. Last-used is the recency signal that makes authority-vs-exercise divergence detectable, and GitHub surfacing it at inventory scale is the strongest shipped argument for the card's recency line.
+- **Agent-product connector settings.** Claude's and ChatGPT's connector pages reproduce the anatomy for MCP servers and tools: reach, status, disconnect. Notable because the surface is being reinvented agent-first, evidence that the connections inventory is converging on this card shape independent of the OAuth lineage.
+
+</div>
+
+*Annotated screenshots of these flows are being collected. Products are credited, annotations follow the site-wide callout conventions, and any screenshot is removed on request. See [About](/about/).*
+
+## Accessibility
+
+<div data-lvl="caveman">
+
+- The card is a real `<article>` with its own name, so a screen reader can hop card to card down the wall and hear which connection each one is.
+- The title is a plain named element, not a locked-in heading size, so the card fits into any settings page without wrecking the page's heading order.
+- **Status is words, not a colored dot**, "Needs re-auth" gets spoken; the color is decoration on top.
+- The key list is a real list with text badges, so what the machine can do is *countable* by a screen reader, not hinted by little icons.
+- Labels and their values (like "Last used" and "2 hours ago") are tied together in a definition list, so they're never read apart.
+- The buttons sit in a steady order; the dangerous revoke is set apart by more than color, position, wording, and a hook you can wire a confirmation to.
+
+</div>
+
+<div data-lvl="human">
+
+- The card is an `<article>` labeled by its title, so screen-reader users can navigate a connections list card by card and hear which connection each one is.
+- The title is a plain element with an id (not a fixed heading level), so the card slots into a settings list at whatever heading depth the surrounding page uses without breaking heading order.
+- **Status is text, not a colored dot**, "Needs re-auth" is announced; the badge color is redundant reinforcement.
+- Active capabilities are a real list, each access level rendered as a text badge, so the standing grant is enumerable by assistive tech rather than implied by iconography.
+- Recency and dates are a definition list (`<dl>`), keeping each label bound to its value.
+- Management actions are ordinary buttons in a consistent order; the destructive revoke is distinguished by more than color (position, label, and a `data-tone` hook you can pair with a confirmation).
+
+</div>
+
+<div data-lvl="academic">
+
+- The card is an `<article>` with `aria-labelledby` pointing at its title. A navigable landmark per connection, so the inventory is traversable card-by-card with each connection's identity announced on arrival.
+- The title deliberately carries an id but no fixed heading level: the card composes into host pages at whatever heading depth the surrounding hierarchy dictates, rather than imposing one and breaking document outline.
+- **Status is text before color** (WCAG 1.4.1): "Needs re-auth" is in the accessible name; the badge tint is redundant encoding. Status is exactly the information a lapsed grant depends on surfacing. It cannot ride on hue.
+- Capabilities are a semantic list with text access-level badges: the standing grant is enumerable by assistive tech, preserving in the review surface the same legibility the grant screen promised.
+- Recency metadata is a `<dl>`, binding each label to its value at the markup level, "Last used" and its timestamp can't drift apart in linearized or screen-reader order.
+- Management actions are native buttons in a stable order; the destructive revoke is differentiated by position, label, and a `data-tone` hook, multiple channels, none of them color alone, and a natural attachment point for a composed confirmation gate.
+
+</div>
+
+## Anti-patterns
+
+<div data-lvl="caveman">
+
+- **The one-way yes.** A rich asking screen at connect time, then nothing forever after, or a bare "Connected ✓" with no way to see or change what was given. The keys outlive the screen; their picture on the wall must too.
+- **Revoke hidden or missing.** If taking the keys back requires writing to support, the gift is forever in practice. The take-back button lives on the card.
+- **Status by color dot alone.** Green dot, red dot, no words, useless to anyone who can't tell them apart, vague to everyone who can.
+- **A frozen "last used."** A freshness line that never updates, or isn't there, hides the exact signal that catches a forgotten key still being turned.
+- **The silent death.** Letting a connection expire without a word, so the first you hear of it is the machine failing mid-job. Put "needs re-auth" on the card, in words.
+
+</div>
+
+<div data-lvl="human">
+
+- **The write-only grant.** Access requested through a rich consent screen, then represented afterward by nothing at all, or a bare "Connected ✓" with no way to see or change scopes. The grant outlives the screen; its representation must too.
+- **Revoke buried or absent.** If disconnecting takes a support ticket, the grant is effectively permanent. Revoke belongs on the card.
+- **Status by color alone.** A green or red dot with no words fails anyone who can't distinguish them and communicates nothing precise to anyone who can.
+- **Stale recency.** "Last used" that never updates, or is absent, hides exactly the signal that tells a user a forgotten grant is still being exercised.
+- **Silent lapse.** Letting a connection expire or fall out of authorization without ever surfacing it, so the first sign of trouble is the agent failing mid-task. Show "needs re-auth" as a status.
+
+</div>
+
+<div data-lvl="academic">
+
+- **The write-only grant.** Consent collected through a rich acquisition screen and then represented by nothing, or by an unexpandable "Connected ✓", breaks the symmetry the delegation depends on: authority that persists must remain inspectable for exactly as long as it persists. Write-only consent is how grant inventories become unauditable.
+- **Revoke buried or absent.** Revocation gated behind support tickets or navigation archaeology makes the grant permanent in practice regardless of policy; the revocation principle is only real if the affordance is co-located with the grant's representation.
+- **Status by color alone.** A chromatic dot encodes the connection's most decision-relevant bit in the channel most likely to be dropped, by color-vision deficiency, by ambient conditions, by assistive tech. WCAG 1.4.1 aside, it is simply an unreliable transport for load-bearing state.
+- **Stale recency.** A last-used line that never updates is worse than none: it asserts dormancy falsely, suppressing exactly the reconsideration signal the card exists to deliver. Recency must be wired to real exercise data or omitted honestly.
+- **Silent lapse.** Expiry or de-authorization that surfaces only as downstream task failure converts a lifecycle event into an incident. The connection's state machine must be user-visible; "needs re-auth" as a text status is the minimum honest rendering.
+
+</div>
+
+## Code
+
+```tsx
+import { ConnectionCard } from "@agentconsent/react";
+import "@agentconsent/react/theme.css";
+
+<ConnectionCard.Root status="active">
+  <ConnectionCard.Header>
+    <ConnectionCard.Icon>✉</ConnectionCard.Icon>
+    <ConnectionCard.Title>Inbox Assistant → Gmail</ConnectionCard.Title>
+    <ConnectionCard.Status />
+  </ConnectionCard.Header>
+
+  <ConnectionCard.Scopes>
+    <ConnectionCard.Scope access="read">Read “Board 2026” label</ConnectionCard.Scope>
+    <ConnectionCard.Scope access="write">Send replies</ConnectionCard.Scope>
+  </ConnectionCard.Scopes>
+
+  <ConnectionCard.Meta>
+    <ConnectionCard.MetaItem label="Last used">
+      2 hours ago, sent 1 reply
+    </ConnectionCard.MetaItem>
+    <ConnectionCard.MetaItem label="Connected">Mar 3, 2026</ConnectionCard.MetaItem>
+  </ConnectionCard.Meta>
+
+  <ConnectionCard.Actions>
+    <ConnectionCard.Action onClick={openScopeManager}>Manage</ConnectionCard.Action>
+    <ConnectionCard.Action onClick={pause}>Pause</ConnectionCard.Action>
+    <ConnectionCard.Action tone="danger" onClick={revoke}>Revoke</ConnectionCard.Action>
+  </ConnectionCard.Actions>
+</ConnectionCard.Root>
+```
+
+`Status` renders the label for the `status` prop by default (`active`, `paused`, `needs-reauth`, `expired`); pass children to override the wording. This is a display surface, so the management buttons are yours to wire. A consequential revoke is a natural place to compose the Irreversibility Gate. All parts are unstyled primitives with `data-acp` attributes; skip `theme.css` and style them yourself, or override the `--acp-*` tokens to retheme.

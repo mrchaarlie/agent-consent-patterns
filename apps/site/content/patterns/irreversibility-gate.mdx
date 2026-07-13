@@ -1,0 +1,283 @@
+import { IrreversibilityGateDemo } from "@/components/irreversibility-gate-demo";
+import { IrreversibilityGateAnatomy } from "@/components/irreversibility-gate-anatomy";
+
+<p data-lvl="caveman" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Small door for small things, heavy door for forever things. Moving a rock: one push. Burning the food store: you must stop, look, and say the burning-words out loud. No two doors should feel the same when the danger is not the same.</p>
+
+<p data-lvl="human" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Weight the confirmation to the consequence. A reversible action should cost a click; an irreversible one should cost a deliberate, legible gesture, and nothing in between should feel the same.</p>
+
+<p data-lvl="academic" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Make confirmation cost a monotonic function of recovery cost: grade actions by reversibility, scale the gate's demand from a click to an enumerated, typed commitment, and preserve the gradient, because friction that doesn't vary carries no information.</p>
+
+## Problem
+
+<div data-lvl="caveman">
+
+Most tools guard everything with the same little fence: one box, one "Are you sure?", one OK. When every act costs the same click, the click stops meaning anything. Your hands learn the beat (box, click, done) and they play it just as fast for "burn 1,240 files forever" as for "put one letter in a drawer."
+
+The same-everywhere fence *trained* you to hop it at the exact moment it was built to stop you. Machines make this worse: they bring acts in piles, fast, and a person stamping a pile has no built-in place where the forever-act stands up and says LOOK AT ME.
+
+</div>
+
+<div data-lvl="human">
+
+Most products confirm everything the same way: one modal, one "Are you sure?", one OK button. When every action carries identical friction, the friction stops meaning anything. Users learn the rhythm (modal, click, done) and apply it just as fast to "delete 1,240 files forever" as to "archive one draft." The uniform gate trained them to click through the exact moment it was supposed to stop them. Agents make this worse: they propose actions in batches, at machine speed, and a user rubber-stamping a queue has no built-in pause where the irreversible one stands out.
+
+</div>
+
+<div data-lvl="academic">
+
+Uniform confirmation is an information-theoretic failure before it is a UX one: friction is a signal, and a signal with no variance carries no information. When archive-draft and delete-forever cost the same modal and the same click, the gate's cost cannot function as a consequence estimate, so users compile the interaction into motor memory (modal, click, done) and habituation generalizes across stakes precisely because the interface gave no feature to discriminate on. The uniform gate doesn't merely fail to stop the dangerous click; it *trains* it. Agency raises the stakes on both axes: agents propose actions in volume (more repetitions to habituate on) and with inferred targets (more chances the destructive item is wrong), while the machine-speed queue removes the natural pauses in which an anomaly might have registered. A related failure hides in the taxonomy itself: products grade gates by *importance* (an emotional register) when the operative variable is *recoverability*. An important-but-undoable action needs less gate than a trivial-but-permanent one.
+
+</div>
+
+## Solution
+
+<div data-lvl="caveman">
+
+Make the fence's height match the fall. Sort acts by how hard they are to un-do, and let that sort decide what the gate looks like and what it demands:
+
+- **Can walk it back**, one click. The fence is mostly there to tell you, not stop you.
+- **Can rescue it**, one click, but the gate *shows you the rope*: "there is an undo window," "the trash can be dug out." You act knowing the net is there.
+- **Gone forever**. The button turns dangerous-colored, the gate lists exactly what dies, and the act stays locked until you *type the confirm word with your own hands*. Typing cannot happen by reflex. That is the point.
+
+</div>
+
+<div data-lvl="human">
+
+Make friction a function of consequence. Grade actions by how hard they are to undo, and let that grade drive both how the gate looks and what it asks of the user:
+
+- **Reversible**, confirm in a single click. The action can be walked back, so the gate mostly exists to inform.
+- **Undoable**, confirm in a click, but advertise the recovery path (an undo window, a trash that can be restored) so the user knows the safety net is there.
+- **Irreversible**. The confirm turns destructive, the specific consequences are enumerated, and the action stays locked behind a deliberate gesture: typing the confirm phrase.
+
+</div>
+
+<div data-lvl="academic">
+
+Define severity as a reversibility grade and make every property of the gate a function of it:
+
+- **Reversible.** Single-click confirm; the gate's role is informational. Spending deliberation friction here would tax the vigilance budget the higher tiers depend on.
+- **Undoable.** Single-click confirm that *advertises the recovery path* (undo window, restorable trash). Disclosing the safety net matters twice over: it calibrates the user's risk model, and it keeps the tier legibly distinct from irreversible. An undoable action dressed in irreversible language is consequence inflation.
+- **Irreversible.** Destructive-weighted confirm, consequences enumerated as specific facts (counts, sizes, what has no backup), and commitment locked behind a typed phrase. Type-to-confirm works because it is *cognitively* expensive rather than merely slow: producing a phrase can't be compiled into the motor rhythm that click-through habituation runs on, so it forcibly re-engages the deliberative system exactly at the tier where a misfire is unrecoverable.
+
+The gradient is the mechanism, not the tiers per se: each step up must be discriminable from the one below, or habituation resumes. Severity classification should key on recovery cost: the one variable the user cannot fix after the fact. Note the composition: [Action Preview](/patterns/action-preview/) supplies *what* the action is; this gate scales *what commitment costs*. And the gate is the fallback, not the ideal. An actual undo window dominates a heavier confirm wherever the system can offer one.
+
+</div>
+
+<IrreversibilityGateDemo />
+
+<div data-lvl="caveman">
+
+The gate above is the real `IrreversibilityGate` component from `@agentconsent/react`. Change the `severity` prop and watch it grow teeth. The type-the-word field appears only at the forever tier, where a slip actually costs something.
+
+</div>
+
+<div data-lvl="human">
+
+The demo is the `IrreversibilityGate` component from `@agentconsent/react`. Change the `severity` prop to watch the gate re-weight itself. The type-to-confirm field appears only at the irreversible tier, where the cost of a misfire justifies it.
+
+</div>
+
+<div data-lvl="academic">
+
+The demo is the `IrreversibilityGate` component from `@agentconsent/react`. Varying `severity` re-weights the gate live; the type-to-confirm field materializes only at the irreversible tier. The deliberate gesture is reserved for the one grade whose misfire cost justifies its cognitive price, keeping the gradient intact.
+
+</div>
+
+## Anatomy
+
+<IrreversibilityGateAnatomy />
+
+## When to use it
+
+<div data-lvl="caveman">
+
+- **Forever-acts**, deleting for good, money leaving, letters reaching real people. Anything with no rope back up.
+- **A pile of mixed acts**, where one forever-act hides among the harmless ones and must visibly break your stamping rhythm.
+- **When the machine chose the target itself.** If it decided *what* to burn or *whom* to pay, the list of what-will-die is your one chance to catch a wrong guess before it lands.
+
+</div>
+
+<div data-lvl="human">
+
+- **Genuinely irreversible actions**, permanent deletion, money that leaves, messages that reach real people, anything with no undo on the other side.
+- **A queue of mixed-stakes actions**, where one destructive item hides among routine ones and needs to visibly break the user's approval rhythm.
+- **When the agent inferred the target.** If the agent chose *what* to delete or *whom* to pay, the enumerated consequences are the user's chance to catch a wrong inference before it lands.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Genuinely irreversible effects**, permanent deletion, funds transfer, messages reaching other principals: any action where the recovery cost is unbounded because no unilateral reversal exists.
+- **Mixed-stakes queues**, where the destructive item's job is to be *rhythm-breaking*: the gate's discontinuity is what interrupts the motor pattern batch review builds. This is the per-item complement of [Batch Approval](/patterns/batch-approval/)'s fencing of high-stakes items out of the sweep.
+- **Inference-derived targets.** When the agent selected what to delete or whom to pay, the enumerated consequences double as an audit surface for the inference itself, counts, names, and sizes are where a wrong target becomes catchable.
+
+</div>
+
+## When not to use it
+
+<div data-lvl="caveman">
+
+- **Small, walk-back-able things.** Making someone type a word to file a letter in a drawer is theater, and it teaches them the heavy gate is noise, so it won't stop them at the cliff either.
+- **The same forever-act, forty times a day.** Typing the word forty times is its own numbness. Set a standing rule instead, [Authority Boundary](/patterns/authority-boundary/) or [Spend & Rate Limits](/patterns/spend-rate-limits/).
+- **Instead of building an undo.** The best gate is not needing one. A rope back up beats a scarier cliff-sign, every time the system can offer the rope.
+
+</div>
+
+<div data-lvl="human">
+
+- **Reversible, low-stakes actions.** Gating an archive or a draft-save with type-to-confirm is friction theatre; it teaches users that the heavy gate is noise and blunts it for the actions that need it.
+- **High-frequency actions in a hot loop.** If the user takes the same irreversible action dozens of times a session, the answer is a standing authority boundary or a spend limit, not a phrase typed forty times.
+- **As a substitute for reversibility.** The best gate is not needing one, prefer an undo window over a scary confirm wherever the system can offer it.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Reversible, low-stakes actions.** Heavy-gating an archive is friction theater with a compounding cost: each unearned ceremony devalues the ceremony everywhere, and the gradient (the pattern's actual mechanism) flattens back toward uniform friction.
+- **High-frequency irreversible actions.** A phrase typed forty times a session becomes motor memory, which is precisely the state type-to-confirm exists to prevent; at frequency, the correct instrument is standing policy ([Authority Boundary](/patterns/authority-boundary/) or [Spend & Rate Limits](/patterns/spend-rate-limits/)), with the gate reserved for the exceptional case.
+- **As a substitute for reversibility.** The gate prices irreversibility; engineering *reversibility* removes it. An undo window strictly dominates a heavier confirm (it protects against the errors that survive any gate), so the confirm ceremony should be read as the residual for actions the system genuinely cannot make recoverable.
+
+</div>
+
+## Real-world examples
+
+<div data-lvl="caveman">
+
+- **GitHub deleting a repo.** To delete a code home forever you must type its full name into a box that lists what dies. Putting it to sleep instead? One click. Same page, two fences, matched to the fall.
+- **AWS typed confirms.** Deleting a storage bucket means typing the bucket's name; other forever-acts each add their own deliberate move. The heavy gates stand only where there is truly no way back.
+- **Claude Code on destructive commands.** It keeps stopping to ask about state-destroying commands (force-push, recursive delete) even after you've told it to auto-accept routine edits. The rhythm breaks exactly where the danger tier changes, that is this whole pattern in one behavior.
+
+</div>
+
+<div data-lvl="human">
+
+- **GitHub's repository deletion.** The canonical type-to-confirm: deleting a repo requires typing its full name into a field that enumerates exactly what will be lost. Archiving, by contrast, is a single click, friction graded to consequence, across the same settings page.
+- **AWS typed confirmations.** Deleting an S3 bucket requires typing the bucket name; deleting a CloudFormation stack or disabling termination protection each add their own deliberate gesture. The heavy gates appear only where recovery genuinely doesn't exist.
+- **Coding agents on destructive commands.** Claude Code keeps stopping for approval on state-destroying shell commands (a force-push, a recursive delete) even when the user has auto-accepted routine file edits. The approval rhythm breaks exactly where the consequence tier changes, which is this pattern's whole argument.
+
+</div>
+
+<div data-lvl="academic">
+
+- **GitHub's repository deletion.** The canonical typed confirmation: the phrase is the *resource's own name*, which upgrades the gesture from generic deliberation to target verification. You cannot complete the gate without reading what you are destroying. Archive, one click away on the same page, keeps the gradient legible by contrast.
+- **AWS typed confirmations.** Bucket deletion, stack deletion, and disabling termination protection each carry their own deliberate gesture, and the last is the interesting one: a heavy gate on *removing a safety mechanism*, i.e., on the action that changes the reversibility class of future actions.
+- **Coding agents on destructive commands.** Claude Code continues to require approval for state-destroying shell commands even under auto-accept for routine edits: severity classification overriding standing authority. The precedence rule (the consequence tier can demote an action *out* of the standing grant) is the composition this pattern contributes to an agent's authority model.
+
+</div>
+
+*Annotated screenshots of these flows are being collected. Products are credited, annotations follow the site-wide callout conventions, and any screenshot is removed on request. See [About](/about/).*
+
+## Accessibility
+
+<div data-lvl="caveman">
+
+- **The in-page gate** is a labeled group. The stakes get spoken on entry ("Permanently delete 1,240 files, group") before your hands reach any button.
+- **The pop-up gate** traps focus properly, says its name, and rests the cursor on **cancel**. The least destructive place. Always.
+- **Escape means no**, through the same path as the cancel button. Closing the box never leaves the act half-alive.
+- **Type-the-word beats hold-the-button.** A press-and-hold button is invisible to a screen reader, impossible one-handed or with a switch, and vague about how long is long enough. A text box with a known word is plain: labeled, reachable, and clear about what finishes it.
+- The confirm button says it is locked in a way machines can hear (`disabled` plus `aria-disabled`), and the type-box is properly tied to its label.
+- Danger is never paint alone: the tier changes the button's *words*, the icon, and whether typing is demanded, not just the color.
+
+</div>
+
+<div data-lvl="human">
+
+- **Inline mode** renders a `role="group"` labeled by the action title, so screen readers announce the stakes on entry ("Permanently delete 1,240 files, group") before the user reaches the controls.
+- **Modal mode** (`asModal`) is a Radix `AlertDialog`: focus is trapped, `role="alertdialog"` is named by the title, and initial focus lands on **cancel**. The least destructive action is always the resting default.
+- **Escape cancels**, routed through `onCancel` like the button. Dismissing is an explicit "no", never a way to leave the action pending.
+- **Type-to-confirm over hold-to-confirm.** A press-and-hold button is invisible to screen readers, unusable with a switch or one-handed, and arbitrary about duration. Typing a known phrase is a standard text input: labeled, focusable, and unambiguous about what completes it.
+- The confirm button exposes its locked state with a real `disabled` attribute plus `aria-disabled`, so assistive tech announces that it cannot yet be activated. The type-to-confirm field is `htmlFor`-associated with its label.
+- Severity is never carried by color alone: it changes the confirm label, the icon, and whether a phrase is required, not just the palette.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Inline mode** is a `role="group"` named by the action title: the stakes enter the accessible name, so a screen-reader user receives the severity framing before reaching the controls, parity with the sighted user's first glance.
+- **Modal mode** (`asModal`) is a Radix `AlertDialog`, trapped focus, `role="alertdialog"` named by title, initial focus on **cancel**. At the destructive tier the resting-default rule is at its least negotiable: reflexive activation must land on the restorative exit.
+- **Escape routes through `onCancel`** identically to the button, refusal is one path, explicit, with no dismissal residue that leaves a destructive action pending.
+- **Type-to-confirm over hold-to-confirm** is an accessibility argument before a security one: press-and-hold has no accessible name for its duration semantics, excludes switch and single-handed input, and its threshold is arbitrary. A known phrase in a standard labeled text input is fully perceivable, operable, and unambiguous about completion. The deliberate gesture without the exclusion.
+- The locked confirm exposes real `disabled` plus `aria-disabled`, so the cannot-yet-activate state is announced rather than merely rendered; the confirm field is `htmlFor`-bound to its label.
+- Severity is multi-channel, confirm label text, icon, and whether a phrase is demanded all shift with tier. The gradient must survive grayscale, screen readers, and cognitive load simultaneously; palette alone survives none of them.
+
+</div>
+
+## Anti-patterns
+
+<div data-lvl="caveman">
+
+- **Same fence everywhere.** One "Are you sure?" for everything is the reason this pattern exists. If filing a letter and burning the food store feel identical, neither fence works.
+- **A heavy gate that says nothing.** "This cannot be undone. Continue?", scary, but *what* cannot be undone? Making someone commit blind is ceremony with no meal. List the specifics.
+- **Hold-the-button as the only way.** Fashionable, and a dead end for anyone using a screen reader, a switch, or one hand. If you offer it, offer typing beside it, and prefer typing.
+- **Yes under the resting finger.** Enter-to-confirm on the destructive button turns the gate into a bump cleared by reflex. The cheapest twitch must be the safe one.
+- **Crying wolf.** Wrapping walk-back-able acts in forever-language ("This will permanently…") when it won't. That is how people learn to ignore the warning that was true.
+
+</div>
+
+<div data-lvl="human">
+
+- **Uniform friction.** One "Are you sure?" for everything is the pattern's reason to exist. If archiving and permanent deletion feel identical, neither gate is doing its job.
+- **Friction with no information.** A heavy confirm that still won't say *what* it will do ("This action cannot be undone. Continue?") makes the user commit blind. Enumerate the specifics, or the ceremony is empty.
+- **Hold-to-confirm as the only path.** Trendy, and an accessibility dead end. If you must offer it, offer type-to-confirm alongside, and prefer typing as the default.
+- **Default-focused confirm.** Enter-to-confirm on the destructive action turns the gate into a speed bump the user clears by reflex. The cheapest gesture must be the reversible one.
+- **Consequence inflation.** Wrapping reversible actions in irreversible-tier language ("This will permanently…") when it won't. Crying wolf here is how users learn to ignore the real warnings.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Uniform friction.** The zero-variance signal. The failure mode the pattern exists to correct. If archive and permanent deletion are indistinguishable at the gate, the gate encodes nothing, and habituation does the rest.
+- **Friction with no information.** Deliberation cost without disclosure ("This action cannot be undone. Continue?") extracts commitment while withholding its object, heavy ceremony that still fails the legibility principle. The enumeration, not the weight, is what makes the pause productive.
+- **Hold-to-confirm as the only path.** Duration-gated activation is imperceptible to screen readers, inoperable via switch access, and semantically mute about its threshold; as the sole path it is an exclusion mechanism wearing a safety costume. Typed confirmation should be the default, with hold at most an alternative.
+- **Default-focused confirm.** Resting focus on the destructive action prices the irreversible outcome at one reflexive keypress, inverting the entire cost gradient at its most expensive point.
+- **Consequence inflation.** Irreversible-tier language on recoverable actions is signal debasement: each false "permanently" lowers the prior that the next one is true. The gradient only functions if tier language is *earned*, which is also why the undoable tier must advertise its safety net rather than borrow gravity it doesn't have.
+
+</div>
+
+## Code
+
+```tsx
+import { IrreversibilityGate } from "@agentconsent/react";
+import "@agentconsent/react/theme.css";
+
+<IrreversibilityGate.Root
+  severity="irreversible"        // "reversible" | "undoable" | "irreversible"
+  confirmPhrase="DELETE"          // required-type gate, irreversible tier only
+  onConfirm={() => execute(action)}
+  onCancel={() => dismiss(action)}
+>
+  <IrreversibilityGate.Header>
+    <IrreversibilityGate.Icon>⚠</IrreversibilityGate.Icon>
+    <IrreversibilityGate.Title>
+      Permanently delete 1,240 files
+    </IrreversibilityGate.Title>
+  </IrreversibilityGate.Header>
+
+  <IrreversibilityGate.Description>
+    The agent wants to empty the export directory for good.
+  </IrreversibilityGate.Description>
+
+  <IrreversibilityGate.Consequences>
+    <IrreversibilityGate.Consequence>
+      Permanently removes 1,240 files (4.2 GB).
+    </IrreversibilityGate.Consequence>
+    <IrreversibilityGate.Consequence>
+      Cannot be undone, no version history or backup exists.
+    </IrreversibilityGate.Consequence>
+  </IrreversibilityGate.Consequences>
+
+  <IrreversibilityGate.ConfirmField />
+
+  <IrreversibilityGate.Actions>
+    <IrreversibilityGate.Cancel>Keep files</IrreversibilityGate.Cancel>
+    <IrreversibilityGate.Confirm>Delete forever</IrreversibilityGate.Confirm>
+  </IrreversibilityGate.Actions>
+</IrreversibilityGate.Root>
+```
+
+`ConfirmField` renders nothing unless the gate actually requires a phrase
+(irreversible severity + a `confirmPhrase`), so you can leave it in the tree
+across all severities. Pass `asModal` with `open`/`onOpenChange` to render as a
+focus-trapped alert dialog. All parts are unstyled primitives with `data-acp`
+attributes; skip `theme.css` and style them yourself, or override the `--acp-*`
+tokens to retheme.

@@ -1,0 +1,287 @@
+import { SpendLimitsDemo } from "@/components/spend-limits-demo";
+import { SpendLimitsAnatomy } from "@/components/spend-limits-anatomy";
+
+<p data-lvl="caveman" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">A money-cap, an act-count, a time-window, these look like boring bill settings, but they are the leash itself. They answer "how far may you run before you come back?" So put them on one wall, each cap shown next to how much is already used up.</p>
+
+<p data-lvl="human" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">A budget cap, an action count, a time window: these read like billing settings, but for an agent they are consent. They're the standing answer to "how far may you go before you come back and ask?". So give them a surface that treats them that way, with each cap shown against live usage.</p>
+
+<p data-lvl="academic" className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Treat numeric guardrails (budget caps, action counts, time windows) as consent primitives rather than billing configuration: metered against live usage, editable in place, and with cap-reached defined as a consent event that routes back to the user instead of a silent stop or overrun.</p>
+
+## Problem
+
+<div data-lvl="caveman">
+
+A machine that acts alone needs edges, and the most honest edges are numbers. "Spend up to $100 a week." "Send at most 20 letters a day." "Book no more than three nights without me." These are not bill-settings buried in an account page. They are the *shape of the leash*.
+
+But number-fences usually get treated as an afterthought: one lonely spend cap on a settings screen, with no sign of how much is already used, and no word on what happens when the number is hit. So you can't tell if the machine is far from its fence or one purchase from it. And "hitting the fence" is left undefined, does the machine stop quietly? Break? Push through? A fence whose edge you cannot see is a fence you cannot trust.
+
+</div>
+
+<div data-lvl="human">
+
+An agent that can act on its own needs edges, and the most honest edges are numeric. "Spend up to $100 a week." "Send at most 20 emails a day." "Book no more than three nights without me." These aren't billing preferences buried in an account page, they're the shape of the authority the user is delegating.
+
+But numeric limits are usually treated as an afterthought: a single spend cap in a settings screen, disconnected from any sense of how much has already been used, with no signal for what happens when the number is hit. So the user can't tell whether the agent is nowhere near its limit or one purchase away from it, and "reaching the cap" is left undefined, does the agent stop silently, error out, or quietly push past? A guardrail you can't see the edge of isn't a guardrail you can trust.
+
+</div>
+
+<div data-lvl="academic">
+
+Autonomous delegation needs bounds, and quantitative bounds are the most precise ones available: "up to $100 a week" states the delegation's extent in a way no categorical grant can. Yet interfaces persistently misfile these numbers as billing configuration: a lone cap on an account page, divorced from the agent's authority surface, unmetered, and with the boundary's semantics undefined. The misfiling has three distinct costs. Without live usage, the cap is a rule with no observable state: the user cannot distinguish an agent at 5% of budget from one a single purchase from the line, so the limit provides no ongoing situational awareness, only a postmortem explanation. Without in-place editability, tightening the guardrail during a task (exactly when concern arises) requires a settings expedition. And without defined cap-reached semantics, the three possible behaviors (silent stop, hard error, quiet overrun) are indistinguishable ex ante, which means the user is trusting an unspecified failure mode with real money. The framing error is the root cause: a spend cap is not a preference about billing; it is the standing answer to "how far may you go before returning to me," which makes it consent infrastructure and entitles it to the same legibility as any other grant.
+
+</div>
+
+## Solution
+
+<div data-lvl="caveman">
+
+Gather the number-fences onto one wall, and treat each one as a real piece of the leash:
+
+- **Show used-next-to-allowed.** Every fence shows how much of it is eaten this window, right beside the cap ("$34 of $100 this week"), so the edge is something you *read*, not something you reconstruct.
+- **Make the number touchable.** The cap is editable right where it sits, with its unit and its window, so tightening the fence is one motion, not a settings expedition.
+- **Say what hitting the fence means.** Reaching the cap is not a crash. It is the machine coming back to ask. It pauses and shows you the next act ([Action Preview](/patterns/action-preview/)) instead of stopping silently or spending past the line.
+
+</div>
+
+<div data-lvl="human">
+
+Gather the numeric guardrails into one surface and treat each as a consent primitive:
+
+- **Show usage against the cap.** Every limit meters what's been consumed this window next to the cap itself ("$34 of $100 this week"), so the boundary is something the user can read, not reconstruct.
+- **Make the cap a control.** The number is editable in place, with its unit and window, so tightening or loosening the guardrail is a first-class action.
+- **Define what reaching the cap means.** Hitting a limit is a *consent event*, not an error: the agent pauses and comes back to ask (through an [Action Preview](/patterns/action-preview/) or a fresh grant) rather than stopping silently or spending past the line.
+
+</div>
+
+<div data-lvl="academic">
+
+Consolidate the quantitative guardrails into one surface and give each the three properties consent primitives require:
+
+- **Metered state.** Every limit renders consumption against cap within the current window ("$34 of $100 this week"), making the boundary continuously observable rather than reconstructible. The meter is what converts a policy into situational awareness; it's also what makes drift and anomaly (an agent suddenly at 90% by Tuesday) user-detectable.
+- **In-place control.** The cap is directly editable, carrying its unit and window. Symmetric adjustability matters: tightening must be as cheap as loosening, because the moment of concern is mid-task, and a guardrail that can only be adjusted in a distant settings context will simply not be tightened.
+- **Defined cap-reached semantics.** The limit's edge is a *consent event*: the agent pauses and returns to the principal (via an [Action Preview](/patterns/action-preview/) for the blocking action or a fresh grant request) rather than silently stopping or overrunning. This is the clause that makes the number a boundary rather than a suggestion; it also fails closed, since an undefined or unparseable cap must behave as zero, not infinity.
+
+The pattern is the quantitative complement of the [Authority Boundary](/patterns/authority-boundary/): levels decide *whether* unattended action is permitted, limits decide *how much*, "automatic up to $50, ask above" is the two composed, and window-scoped caps are the expiry principle applied to quantity (the authority renews rather than accumulates).
+
+</div>
+
+<SpendLimitsDemo />
+
+<div data-lvl="caveman">
+
+The wall above is the real `SpendLimits` component from `@agentconsent/react`. The travel budget is already past its cap, so it reads "cap reached, agent will ask." Raise that cap above what's spent and watch the tally re-count.
+
+</div>
+
+<div data-lvl="human">
+
+The demo is the `SpendLimits` component from `@agentconsent/react`. The travel budget is already over its cap, so it reads "cap reached, agent will ask"; raise that cap above what's been spent and watch the summary re-tally.
+
+</div>
+
+<div data-lvl="academic">
+
+The demo is the `SpendLimits` component from `@agentconsent/react`. The travel budget arrives over-cap and states its semantics in words ("cap reached, agent will ask"), the defined-edge property rendered as text; raising the cap above consumption re-tallies the summary live.
+
+</div>
+
+## Anatomy
+
+<SpendLimitsAnatomy />
+
+## When to use it
+
+<div data-lvl="caveman">
+
+- **Machines that spend money or act in bulk.** Anything that can buy, send piles of letters, or burn through a metered service needs a numeric ceiling you can see and set.
+- **Next to the big rule-wall ([Authority Boundary](/patterns/authority-boundary/)).** Rungs answer *whether* the machine may act alone; numbers answer *how much*. "By itself up to $50, ask above" is the two working together.
+- **When the honest answer is a threshold, not yes-or-no.** Some abilities shouldn't be all-or-nothing. "This much, then ask" is exactly the right amount of nuance.
+
+</div>
+
+<div data-lvl="human">
+
+- **Agents that spend money or act at volume.** Any agent that can make purchases, send messages in bulk, or call metered APIs needs a numeric ceiling the user can see and set.
+- **Alongside an [Authority Boundary](/patterns/authority-boundary/).** Levels answer *whether* the agent may do something on its own; limits answer *how much*. "Automatic up to $50, ask above" is two patterns working together.
+- **When the safe answer is a threshold, not a yes/no.** Some capabilities shouldn't be all-or-nothing. A rate is exactly the right amount of nuance.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Agents with monetary or volumetric effect channels.** Purchasing, bulk messaging, metered API consumption, anywhere per-action approval is too slow and categorical permission too coarse, the numeric ceiling is the correctly-shaped instrument.
+- **Composed with an [Authority Boundary](/patterns/authority-boundary/).** Levels are policy over the categorical axis, limits over the quantitative one; "automatic up to $50, ask above" is their product, and keeping the two surfaces adjacent-but-distinct preserves each one's legibility.
+- **Where the risk function is genuinely continuous.** When marginal consequence scales with quantity (one email is outreach, five hundred is spam; $5 is trivial, $500 is not), a threshold encodes the user's actual risk tolerance in a way binary permission cannot. The rate is the nuance.
+
+</div>
+
+## When not to use it
+
+<div data-lvl="caveman">
+
+- **One single big act.** "Approve *this* $2,000 transfer" is an [Action Preview](/patterns/action-preview/) or an [Irreversibility Gate](/patterns/irreversibility-gate/). A standing cap is the wrong tool for one throw.
+- **An ability that should be OFF.** "Never spend money" is a Never rung on the [Authority Boundary](/patterns/authority-boundary/), not a cap of zero hiding in a list of numbers.
+- **Rules with no numbers in them.** If every fence is a what-it-may-do, not a how-much, you want rungs, not numbers.
+
+</div>
+
+<div data-lvl="human">
+
+- **A single, per-action decision.** If the question is "approve *this* $2,000 transfer," that's an [Action Preview](/patterns/action-preview/) or an [Irreversibility Gate](/patterns/irreversibility-gate/), not a standing cap.
+- **A capability that should be off entirely.** "Never spend money" is an [Authority Boundary](/patterns/authority-boundary/) level set to Never, not a cap of zero buried in a limits list.
+- **Purely categorical authority.** If none of the guardrails are quantities (just what the agent may and may not do), you want levels, not numbers.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Per-action decisions.** "Approve *this* $2,000 transfer" is a token-level judgment, [Action Preview](/patterns/action-preview/), gated by the [Irreversibility Gate](/patterns/irreversibility-gate/) where warranted. A standing cap approves a *flow*; using it to smuggle through a single large action inverts its granularity.
+- **Capabilities that should be prohibited.** "Never spend" is a categorical fact and belongs on the categorical surface (an [Authority Boundary](/patterns/authority-boundary/) Never), not a zero cap in a limits list, where it reads as a threshold that might reasonably be raised rather than a prohibition that shouldn't be.
+- **Purely categorical authority.** If no guardrail is a quantity, the numeric surface has nothing to meter; forcing categorical rules into numeric clothing (caps of 0 and ∞) discards the legibility both surfaces exist to provide.
+
+</div>
+
+## Real-world examples
+
+<div data-lvl="caveman">
+
+- **The card networks' machine-payment rules.** Visa and Mastercard both built their let-a-machine-hold-a-card systems around user-set spending caps, enforced by the network on the real money stream, not promised by the machine. The money people converged on this fence on their own.
+- **Virtual cards.** Privacy.com and Ramp-style cards come with per-store locks, per-purchase maximums, and monthly caps. Increasingly *the* practical way to hand a machine money, because the ceiling lives at the card, outside the machine's reach.
+- **Cloud and API budgets.** AWS budget alerts and the monthly caps on API dashboards are number-fences on machines that consume by themselves, with the same used-of-cap meters and getting-close warnings this component draws.
+
+</div>
+
+<div data-lvl="human">
+
+- **Card networks' agent payment frameworks.** Visa Intelligent Commerce and Mastercard Agent Pay both put user-set spending limits and conditions at the center of letting an agent hold a (tokenized) card, caps enforced on real-time transaction data, not promised by the agent. The payments industry independently converged on this pattern as the precondition for agentic commerce.
+- **Virtual card controls.** Privacy.com, Ramp, and Lithic-style issued cards ship per-card merchant locks, per-transaction maximums, and monthly caps, increasingly the practical way people hand an agent money, because the ceiling lives at the card, outside the agent's reach.
+- **Cloud and API budgets.** AWS Budgets alerts and actions, and the monthly usage caps on the OpenAI and Anthropic API dashboards, are numeric authority ceilings on autonomous consumption, with the same used-of-cap meters and threshold warnings this component renders.
+
+</div>
+
+<div data-lvl="academic">
+
+- **Card networks' agent payment frameworks.** Visa Intelligent Commerce and Mastercard Agent Pay center user-set spending limits and conditions, enforced by the network on real-time transaction data. The enforcement locus is the lesson: the cap binds at a layer the agent cannot reach, so the guarantee is independent of agent alignment, limits as infrastructure, with this pattern as their user-facing rendering.
+- **Virtual card controls.** Privacy.com-, Ramp-, and Lithic-style cards carry merchant locks, per-transaction maxima, and period caps at the card itself. A capability-scoped, self-limiting payment credential. Structurally this is the same move as [Credential Handoff](/patterns/credential-handoff/): the delegated instrument embeds its own bounds.
+- **Cloud and API budgets.** AWS Budgets and the monthly caps on the OpenAI/Anthropic API dashboards are numeric ceilings on autonomous consumption, with used-of-cap meters and threshold alerts, and their standard failure (alert-only "caps" that notify rather than stop) is a clean illustration of why cap-reached semantics must be defined and enforced, not just displayed.
+
+</div>
+
+*Annotated screenshots of these flows are being collected. Products are credited, annotations follow the site-wide callout conventions, and any screenshot is removed on request. See [About](/about/).*
+
+## Accessibility
+
+<div data-lvl="caveman">
+
+- The whole wall is one named region, so a screen reader announces the full set of fences as one place.
+- **Every cap is a real, labeled number box.** Each control's spoken name says the fence and its window ("Purchases cap, per week"), never a mystery box of digits.
+- **Usage is words, not just a bar.** The colored fill is decoration and hidden from screen readers; "$34 of $100 this week" carries the real numbers, and a hit fence says so in words ("cap reached, agent will ask"). The edge never depends on seeing the bar.
+- **The tally speaks politely.** Editing a cap re-counts "1 cap reached · 1 near cap" without grabbing focus, so a non-seeing user always knows how close the machine is to its edges.
+- Near-the-fence and past-the-fence are told apart by **words and layout**, never by hue alone.
+
+</div>
+
+<div data-lvl="human">
+
+- The surface is a `role="group"` labelled by its title, so assistive tech announces the whole set of guardrails as one named region.
+- **Each cap is a real, labelled number input.** Every limit's control has an accessible name naming the guardrail and its window ("Purchases cap, per week"), so it's an independent numeric field, not an unlabelled box.
+- **Usage is text, not just a bar.** The meter's fill is decorative and `aria-hidden`; the "$34 of $100 this week" readout carries the real numbers, and a reached cap is stated in words ("cap reached, agent will ask"), so the boundary never depends on the colored bar to be read.
+- **The summary is a polite live region.** Editing any cap re-tallies "1 cap reached · 1 near cap" without moving focus, so a non-visual user always knows how close the agent is to its edges.
+- State is conveyed with **text and layout** in addition to color, near-cap and reached limits are never distinguished by hue alone.
+
+</div>
+
+<div data-lvl="academic">
+
+- The surface is a `role="group"` named by its title. The guardrail set is one addressable region, mirroring its status as one policy object.
+- **Each cap is a native, labelled number input** whose accessible name binds guardrail to window ("Purchases cap, per week"). The window is part of the cap's meaning ($100/week and $100/day are different authorities), so it belongs in the name, not the surrounding layout.
+- **Usage is text-primary.** The meter fill is decorative and `aria-hidden`; "$34 of $100 this week" carries the state, and a reached cap is stated in words along with its consequence ("cap reached, agent will ask"). The consequence clause in text is the defined-edge property made non-visually available. The user hears not just *where* the line is but *what happens at it*.
+- **The summary is a polite live region**: cap edits re-tally "1 cap reached · 1 near cap" without focus movement, keeping the aggregate proximity-to-edges continuously available to non-visual users.
+- Near-cap and reached states ride on **text and layout** with color as reinforcement (WCAG 1.4.1). The distinction between "approaching the line" and "at it" is precisely the one that must survive every channel.
+
+</div>
+
+## Anti-patterns
+
+<div data-lvl="caveman">
+
+- **A cap with no used-so-far.** A fence shown without how much is already eaten tells you the rule but not where you stand inside it. Always show used-next-to-allowed.
+- **An undefined edge.** Not saying what happens at the line, quiet stop, loud crash, or sneaky overspend all look identical from outside. Hitting the fence means *come back and ask*, and the wall should say so.
+- **Fences filed under billing.** Hiding the caps in an account page, far from the machine's other rules, so the numbers that actually hold the leash are the ones nobody thinks to check.
+- **Generous caps out of the box.** Shipping high ceilings so the machine rarely asks makes the loose leash the resting state. Start low; let the human raise the ceiling on purpose.
+- **A cap that gives more than the human has.** A fence can only ever *shrink* what you yourself could spend or do. "$100 a week" for the machine never means money you couldn't move yourself. The number tightens the leash, it never lengthens it past your own arm.
+
+</div>
+
+<div data-lvl="human">
+
+- **A cap with no usage.** A limit shown without how much has already been consumed tells the user a rule but not where they stand against it. Always meter usage against the cap.
+- **An undefined edge.** Leaving "what happens at the limit" unspecified, silent stop, hard error, or quiet overspend all look the same from outside. Define reaching the cap as a consent event and say so.
+- **Limits as billing, not consent.** Hiding spend caps in an account/billing screen, disconnected from the agent's authority surface, so the numbers that actually bound the agent are the ones nobody thinks to review.
+- **Defaults set high "for convenience."** Shipping generous caps so the agent rarely has to ask makes the permissive choice the resting state. Default low and let the user raise the ceiling deliberately.
+- **A limit that escalates past the principal.** A cap can only ever narrow what the user themselves may spend or do. It is a ceiling on the user's own authority, never a grant of new spending power. An agent allowed "$100 a week" still can't move money the user couldn't move; the limit bounds the intersection, it never widens it.
+
+</div>
+
+<div data-lvl="academic">
+
+- **A cap with no usage.** An unmetered limit states policy without state. The user knows the rule but not their position under it, so the guardrail provides no awareness until it's hit, at which point it provides only history. The meter is not garnish; it is the half of the primitive that makes the other half usable.
+- **An undefined edge.** Unspecified cap-reached semantics collapse three very different systems (fail-closed, fail-loud, fail-open) into one indistinguishable UI. The definition (pause and re-consent) must be explicit, stated on the surface, and fail-closed in implementation: a missing or malformed cap reads as zero, never as unbounded.
+- **Limits as billing, not consent.** Filing the caps under account/billing severs them from the authority surface they actually implement; the numbers that bound the agent become the ones nobody reviews when reasoning about the agent. Placement is a semantic claim, and this placement makes the wrong one.
+- **Defaults set high "for convenience."** Generous shipped caps make maximal autonomous consumption the zero-action state. The defaults-are-policy failure on the quantitative axis. Ship low; let ceilings rise by deliberate act, the same direction every widening should run.
+- **A limit that escalates past the principal.** A cap is a ceiling on delegated exercise of the *user's own* authority, never a source of new spending power: an agent allowed "$100 a week" still cannot move money its principal couldn't. The limit narrows the (grant ∩ principal's rights) intersection; a limits surface that could widen it would be a confused-deputy mint with a currency symbol.
+
+</div>
+
+## Code
+
+```tsx
+import { SpendLimits } from "@agentconsent/react";
+import "@agentconsent/react/theme.css";
+
+<SpendLimits.Root
+  limits={[                              // usage facts + the summary's source
+    { id: "purchases", used: 34 },
+    { id: "outreach", used: 17 },
+  ]}
+  value={caps}                           // { [id]: number }
+  onValueChange={setCaps}
+>
+  <SpendLimits.Header>
+    <SpendLimits.Icon>▤</SpendLimits.Icon>
+    <SpendLimits.Title>
+      How far can Shopping Agent go on its own?
+    </SpendLimits.Title>
+  </SpendLimits.Header>
+
+  <SpendLimits.Summary>
+    {({ reached, warning }) =>
+      `${reached} cap reached · ${warning} near cap`}
+  </SpendLimits.Summary>
+
+  <SpendLimits.List>
+    <SpendLimits.Limit
+      id="purchases"
+      kind="spend"                       // meters money, unit is a symbol
+      unit="$"
+      period="week"
+      label="Purchases"
+      description="Buy items on your behalf."
+    />
+    <SpendLimits.Limit
+      id="outreach"
+      kind="rate"                        // meters a count, unit is a noun
+      unit="emails"
+      period="day"
+      label="Outreach emails"
+      description="Message sellers on your behalf."
+    />
+  </SpendLimits.List>
+</SpendLimits.Root>
+```
+
+The `limits` array is the single source of truth for usage and the summary;
+the cap map (`value` / `defaultValue`) holds the editable ceilings. A limit with
+no cap entry reads as unbounded. All parts are unstyled primitives with
+`data-acp` attributes; skip `theme.css` and style them yourself, or override the
+`--acp-*` tokens to retheme.

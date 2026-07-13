@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
+    // tsup's dts worker injects baseUrl, which TS 6 flags as deprecated
+    "ignoreDeprecations": "6.0"
+  },
+  "include": ["src", "tsup.config.ts", "vitest.config.ts", "vitest.setup.ts"]
+}

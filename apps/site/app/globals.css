@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@import "@agentconsent/react/theme.css";
+
+/* Map site utilities onto the library's design tokens so the docs site and
+   the components share one palette and retheme together. */
+@theme inline {
+  --color-surface: var(--acp-color-surface);
+  --color-surface-raised: var(--acp-color-surface-raised);
+  --color-surface-sunken: var(--acp-color-surface-sunken);
+  --color-ink: var(--acp-color-ink);
+  --color-ink-muted: var(--acp-color-ink-muted);
+  --color-ink-faint: var(--acp-color-ink-faint);
+  --color-line: var(--acp-color-line);
+  --color-line-strong: var(--acp-color-line-strong);
+  --color-approve: var(--acp-color-approve);
+  --color-danger: var(--acp-color-danger);
+  --color-danger-surface: var(--acp-color-danger-surface);
+  --color-agent: var(--acp-color-agent);
+  --color-agent-surface: var(--acp-color-agent-surface);
+  --color-untrusted: var(--acp-color-untrusted);
+  --color-untrusted-surface: var(--acp-color-untrusted-surface);
+  --color-focus: var(--acp-color-focus);
+  --font-sans: var(--acp-font-sans);
+  --font-mono: var(--acp-font-mono);
+}
+
+body {
+  background: var(--acp-color-surface);
+  color: var(--acp-color-ink);
+  font-family: var(--acp-font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--acp-color-focus);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--acp-color-agent-surface);
+  color: var(--acp-color-agent);
+}
+
+/* Reading level ("brain level"): every leveled prose block exists three times
+   in the static HTML, tagged data-lvl. Only the variant matching the level on
+   <html data-level> is displayed — display:none also removes the hidden two
+   from the accessibility tree. The attribute is set pre-paint by an inline
+   script in the root layout (persisted in localStorage). */
+[data-lvl] {
+  display: none;
+}
+html[data-level="caveman"] [data-lvl="caveman"],
+html[data-level="human"] [data-lvl="human"],
+html[data-level="academic"] [data-lvl="academic"] {
+  display: revert;
+}
+
+/* Technical-editorial label: the small-caps mono eyebrow used across the site */
+.eyebrow {
+  font-family: var(--acp-font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--acp-color-ink-faint);
+}
