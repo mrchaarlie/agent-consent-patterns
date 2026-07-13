@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 
 type FrameTheme = "light" | "dark";
 
@@ -12,11 +12,27 @@ function resolveSiteTheme(): FrameTheme {
     : "light";
 }
 
+// External store over the site's resolved theme (its own override, or
+// prefers-color-scheme) — avoids effect-driven setState, mirrors ThemeSwitch.
+function subscribe(onChange: () => void) {
+  const mql = window.matchMedia("(prefers-color-scheme: dark)");
+  mql.addEventListener("change", onChange);
+  window.addEventListener("acp-themechange", onChange);
+  return () => {
+    mql.removeEventListener("change", onChange);
+    window.removeEventListener("acp-themechange", onChange);
+  };
+}
+
+function getServerSnapshot(): FrameTheme {
+  return "light";
+}
+
 /**
  * Device-neutral frame for live component demos. Defaults to matching the
- * site's current theme (its own override or prefers-color-scheme), then
- * keeps tracking it live — until the reader clicks light/dark below, which
- * pins this one frame so it can be inspected independent of the page theme.
+ * site's current theme, then keeps tracking it live — until the reader
+ * clicks light/dark below, which pins this one frame so it can be inspected
+ * independent of the page theme.
  */
 export function DemoFrame({
   label = "Live demo",
@@ -25,26 +41,12 @@ export function DemoFrame({
   label?: string;
   children: React.ReactNode;
 }) {
-  const [theme, setTheme] = useState<FrameTheme>("light");
-  const [pinned, setPinned] = useState(false);
-
-  useEffect(() => {
-    if (pinned) return;
-    setTheme(resolveSiteTheme());
-
-    const mql = window.matchMedia("(prefers-color-scheme: dark)");
-    const sync = () => setTheme(resolveSiteTheme());
-    mql.addEventListener("change", sync);
-    window.addEventListener("acp-themechange", sync);
-    return () => {
-      mql.removeEventListener("change", sync);
-      window.removeEventListener("acp-themechange", sync);
-    };
-  }, [pinned]);
+  const siteTheme = useSyncExternalStore(subscribe, resolveSiteTheme, getServerSnapshot);
+  const [pinnedTheme, setPinnedTheme] = useState<FrameTheme | null>(null);
+  const theme = pinnedTheme ?? siteTheme;
 
   function handleSetTheme(next: FrameTheme) {
-    setPinned(true);
-    setTheme(next);
+    setPinnedTheme(next);
   }
 
   return (
