@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Analytics } from "@/components/analytics";
 import { ReadingLevelSwitch } from "@/components/reading-level";
+import { ThemeSwitch } from "@/components/theme-switch";
 import "./globals.css";
 
 /**
@@ -10,6 +11,12 @@ import "./globals.css";
  * React never re-renders the attribute, hence suppressHydrationWarning on <html>.
  */
 const READING_LEVEL_INIT = `try{var l=localStorage.getItem("acp-reading-level");if(l==="caveman"||l==="academic")document.documentElement.dataset.level=l;}catch(e){}`;
+
+/**
+ * Applies a stored theme override before first paint so light/dark never
+ * flashes. Unset (or "system") leaves prefers-color-scheme in control.
+ */
+const THEME_INIT = `try{var t=localStorage.getItem("acp-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;}catch(e){}`;
 
 const SITE_DESCRIPTION =
   "UX patterns for AI agent permissions, consent, and human-in-the-loop control. A reference site and React component library.";
@@ -60,6 +67,7 @@ export default function RootLayout({
     <html lang="en" data-level="human" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: READING_LEVEL_INIT }} />
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
       </head>
       <body className="flex min-h-dvh flex-col">
         <Analytics />
@@ -107,34 +115,37 @@ export default function RootLayout({
               MIT licensed. Components:{" "}
               <span className="font-mono">@agentconsent/react</span>
             </p>
-            <nav aria-label="More">
-              <ul className="flex flex-wrap gap-x-6 gap-y-2">
-                <li>
-                  <Link
-                    href="/about/"
-                    className="underline underline-offset-4 hover:text-ink"
-                  >
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/mrchaarlie/agent-consent-patterns"
-                    className="underline underline-offset-4 hover:text-ink"
-                  >
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/llms.txt"
-                    className="underline underline-offset-4 hover:text-ink"
-                  >
-                    llms.txt
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
+              <nav aria-label="More">
+                <ul className="flex flex-wrap gap-x-6 gap-y-2">
+                  <li>
+                    <Link
+                      href="/about/"
+                      className="underline underline-offset-4 hover:text-ink"
+                    >
+                      About
+                    </Link>
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/mrchaarlie/agent-consent-patterns"
+                      className="underline underline-offset-4 hover:text-ink"
+                    >
+                      GitHub
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/llms.txt"
+                      className="underline underline-offset-4 hover:text-ink"
+                    >
+                      llms.txt
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+              <ThemeSwitch />
+            </div>
           </div>
         </footer>
       </body>

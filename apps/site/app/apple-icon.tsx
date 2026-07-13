@@ -27,7 +27,7 @@ export default function AppleIcon() {
         }}
       >
         <span>ACP</span>
-        <span style={{ color: "#3d4f9e", marginLeft: 4 }}>/</span>
+        <span style={{ color: "#93a4e8", marginLeft: 4 }}>/</span>
       </div>
     ),
     { ...size },

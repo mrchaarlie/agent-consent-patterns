@@ -1,13 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type FrameTheme = "light" | "dark";
 
+function resolveSiteTheme(): FrameTheme {
+  const override = document.documentElement.dataset.theme;
+  if (override === "light" || override === "dark") return override;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
 /**
- * Device-neutral frame for live component demos. The theme toggle scopes
- * data-theme to the frame subtree, so the demo can be inspected in both
- * palettes independent of the page theme.
+ * Device-neutral frame for live component demos. Defaults to matching the
+ * site's current theme (its own override or prefers-color-scheme), then
+ * keeps tracking it live — until the reader clicks light/dark below, which
+ * pins this one frame so it can be inspected independent of the page theme.
  */
 export function DemoFrame({
   label = "Live demo",
@@ -17,6 +26,26 @@ export function DemoFrame({
   children: React.ReactNode;
 }) {
   const [theme, setTheme] = useState<FrameTheme>("light");
+  const [pinned, setPinned] = useState(false);
+
+  useEffect(() => {
+    if (pinned) return;
+    setTheme(resolveSiteTheme());
+
+    const mql = window.matchMedia("(prefers-color-scheme: dark)");
+    const sync = () => setTheme(resolveSiteTheme());
+    mql.addEventListener("change", sync);
+    window.addEventListener("acp-themechange", sync);
+    return () => {
+      mql.removeEventListener("change", sync);
+      window.removeEventListener("acp-themechange", sync);
+    };
+  }, [pinned]);
+
+  function handleSetTheme(next: FrameTheme) {
+    setPinned(true);
+    setTheme(next);
+  }
 
   return (
     <figure className="my-8 overflow-hidden rounded-lg border border-line">
@@ -31,7 +60,7 @@ export function DemoFrame({
             <button
               key={t}
               type="button"
-              onClick={() => setTheme(t)}
+              onClick={() => handleSetTheme(t)}
               aria-pressed={theme === t}
               className="rounded px-2 py-1 text-ink-muted aria-pressed:bg-surface-sunken aria-pressed:text-ink"
             >

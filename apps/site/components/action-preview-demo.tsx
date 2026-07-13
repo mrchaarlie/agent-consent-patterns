@@ -30,7 +30,7 @@ export function ActionPreviewDemo() {
   };
 
   return (
-    <div>
+    <div className="mt-4">
       <div className="mb-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
         <fieldset className="flex items-center gap-3">
           <legend className="sr-only">Consequence prop</legend>
