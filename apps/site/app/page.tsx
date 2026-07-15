@@ -185,7 +185,7 @@ export default function HomePage() {
         </ul>
       </section>
 
-      <section className="border-b border-line py-14">
+      <section className="border-line py-14">
         <div className="mb-2 flex items-baseline justify-between gap-4">
           <h2 className="text-2xl font-semibold tracking-tight">
             The taxonomy at a glance
