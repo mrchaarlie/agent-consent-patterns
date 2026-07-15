@@ -1,6 +1,9 @@
 # Agent Consent Patterns
 
 [![CI](https://github.com/mrchaarlie/agent-consent-patterns/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mrchaarlie/agent-consent-patterns/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/%40agentconsent%2Freact?logo=npm&label=%40agentconsent%2Freact)](https://www.npmjs.com/package/@agentconsent/react)
+[![license](https://img.shields.io/github/license/mrchaarlie/agent-consent-patterns)](LICENSE)
+[![Node.js](https://img.shields.io/node/v/%40agentconsent%2Freact?logo=node.js)](https://nodejs.org/)
 
 **UX patterns for AI agent permissions, consent, and human-in-the-loop control**. A reference
 site and React component library for teams building products where an agent acts on a user's
