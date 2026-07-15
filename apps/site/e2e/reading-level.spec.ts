@@ -26,7 +26,8 @@ test.describe("Reading level switcher", () => {
     await page.goto("/patterns/scoped-grant/");
     await page.locator(SWITCH).locator("select").selectOption("academic");
 
-    await page.getByRole("link", { name: "Glossary" }).click();
+    await page.getByText("Reference", { exact: true }).click();
+    await page.getByRole("link", { name: "Glossary", exact: true }).click();
     await expect(page.locator("html")).toHaveAttribute(
       "data-level",
       "academic",

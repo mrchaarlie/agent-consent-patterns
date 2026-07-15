@@ -36,12 +36,21 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {...props}
       />
     ),
-    code: (props) => (
-      <code
-        className="rounded bg-surface-sunken px-1.5 py-0.5 font-mono text-[0.85em] text-ink"
-        {...props}
-      />
-    ),
+    code: (props) =>
+      props.children === "@agentconsent/react" ? (
+        <a
+          href="https://www.npmjs.com/package/@agentconsent/react"
+          className="rounded bg-surface-sunken px-1.5 py-0.5 font-mono text-[0.85em] text-ink underline underline-offset-4 hover:text-agent"
+          aria-label="View @agentconsent/react on npm"
+        >
+          {props.children}
+        </a>
+      ) : (
+        <code
+          className="rounded bg-surface-sunken px-1.5 py-0.5 font-mono text-[0.85em] text-ink"
+          {...props}
+        />
+      ),
     pre: (props) => (
       // tabIndex: scrollable region must be reachable by keyboard (axe)
       <pre

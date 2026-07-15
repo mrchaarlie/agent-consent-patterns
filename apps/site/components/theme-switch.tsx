@@ -65,7 +65,7 @@ function setTheme(next: ThemePreference) {
 }
 
 /**
- * Site-wide theme toggle (system/light/dark). Persists in localStorage; a
+ * Labelled theme dropdown (system/light/dark). Persists in localStorage; a
  * pre-hydration inline script in the root layout applies the stored
  * preference before first paint, so there is no flash. "System" clears the
  * override and falls back to prefers-color-scheme.
@@ -74,23 +74,25 @@ export function ThemeSwitch() {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   return (
-    <div
-      role="group"
-      aria-label="Theme"
-      data-acp="theme-switch"
-      className="flex items-center gap-1 font-mono text-xs"
-    >
-      {THEMES.map(({ value, label }) => (
-        <button
-          key={value}
-          type="button"
-          onClick={() => setTheme(value)}
-          aria-pressed={theme === value}
-          className="rounded px-2 py-1 text-ink-faint transition-colors hover:text-ink aria-pressed:bg-surface-raised aria-pressed:text-ink"
-        >
-          {label}
-        </button>
-      ))}
+    <div data-acp="theme-switch" className="flex items-center gap-2">
+      <label
+        htmlFor="theme"
+        className="font-mono text-[0.6875rem] uppercase tracking-[0.1em] text-ink-faint"
+      >
+        Theme
+      </label>
+      <select
+        id="theme"
+        value={theme}
+        onChange={(e) => setTheme(e.target.value as ThemePreference)}
+        className="cursor-pointer rounded-md border border-line bg-surface-raised px-2 py-1 text-xs text-ink hover:border-line-strong"
+      >
+        {THEMES.map(({ value, label }) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

@@ -13,6 +13,8 @@ const BASE = "https://agentconsent.dev";
 const ROUTES = [
   "/",
   "/patterns/",
+  "/library/",
+  "/skill/",
   "/principles/",
   "/glossary/",
   "/about/",

@@ -1,11 +1,6 @@
 import Link from "next/link";
-import { CodeBlock } from "@/components/code-block";
 import { Lvl } from "@/components/lvl";
 import { CATEGORIES, CATEGORY_BLURB, PATTERNS } from "@/lib/patterns";
-
-const REPO = "https://github.com/mrchaarlie/agent-consent-patterns";
-const NPM_PACKAGE = "https://www.npmjs.com/package/@agentconsent/react";
-const SKILL_SOURCE = `${REPO}/blob/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md`;
 
 export default function HomePage() {
   return (
@@ -119,39 +114,45 @@ export default function HomePage() {
             <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
               <Lvl level="caveman" as="span">
                 Every pattern gets a working piece in{" "}
-                <span className="font-mono text-ink">@agentconsent/react</span>
+                <Link
+                  href="/library/"
+                  className="font-mono text-ink underline underline-offset-4 hover:text-ink-muted"
+                >
+                  @agentconsent/react
+                </Link>
                 : plain bones, a swappable skin, screen reader friendly, free
                 to take.
               </Lvl>
               <Lvl level="human" as="span">
                 A working implementation of every pattern in{" "}
-                <span className="font-mono text-ink">@agentconsent/react</span>
+                <Link
+                  href="/library/"
+                  className="font-mono text-ink underline underline-offset-4 hover:text-ink-muted"
+                >
+                  @agentconsent/react
+                </Link>
                 : headless primitives plus a themeable default. WCAG 2.2 AA,
                 axe-clean, MIT.
               </Lvl>
               <Lvl level="academic" as="span">
                 A reference implementation of every pattern in{" "}
-                <span className="font-mono text-ink">@agentconsent/react</span>
+                <Link
+                  href="/library/"
+                  className="font-mono text-ink underline underline-offset-4 hover:text-ink-muted"
+                >
+                  @agentconsent/react
+                </Link>
                 : headless primitives with a themeable default skin, WCAG 2.2
                 AA, MIT. The premise: a pattern without a runnable artifact is
                 an opinion.
               </Lvl>
             </p>
-            <CodeBlock code="npm install @agentconsent/react" />
-            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
-              <a
-                href={REPO}
-                className="inline-block text-sm text-ink underline underline-offset-4 hover:text-ink-muted"
-              >
-                View the source →
-              </a>
-              <a
-                href={NPM_PACKAGE}
-                className="inline-block text-sm text-ink underline underline-offset-4 hover:text-ink-muted"
-              >
-                View on npm →
-              </a>
-            </div>
+            <Link
+              href="/library/"
+              className="mt-3 inline-block text-sm text-ink underline underline-offset-4 hover:text-ink-muted"
+            >
+              Read the library guide →
+            </Link>
           </li>
 
           <li className="rounded-lg border border-line bg-surface-raised p-5">
@@ -174,20 +175,12 @@ export default function HomePage() {
                 consent flows.
               </Lvl>
             </p>
-            <p className="mt-4 eyebrow">Claude Code &amp; Codex</p>
-            <CodeBlock
-              className="mt-1.5"
-              code={
-                "/plugin marketplace add mrchaarlie/agent-consent-patterns\n" +
-                "/plugin install consent-ux@agent-consent-patterns"
-              }
-            />
-            <a
-              href={SKILL_SOURCE}
-              className="mt-3 inline-block text-sm text-ink underline underline-offset-4 hover:text-ink-muted"
+            <Link
+              href="/skill/"
+              className="mt-4 inline-block text-sm text-ink underline underline-offset-4 hover:text-ink-muted"
             >
-              View the skill source →
-            </a>
+              Read the skill guide →
+            </Link>
           </li>
         </ul>
       </section>

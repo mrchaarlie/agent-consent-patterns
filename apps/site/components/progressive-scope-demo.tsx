@@ -131,7 +131,11 @@ export function ProgressiveScopeDemo() {
       {log.length > 0 && (
         <div className="rounded-md border border-line bg-surface-raised p-3">
           <p className="eyebrow mb-2">Callback log</p>
-          <ul className="space-y-1 font-mono text-xs text-ink-muted">
+          <ul
+            tabIndex={0}
+            aria-label="Callback log entries"
+            className="max-h-48 space-y-1 overflow-y-auto pr-2 font-mono text-xs text-ink-muted"
+          >
             {log.map((entry, i) => (
               <li key={`${entry}-${i}`}>{entry}</li>
             ))}

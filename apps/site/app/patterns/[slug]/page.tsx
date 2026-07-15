@@ -71,6 +71,11 @@ export default async function PatternPage({
   if (!pattern || !load) notFound();
   const { default: Content } = await load();
 
+  const live = PATTERNS.filter((p) => p.status === "live");
+  const index = live.findIndex((p) => p.slug === slug);
+  const prev = index > 0 ? live[index - 1] : undefined;
+  const next = index < live.length - 1 ? live[index + 1] : undefined;
+
   return (
     <article className="mx-auto max-w-3xl px-6 py-12">
       <header>
@@ -90,6 +95,34 @@ export default async function PatternPage({
         >
           ← All patterns
         </Link>
+        <div className="mt-6 flex items-start justify-between gap-6">
+          <div className="text-left">
+            {prev && (
+              <Link
+                href={`/patterns/${prev.slug}/`}
+                className="group flex flex-col gap-1"
+              >
+                <span className="text-xs text-ink-faint">← Previous</span>
+                <span className="underline underline-offset-4 group-hover:text-ink">
+                  {prev.name}
+                </span>
+              </Link>
+            )}
+          </div>
+          <div className="text-right">
+            {next && (
+              <Link
+                href={`/patterns/${next.slug}/`}
+                className="group flex flex-col items-end gap-1"
+              >
+                <span className="text-xs text-ink-faint">Next →</span>
+                <span className="underline underline-offset-4 group-hover:text-ink">
+                  {next.name}
+                </span>
+              </Link>
+            )}
+          </div>
+        </div>
       </footer>
     </article>
   );

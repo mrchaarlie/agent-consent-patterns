@@ -105,8 +105,10 @@ function proseToMarkdown(jsx) {
   s = s.replace(/<em[^>]*>/g, "_").replace(/<\/em>/g, "_");
   // Paragraph boundaries.
   s = s.replace(/<p[^>]*>/g, "").replace(/<\/p>/g, "\n\n");
-  // Drop fragments and any remaining tags.
-  s = s.replace(/<\/?>/g, "").replace(/<[^>]+>/g, "");
+  // Drop fragments and any remaining markup delimiters. Strip the individual
+  // delimiter characters rather than matching whole tags: overlapping malformed
+  // tags can otherwise re-form after a single multi-character replacement.
+  s = s.replace(/[<>]/g, "");
   s = decodeEntities(s);
   // Normalize whitespace inside paragraphs, collapse blank runs.
   s = s
@@ -201,6 +203,38 @@ function mdxToMarkdown(mdx, pattern) {
     `part of Agent Consent Patterns.\n` +
     `> Human page: ${url(`/patterns/${pattern.slug}/`)}\n`;
   return `${header}\n${body}\n`;
+}
+
+/** Turn a standalone docs MDX file into its canonical Human Markdown mirror. */
+function docsMdxToMarkdown(mdx, { title, path }) {
+  const lines = mdx.split("\n");
+  const out = [];
+  let inFence = false;
+  let lvlBlock = null;
+  for (const line of lines) {
+    if (/^```/.test(line)) {
+      inFence = !inFence;
+      if (lvlBlock === null || lvlBlock === "human") out.push(line);
+      continue;
+    }
+    if (inFence) {
+      if (lvlBlock === null || lvlBlock === "human") out.push(line);
+      continue;
+    }
+    const lvlOpen = line.match(/^<div data-lvl="(caveman|human|academic)">\s*$/);
+    if (lvlOpen) {
+      lvlBlock = lvlOpen[1];
+      continue;
+    }
+    if (lvlBlock !== null && /^<\/div>\s*$/.test(line)) {
+      lvlBlock = null;
+      continue;
+    }
+    if (lvlBlock !== null && lvlBlock !== "human") continue;
+    out.push(line);
+  }
+  const body = out.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  return `# ${title}\n\n> Human page: ${url(path)}\n\n${body}\n`;
 }
 
 /** Extract principles (name, lede, body prose) + stubs + intro from the page. */
@@ -345,12 +379,17 @@ function renderLlmsTxt(patterns, categories) {
   }
   lines.push(
     "",
-    "## Background",
+    "## Reference",
     "",
     `- [Principles of agent consent](${url("/principles.md")}): the ten principles the pattern library is built on.`,
     `- [Glossary](${url("/glossary.md")}): shared vocabulary for agent consent UX.`,
     `- [About](${url("/about.md")}): why the project exists and how to contribute.`,
     `- [Overview](${url("/index.md")}): the full taxonomy on one page.`,
+    "",
+    "## Build",
+    "",
+    `- [React library](${url("/library.md")}): install and compose the accessible React primitives.`,
+    `- [Agent skill](${url("/skill.md")}): install the consent-UX guidance in Claude Code, Codex, or another compatible agent.`,
     "",
     "## Optional",
     "",
@@ -398,11 +437,21 @@ async function main() {
   const glossary = renderGlossary(await loadGlossary());
   const principles = renderPrinciples(await loadPrinciples());
   const about = renderAbout(await loadAbout());
+  const library = docsMdxToMarkdown(
+    await readFile(join(SITE_DIR, "content/library.mdx"), "utf8"),
+    { title: "React library — Agent Consent Patterns", path: "/library/" },
+  );
+  const skill = docsMdxToMarkdown(
+    await readFile(join(SITE_DIR, "content/skill.mdx"), "utf8"),
+    { title: "Agent skill — Agent Consent Patterns", path: "/skill/" },
+  );
   const indexMd = renderIndexMd(patterns, CATEGORIES);
 
   await writeFile(join(OUT_DIR, "glossary.md"), glossary);
   await writeFile(join(OUT_DIR, "principles.md"), principles);
   await writeFile(join(OUT_DIR, "about.md"), about);
+  await writeFile(join(OUT_DIR, "library.md"), library);
+  await writeFile(join(OUT_DIR, "skill.md"), skill);
   await writeFile(join(OUT_DIR, "index.md"), indexMd);
 
   // llms.txt index + concatenated full text.
@@ -413,11 +462,13 @@ async function main() {
     ...patternDocs,
     glossary,
     about,
+    library,
+    skill,
   ].join("\n\n---\n\n");
   await writeFile(join(OUT_DIR, "llms-full.txt"), full);
 
   console.log(
-    `[agent-view] wrote llms.txt, llms-full.txt, index.md, and ${patterns.length} pattern + 3 page mirrors to out/`,
+    `[agent-view] wrote llms.txt, llms-full.txt, index.md, and ${patterns.length} pattern + 5 page mirrors to out/`,
   );
 }
 

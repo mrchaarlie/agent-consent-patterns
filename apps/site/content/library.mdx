@@ -1,0 +1,112 @@
+<div data-lvl="caveman">
+
+This is a box of ready-made asking-parts for apps with agents. Pick the pattern that fits, put its pieces together, and make it look like your app.
+
+</div>
+
+<div data-lvl="human">
+
+`@agentconsent/react` provides accessible, headless React primitives for every pattern in this reference. It owns consent-flow behavior and semantics; you supply the product language, data, callbacks, and visual treatment.
+
+</div>
+
+<div data-lvl="academic">
+
+`@agentconsent/react` is the reference implementation layer for this pattern language. Its headless primitives encode interaction and accessibility semantics while leaving data integration, product wording, and visual presentation to the consuming application.
+
+</div>
+
+## Install
+
+```sh
+npm install @agentconsent/react
+```
+
+<div data-lvl="caveman">
+
+Use the ready skin first. Later, change the color knobs or make your own skin.
+
+</div>
+
+<div data-lvl="human">
+
+Import the default theme for usable styling immediately. Import only the tokens when you want to provide your own component styles.
+
+</div>
+
+<div data-lvl="academic">
+
+The default stylesheet consumes the public token contract. Consumers can adopt it unchanged, override token values, or import only tokens and implement an entirely custom visual layer.
+
+</div>
+
+```tsx
+import "@agentconsent/react/theme.css";
+// Or, for a fully custom visual layer:
+import "@agentconsent/react/tokens.css";
+```
+
+## Compose a pattern
+
+<div data-lvl="caveman">
+
+Each pattern is made of named pieces. Put the pieces inside its Root. The Root keeps them working together.
+
+</div>
+
+<div data-lvl="human">
+
+Patterns use compound components. Render the named parts inside the matching `Root`, then connect the product-specific approval and refusal callbacks at the boundary.
+
+</div>
+
+<div data-lvl="academic">
+
+Each pattern exposes a compound-component API. The `Root` supplies shared state and semantics, while named descendants provide stable structural and styling boundaries for an application's own data and event handlers.
+
+</div>
+
+```tsx
+import { ActionPreview } from "@agentconsent/react";
+
+<ActionPreview.Root>
+  <ActionPreview.Header>
+    <ActionPreview.Title>Send email?</ActionPreview.Title>
+  </ActionPreview.Header>
+  <ActionPreview.Fields>
+    <ActionPreview.Field label="To">Dana</ActionPreview.Field>
+    <ActionPreview.Field label="Subject">Project update</ActionPreview.Field>
+  </ActionPreview.Fields>
+  <ActionPreview.Actions>
+    <ActionPreview.Button onClick={sendEmail}>Send email</ActionPreview.Button>
+    <ActionPreview.Button onClick={cancel}>Cancel</ActionPreview.Button>
+  </ActionPreview.Actions>
+</ActionPreview.Root>
+```
+
+## Choose the right primitive
+
+<div data-lvl="caveman">
+
+Start with the pattern page. It tells you which box to use, what not to do, and shows it working.
+
+</div>
+
+<div data-lvl="human">
+
+Start from the pattern index. Each pattern page pairs its React primitive with the decision it supports, live behavior, accessibility expectations, anti-patterns, and source-level implementation details.
+
+</div>
+
+<div data-lvl="academic">
+
+Select a primitive through the pattern taxonomy rather than by component name alone. Each pattern page establishes its applicability conditions, live reference behavior, accessibility contract, failure modes, and implementation context.
+
+</div>
+
+- [Browse all patterns](/patterns/)
+- [Action Preview](/patterns/action-preview/)
+- [Scoped Grant](/patterns/scoped-grant/)
+- [Authority Boundary](/patterns/authority-boundary/)
+- [View the package on npm](https://www.npmjs.com/package/@agentconsent/react)
+- [View the source on GitHub](https://github.com/mrchaarlie/agent-consent-patterns/tree/main/packages/react)
