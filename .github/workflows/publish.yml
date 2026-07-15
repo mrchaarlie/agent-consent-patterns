@@ -53,7 +53,9 @@ jobs:
       - name: Build library
         run: pnpm --filter @agentconsent/react build
       - name: Confirm tag matches package version
-        run: test "${GITHUB_REF_NAME#react-v}" = "$(node -p \"require('./package.json').version\")"
+        run: |
+          package_version="$(node -p "require('./package.json').version")"
+          test "${GITHUB_REF_NAME#react-v}" = "$package_version"
         working-directory: packages/react
       - name: Publish with npm Trusted Publishing
         run: npm publish
