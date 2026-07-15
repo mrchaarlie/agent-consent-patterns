@@ -3,120 +3,150 @@
 [![CI](https://github.com/mrchaarlie/agent-consent-patterns/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mrchaarlie/agent-consent-patterns/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/%40agentconsent%2Freact?logo=npm&label=%40agentconsent%2Freact)](https://www.npmjs.com/package/@agentconsent/react)
 [![license](https://img.shields.io/github/license/mrchaarlie/agent-consent-patterns)](LICENSE)
-[![Node.js](https://img.shields.io/node/v/%40agentconsent%2Freact?logo=node.js)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D20-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 
-**UX patterns for AI agent permissions, consent, and human-in-the-loop control**. A reference
-site and React component library for teams building products where an agent acts on a user's
-behalf.
+**UX patterns for AI-agent permissions, consent, and human-in-the-loop control.** Agent Consent
+Patterns is a live reference site, an accessible React component library, and a reusable skill for
+coding agents building products that act on a person's behalf.
 
-Site: **[agentconsent.dev](https://agentconsent.dev)**
+**Explore the reference at [agentconsent.dev](https://agentconsent.dev).**
 
 ## Why this exists
 
-Agentic products face a consent design space traditional app permissions never had to handle.
-A checkbox that says "Allow access to your email" was already a weak contract between a person
-and an app; between a person and an *agent* (software that interprets intent, chains actions,
-and keeps acting after the dialog closes), it breaks down entirely. Teams shipping agents today
-are all improvising answers to the same questions:
+Agentic products create consent problems that ordinary application permissions do not cover. A
+simple "allow access to your email" prompt does not explain what an agent will do, how long the
+authority lasts, which actions need review, or how a person can inspect and revoke it later.
 
-- **Scope ambiguity:** what exactly did the user hand over, and can they tell?
-- **Standing authority:** what may the agent keep doing tomorrow without asking again?
-- **Irreversibility:** which actions deserve real friction, and which shouldn't nag?
-- **Prompt injection:** when content the agent read starts issuing instructions, does the user find out?
-- **Credential handoff:** how does an agent sign in or pay without ever holding the secret?
-- **Auditability:** after the agent acts, what record does the user get, and what can they undo?
+This project gives teams a shared language and concrete, accessible implementations for those
+decisions: scope, standing authority, irreversible actions, prompt injection, credential handoff,
+and auditability.
 
-No canonical reference for these flows exists. This project is that reference.
+## The pattern library
 
-## What you get
+The reference documents 12 patterns, each with a decision model, live demo, accessibility guidance,
+real-world examples, implementation notes, and anti-patterns.
 
-1. **A taxonomy of 12 named patterns** across four categories: a shared vocabulary so teams can
-   say "that needs an Irreversibility Gate, not another confirm dialog" and mean the same thing:
+| Category | Patterns |
+| --- | --- |
+| Granting access | Scoped Grant · Progressive Scope · Connection Card |
+| Approving actions | Action Preview · Irreversibility Gate · Batch Approval |
+| Standing authority | Consent Memory · Authority Boundary · Spend & Rate Limits |
+| Trust & transparency | Injection Flag · Action Receipt · Credential Handoff |
 
-   | Category | Patterns |
-   |----------|----------|
-   | Granting access | Scoped Grant · Progressive Scope · Connection Card |
-   | Approving actions | Action Preview · Irreversibility Gate · Batch Approval |
-   | Standing authority | Consent Memory · Authority Boundary · Spend & Rate Limits |
-   | Trust & transparency | Injection Flag · Action Receipt · Credential Handoff |
+[Browse all patterns →](https://agentconsent.dev/patterns/)
 
-   Each pattern is documented with the problem it solves, anatomy, when (not) to use it,
-   real-world examples, accessibility notes, and anti-patterns.
+## React library
 
-2. **A production-quality React implementation of every pattern** (`@agentconsent/react`),
-   headless-first: logic and accessibility ship as unstyled primitives (built on Radix UI), with
-   a default theme (`@agentconsent/react/theme.css`) and design tokens as CSS variables
-   (`@agentconsent/react/tokens.css`) so themes are swappable. WCAG 2.2 AA, axe-clean, fully
-   keyboard-operable.
+[`@agentconsent/react`](https://www.npmjs.com/package/@agentconsent/react) provides headless React
+primitives for every pattern. The components provide interaction and accessibility semantics; your
+application supplies the language, data, callbacks, and visual treatment.
 
-3. **A distilled best-practices skill for coding agents.** Install it into Claude Code, Codex, or
-   another compatible agent, and it applies these patterns when it builds consent flows:
-
-   ```
-   /plugin marketplace add mrchaarlie/agent-consent-patterns
-   /plugin install consent-ux@agent-consent-patterns
-   ```
-
-## Getting started
-
-- **[React library guide](https://agentconsent.dev/library/):** install, theme, and compose the
-  headless primitives in `@agentconsent/react`.
-- **[Agent skill guide](https://agentconsent.dev/skill/):** install the consent-UX skill in Claude
-  Code or Codex, or copy its portable `SKILL.md` directory into another compatible agent.
-
-## Agent mode
-
-The site has an agent-readable view: a plain-text/Markdown mirror so an agent can
-read the reference without parsing React or hydration markup. It follows the
-[llms.txt](https://llmstxt.org) convention.
-
-- **`/llms.txt`**: an index of the whole site (the 12 patterns + principles,
-  glossary, about) with one-line descriptions and links to each Markdown file.
-- **`/llms-full.txt`**: every pattern and page concatenated into one document.
-- **`/patterns/<slug>.md`, `/principles.md`, `/glossary.md`, `/about.md`,
-  `/library.md`, `/skill.md`, `/index.md`**: clean Markdown mirrors of each page. Live component demos are
-  replaced with a short note pointing back at the interactive page.
-
-Every human page also advertises its mirror via
-`<link rel="alternate" type="text/markdown">`, and the footer links to `llms.txt`.
-These files are generated from the content sources (MDX + the pattern/glossary/
-principles data) by `apps/site/scripts/generate-agent-view.mjs`, which runs as the
-site's `postbuild` step, so the agent view can never drift from the human one.
-
-## Structure
-
+```sh
+npm install @agentconsent/react
 ```
-packages/react/   @agentconsent/react, headless components + styled default theme
-apps/site/        Docs site (Next.js, static export), patterns, guides, principles, glossary
-  scripts/        generate-agent-view.mjs, builds the llms.txt + Markdown mirror
-plugins/          Claude Code plugin: the agent-consent best-practices skill
+
+Start with the default theme, or import only the tokens when you want to provide all component
+styles yourself:
+
+```tsx
+import "@agentconsent/react/theme.css";
+// Or: import "@agentconsent/react/tokens.css";
+```
+
+Patterns use compound components, with a `Root` coordinating their shared behavior:
+
+```tsx
+import { ActionPreview } from "@agentconsent/react";
+
+<ActionPreview.Root>
+  <ActionPreview.Header>
+    <ActionPreview.Title>Send email?</ActionPreview.Title>
+  </ActionPreview.Header>
+  <ActionPreview.Fields>
+    <ActionPreview.Field label="To">Dana</ActionPreview.Field>
+    <ActionPreview.Field label="Subject">Project update</ActionPreview.Field>
+  </ActionPreview.Fields>
+  <ActionPreview.Actions>
+    <ActionPreview.Button onClick={sendEmail}>Send email</ActionPreview.Button>
+    <ActionPreview.Button onClick={cancel}>Cancel</ActionPreview.Button>
+  </ActionPreview.Actions>
+</ActionPreview.Root>
+```
+
+See the [library guide](https://agentconsent.dev/library/) for theming and composition, or choose a
+primitive from the [pattern index](https://agentconsent.dev/patterns/) rather than from its name alone.
+
+## Use the skill with a coding agent
+
+The included `consent-ux` skill gives coding agents the pattern vocabulary, selection guidance,
+anti-patterns, and accessibility checks behind this reference. Use it when an agent is designing,
+building, or reviewing consent flows.
+
+### Claude Code
+
+```text
+/plugin marketplace add mrchaarlie/agent-consent-patterns
+/plugin install consent-ux@agent-consent-patterns
+```
+
+### Codex
+
+```sh
+codex plugin marketplace add mrchaarlie/agent-consent-patterns
+codex plugin add consent-ux@agent-consent-patterns
+```
+
+For other compatible agents, copy the complete
+[`plugins/agent-consent-patterns/skills/agent-consent-patterns/`](plugins/agent-consent-patterns/skills/agent-consent-patterns/)
+directory into the agent's skills location. [Read the skill guide →](https://agentconsent.dev/skill/)
+
+## Read it your way — or let an agent read it
+
+The site offers every explanatory passage at three reading levels: **Caveman**, **Human**, and
+**Academic**. The Human level is the canonical source for metadata and the agent-readable views.
+
+Those views follow the [llms.txt](https://llmstxt.org) convention and are generated from the same
+site content as the human pages:
+
+- [llms.txt](https://agentconsent.dev/llms.txt) — concise index of the reference.
+- [llms-full.txt](https://agentconsent.dev/llms-full.txt) — every pattern and guide in one document.
+- Markdown mirrors — for example, [Action Preview](https://agentconsent.dev/patterns/action-preview.md),
+  [principles](https://agentconsent.dev/principles.md), and the [library guide](https://agentconsent.dev/library.md).
+
+Each human page advertises its Markdown counterpart, so agents can discover the alternative view
+without parsing the rendered application.
+
+## Project structure
+
+```text
+packages/react/   Published @agentconsent/react component library
+apps/site/        Next.js static reference site and live pattern demos
+plugins/          Claude Code / Codex marketplace plugin and portable skill
 ```
 
 ## Development
 
+Requires Node.js 20 or later and pnpm 11.
+
 ```sh
 pnpm install
-pnpm dev          # docs site at localhost:3000
-pnpm build        # build library + static site
-pnpm test         # unit + axe tests (library), Playwright smoke (site)
-pnpm typecheck && pnpm lint
+pnpm dev          # reference site at http://localhost:3000
+pnpm build        # library, static site, and agent-readable mirrors
+pnpm test         # library unit/axe tests and site Playwright tests
+pnpm typecheck
+pnpm lint
 ```
 
-## Why Radix UI as the foundation
+## Quality and security
 
-Its unstyled primitives (AlertDialog, Switch, RadioGroup, Slider) map directly onto the consent
-patterns, ship per-package so consumers only pay for what they use, and are already familiar to
-the design-engineering audience this library serves. That familiarity and the maturity of its
-focus-management/aria wiring beat the alternatives (React Aria's hooks: deeper control, more glue
-code; hand-rolling: zero deps, but we'd own every screen-reader edge case).
-
-## Security
+The library is built on Radix UI primitives and is designed for keyboard operation and WCAG 2.2 AA
+workflows. Accessibility checks run with axe in both unit tests and real-browser Playwright tests.
+Published npm releases are built and released through GitHub Actions with npm Trusted Publishing and
+provenance.
 
 Please report vulnerabilities privately as described in [SECURITY.md](SECURITY.md), rather than
-opening a public issue. The package release process uses CI, dependency review, and npm provenance
-through Trusted Publishing once public publishing begins. See the [npm package](https://www.npmjs.com/package/@agentconsent/react)
-for provenance information after a published release.
+opening a public issue.
 
 ## License
 
-MIT
+[MIT](LICENSE)
