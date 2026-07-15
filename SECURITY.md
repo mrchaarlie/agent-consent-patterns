@@ -26,9 +26,11 @@ Publishing. Once enabled, npm provenance links each release to its source commit
 
 ## Maintainer setup
 
-Before the first public release, enable GitHub private vulnerability reporting and subscribe the
-maintainer to repository security alerts. Protect `main` with pull requests, required `CI` and
-`Dependency review` checks, blocked force pushes, and blocked branch deletion.
+Before the first public release, enable Dependency graph (Settings → Advanced Security) — without
+it, `dependency-review.yml` fails every PR with HTTP 403 ("Dependency review is not supported").
+Enable private vulnerability reporting and subscribe the maintainer to repository security alerts.
+Protect `main` with pull requests, required `CI` and `Dependency review` checks, blocked force
+pushes, and blocked branch deletion.
 
 After the first release creates the npm package, configure npm Trusted Publishing for
 `.github/workflows/publish.yml`, require two-factor authentication, disallow token publishing, and
