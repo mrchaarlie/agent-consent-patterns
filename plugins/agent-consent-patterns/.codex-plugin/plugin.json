@@ -1,13 +1,27 @@
 {
-  "name": "consent-ux",
-  "version": "0.1.0",
-  "description": "Best practices for AI agent consent UX: 12 named patterns and 10 principles for permission grants, action approval, standing authority, and trust surfaces.",
-  "author": "Charles Wu",
+  "name": "agent-consent-patterns",
+  "version": "0.1.1",
+  "description": "Practical security and UX guidance for building trustworthy AI agents that act with clear human control.",
+  "author": {
+    "name": "Charles Wu",
+    "email": "imcharleswu@gmail.com",
+    "url": "https://github.com/mrchaarlie"
+  },
+  "homepage": "https://agentconsent.dev/skill/",
+  "repository": "https://github.com/mrchaarlie/agent-consent-patterns",
   "license": "MIT",
+  "keywords": ["ai-agents", "consent", "permissions", "human-in-the-loop", "ux"],
   "skills": "./skills/",
-  "displayName": "Agent Consent Patterns",
-  "shortDescription": "12 UX patterns for AI agent permissions, consent, and human-in-the-loop control",
-  "category": "UX / Design",
-  "capabilities": ["consent-ux", "permission-design", "accessibility-review"],
-  "websiteURL": "https://github.com/mrchaarlie/agent-consent-patterns"
+  "interface": {
+    "displayName": "Agent Consent Patterns",
+    "shortDescription": "Build safer, clearer, human-controlled AI agents.",
+    "longDescription": "Actionable best practices for designing and reviewing AI agents that request access, take actions, and operate with least privilege, accessible controls, and meaningful human oversight.",
+    "developerName": "Charles Wu",
+    "category": "Education & Research",
+    "capabilities": ["Consent UX guidance", "Permission design", "Accessibility review"],
+    "websiteURL": "https://agentconsent.dev/skill/",
+    "defaultPrompt": ["Review this AI agent permission or approval flow for consent UX risks."],
+    "composerIcon": "./assets/composer-icon.png",
+    "logo": "./assets/logo.png"
+  }
 }

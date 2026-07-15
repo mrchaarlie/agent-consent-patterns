@@ -1,6 +1,6 @@
 ---
 name: agent-consent-patterns
-description: Best practices for designing AI agent consent, permission, and human-in-the-loop UX. Use when building or reviewing ANY surface where an agent asks for access, previews an action, holds standing authority, or reports what it did, such as OAuth/connection screens, tool-approval dialogs, permission settings, autonomy levels, spend caps, activity logs, credential flows. Triggers on "agent permissions", "consent screen", "approval dialog", "human in the loop", "tool approval", "connect integration", "always allow", "autonomy settings".
+description: Security and UX best practices for building trustworthy AI agents that request access, take actions, and operate with clear human control. Use when building or reviewing agent permissions, approval flows, delegation settings, action previews, standing authority, activity records, or credential handoffs. Triggers on "agent permissions", "consent screen", "approval dialog", "human in the loop", "tool approval", "connect integration", "always allow", "autonomy settings".
 ---
 
 # Agent Consent Patterns
