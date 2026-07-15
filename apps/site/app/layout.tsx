@@ -74,28 +74,28 @@ export default function RootLayout({
           Skip to content
         </a>
         <SiteHeader>
-          <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-8 gap-y-2 px-6 py-5 md:flex-nowrap md:pr-40">
-            <Link href="/" className="flex items-baseline gap-3">
+          <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-4 gap-y-3 px-6 py-4 md:flex-nowrap md:gap-x-6 md:py-5">
+            <Link href="/" className="flex shrink-0 items-baseline gap-3">
               <span className="font-mono text-xs text-ink-faint" aria-hidden>
                 ACP/
               </span>
-              <span className="font-semibold tracking-tight">
+              <span className="hidden font-semibold tracking-tight md:inline">
                 Agent Consent Patterns
               </span>
             </Link>
-            <div className="ml-auto">
+            <div className="ml-auto shrink-0">
               <SiteNavigation />
             </div>
-          </div>
-          <div className="mx-auto mt-2 max-w-5xl px-6 pb-5 md:absolute md:right-6 md:top-1/2 md:mt-0 md:max-w-none md:-translate-y-1/2 md:px-0 md:pb-0">
-            <ReadingLevelSwitch />
+            <div className="flex w-full border-t border-line pt-3 md:ml-auto md:w-auto md:border-t-0 md:pt-0">
+              <ReadingLevelSwitch />
+            </div>
           </div>
         </SiteHeader>
         <main id="main" className="flex-1">
           {children}
         </main>
         <footer className="relative border-t border-line">
-          <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-8 gap-y-4 px-6 py-8 text-xs text-ink-faint md:flex-nowrap md:pr-40">
+          <div className="mx-auto flex max-w-5xl flex-col items-start gap-y-4 px-6 py-8 text-xs text-ink-faint md:flex-row md:items-center md:gap-x-8 md:gap-y-4 md:pr-40">
             <p>
               MIT licensed. Components:{" "}
               <Link
@@ -105,9 +105,10 @@ export default function RootLayout({
                 @agentconsent/react
               </Link>
             </p>
-            <div className="ml-auto">
-              <nav aria-label="More">
-                <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            <div className="flex w-full items-center justify-between gap-3 md:contents">
+              <div className="shrink-0 md:ml-auto">
+                <nav aria-label="More">
+                  <ul className="flex flex-nowrap gap-x-3 md:gap-x-6">
                   <li>
                     <Link
                       href="/about/"
@@ -140,12 +141,13 @@ export default function RootLayout({
                       llms.txt
                     </a>
                   </li>
-                </ul>
-              </nav>
+                  </ul>
+                </nav>
+              </div>
+              <div className="shrink-0 md:absolute md:right-6 md:top-1/2 md:max-w-none md:-translate-y-1/2">
+                <ThemeSwitch />
+              </div>
             </div>
-          </div>
-          <div className="mx-auto px-6 pb-8 md:absolute md:right-6 md:top-1/2 md:max-w-none md:-translate-y-1/2 md:px-0 md:pb-0">
-            <ThemeSwitch />
           </div>
         </footer>
       </body>

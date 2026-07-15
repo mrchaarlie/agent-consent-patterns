@@ -43,7 +43,7 @@ export function SiteNavigation() {
 
   return (
     <nav ref={navRef} aria-label="Site">
-      <ul className="flex gap-6 text-sm text-ink-muted">
+      <ul className="flex gap-3 text-sm text-ink-muted sm:gap-4 md:gap-6">
         {NAV.map((group) => {
           const isOpen = openGroup === group.label;
           const menuId = `site-nav-${group.label.toLowerCase()}`;

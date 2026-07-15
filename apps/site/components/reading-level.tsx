@@ -67,7 +67,7 @@ export function ReadingLevelSwitch() {
   const level = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   return (
-    <div data-acp="reading-level" className="flex items-center gap-2">
+    <div data-acp="reading-level" className="flex w-full items-center justify-between gap-2 md:w-auto md:justify-start">
       <label
         htmlFor="reading-level"
         className="font-mono text-[0.6875rem] uppercase tracking-[0.1em] text-ink-faint"
@@ -78,7 +78,7 @@ export function ReadingLevelSwitch() {
         id="reading-level"
         value={level}
         onChange={(e) => setDocumentLevel(e.target.value as ReadingLevel)}
-        className="cursor-pointer rounded-md border border-line bg-surface-raised px-2 py-1 text-xs text-ink hover:border-line-strong"
+        className="cursor-pointer rounded-md border border-line bg-surface-raised px-1.5 py-1 text-[0.6875rem] text-ink hover:border-line-strong md:px-2 md:text-xs"
       >
         {READING_LEVELS.map(({ value, label }) => (
           <option key={value} value={value}>

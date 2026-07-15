@@ -82,15 +82,43 @@ test.describe("Guides and site navigation", () => {
     const labelBox = await readingLabel.boundingBox();
     const selectBox = await readingSelect.boundingBox();
     expect(labelBox?.x).toBeLessThan(selectBox?.x ?? 0);
-    const viewport = page.viewportSize();
-    expect(viewport).not.toBeNull();
-    expect((viewport?.width ?? 0) - ((selectBox?.x ?? 0) + (selectBox?.width ?? 0))).toBeLessThanOrEqual(32);
+
+    for (const width of [780, 1024]) {
+      await page.setViewportSize({ width, height: 800 });
+      const buildBox = await page.getByText("Build", { exact: true }).boundingBox();
+      const readingBox = await page.locator('[data-acp="reading-level"]').boundingBox();
+      expect(buildBox).not.toBeNull();
+      expect(readingBox).not.toBeNull();
+      expect(buildBox!.x + buildBox!.width + 16).toBeLessThanOrEqual(readingBox!.x);
+      expect(buildBox!.y + buildBox!.height).toBeGreaterThan(readingBox!.y);
+      expect(readingBox!.y + readingBox!.height).toBeGreaterThan(buildBox!.y);
+    }
+
+    await page.setViewportSize({ width: 375, height: 800 });
+    const mobileBuildBox = await page.getByText("Build", { exact: true }).boundingBox();
+    const mobileReadingBox = await page.locator('[data-acp="reading-level"]').boundingBox();
+    expect(mobileBuildBox).not.toBeNull();
+    expect(mobileReadingBox).not.toBeNull();
+    expect(mobileBuildBox!.y + mobileBuildBox!.height).toBeLessThanOrEqual(mobileReadingBox!.y);
+    await expect(page.getByText("Reading level", { exact: true })).toBeVisible();
+    await expect(page.getByText("Agent Consent Patterns", { exact: true })).toBeHidden();
+
+    const licenseBox = await page.getByText("MIT licensed.", { exact: false }).boundingBox();
+    const moreNavBox = await page.getByRole("navigation", { name: "More" }).boundingBox();
+    expect(licenseBox).not.toBeNull();
+    expect(moreNavBox).not.toBeNull();
+    expect(licenseBox!.y + licenseBox!.height).toBeLessThanOrEqual(moreNavBox!.y);
 
     const theme = page.locator('[data-acp="theme-switch"] select');
     await expect(theme).toHaveValue("system");
     await theme.selectOption("dark");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     const themeBox = await theme.boundingBox();
+    expect(themeBox).not.toBeNull();
+    expect(moreNavBox!.y + moreNavBox!.height).toBeGreaterThan(themeBox!.y);
+    expect(themeBox!.y + themeBox!.height).toBeGreaterThan(moreNavBox!.y);
+    const viewport = page.viewportSize();
+    expect(viewport).not.toBeNull();
     expect((viewport?.width ?? 0) - ((themeBox?.x ?? 0) + (themeBox?.width ?? 0))).toBeLessThanOrEqual(32);
   });
 });
