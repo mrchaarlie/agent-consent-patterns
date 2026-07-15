@@ -15,7 +15,7 @@
             "code": "Add the Agent Consent Patterns plugin from https://github.com/mrchaarlie/agent-consent-patterns"
           },
           {
-            "label": "Or, add it from the marketplace",
+            "label": "Or, add it from the Customize page",
             "steps": [
               "Open Customize, then Plugins.",
               "In Personal plugins, select +, then Add marketplace.",
@@ -59,7 +59,7 @@
             "code": "Add the Agent Consent Patterns plugin from https://github.com/mrchaarlie/agent-consent-patterns"
           },
           {
-            "label": "Find it in the Plugins page",
+            "label": "Or, add it from the Plugins page",
             "steps": ["Open the Plugins page, search for \"Agent Consent Patterns\", then install the official plugin."]
           }
         ]

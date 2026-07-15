@@ -101,7 +101,7 @@ test.describe("Guides and site navigation", () => {
       ),
     ).toBeVisible();
     await expect(
-      installer.getByRole("heading", { name: "Or, add it from the marketplace" }),
+      installer.getByRole("heading", { name: "Or, add it from the Customize page" }),
     ).toBeVisible();
     await expect(installer.getByText("Customize, then Plugins.")).toBeVisible();
     await expect(
@@ -126,7 +126,7 @@ test.describe("Guides and site navigation", () => {
       ),
     ).toBeVisible();
     await expect(
-      installer.getByRole("heading", { name: "Find it in the Plugins page" }),
+      installer.getByRole("heading", { name: "Or, add it from the Plugins page" }),
     ).toBeVisible();
     await expect(
       installer.getByText(
