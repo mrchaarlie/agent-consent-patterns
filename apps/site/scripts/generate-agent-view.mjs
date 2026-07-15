@@ -105,8 +105,10 @@ function proseToMarkdown(jsx) {
   s = s.replace(/<em[^>]*>/g, "_").replace(/<\/em>/g, "_");
   // Paragraph boundaries.
   s = s.replace(/<p[^>]*>/g, "").replace(/<\/p>/g, "\n\n");
-  // Drop fragments and any remaining tags.
-  s = s.replace(/<\/?>/g, "").replace(/<[^>]+>/g, "");
+  // Drop fragments and any remaining markup delimiters. Strip the individual
+  // delimiter characters rather than matching whole tags: overlapping malformed
+  // tags can otherwise re-form after a single multi-character replacement.
+  s = s.replace(/[<>]/g, "");
   s = decodeEntities(s);
   // Normalize whitespace inside paragraphs, collapse blank runs.
   s = s
