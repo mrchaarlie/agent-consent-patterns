@@ -6,3 +6,5 @@ allowBuilds:
   sharp: true
   "@tailwindcss/oxide": true
   unrs-resolver: true
+overrides:
+  postcss: 8.5.19
