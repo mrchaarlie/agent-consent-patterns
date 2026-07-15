@@ -16,19 +16,9 @@ The Agent Consent Patterns skill operationalizes this reference for coding agent
 
 </div>
 
-## Claude Code
+import { SkillInstaller } from "@/components/skill-installer";
 
-```text
-/plugin marketplace add mrchaarlie/agent-consent-patterns
-/plugin install consent-ux@agent-consent-patterns
-```
-
-## Codex
-
-```sh
-codex plugin marketplace add mrchaarlie/agent-consent-patterns
-codex plugin add consent-ux@agent-consent-patterns
-```
+<SkillInstaller />
 
 <div data-lvl="caveman">
 
@@ -45,26 +35,6 @@ After installation, invoke the skill explicitly when needed or let the agent sel
 <div data-lvl="academic">
 
 Installed skills may be invoked explicitly or selected from their trigger descriptions. Apply this one at design time, implementation time, and review time so the consent contract remains consistent across the workflow rather than becoming a final-pass checklist.
-
-</div>
-
-## Other compatible agents
-
-<div data-lvl="caveman">
-
-Copy the whole skill folder, not just one file, into the place your agent looks for skills.
-
-</div>
-
-<div data-lvl="human">
-
-For another agent that supports the open `SKILL.md` format, copy the complete `plugins/agent-consent-patterns/skills/agent-consent-patterns/` directory into that agent's documented skills location. Preserve the directory name and front matter; installation locations differ by product.
-
-</div>
-
-<div data-lvl="academic">
-
-The skill is distributed in the interoperable `SKILL.md` directory format. Compatible agents can consume the complete `plugins/agent-consent-patterns/skills/agent-consent-patterns/` directory through their own documented discovery mechanism; platform-specific installation paths are intentionally not assumed to be interchangeable.
 
 </div>
 

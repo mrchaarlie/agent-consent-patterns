@@ -1,0 +1,218 @@
+[
+  {
+    "id": "claude",
+    "label": "Claude",
+    "modes": ["app", "cli"],
+    "guides": {
+      "app": {
+        "title": "Add it in the Claude app",
+        "steps": [
+          "Open Customize, then Plugins.",
+          "In Personal plugins, select +, then Add marketplace.",
+          "Choose Add from a repository, paste https://github.com/mrchaarlie/agent-consent-patterns, then add the marketplace.",
+          "Select agent-consent-patterns from the marketplace, then select Install."
+        ],
+        "code": null,
+        "copyText": "https://github.com/mrchaarlie/agent-consent-patterns"
+      },
+      "cli": {
+        "title": "Install with Claude Code",
+        "steps": [],
+        "code": null,
+        "scopes": {
+          "project": {
+            "steps": ["Run this in the project directory. It adds the marketplace when needed, otherwise refreshes it before installing the skill for this project."],
+            "code": "(claude plugin marketplace add mrchaarlie/agent-consent-patterns --scope project || claude plugin marketplace update agent-consent-patterns) && claude plugin install agent-consent-patterns@agent-consent-patterns --scope project"
+          },
+          "global": {
+            "steps": ["Run this in a terminal. It adds the marketplace when needed, otherwise refreshes it before installing the skill for your user account."],
+            "code": "(claude plugin marketplace add mrchaarlie/agent-consent-patterns --scope user || claude plugin marketplace update agent-consent-patterns) && claude plugin install agent-consent-patterns@agent-consent-patterns --scope user"
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "chatgpt-codex",
+    "label": "ChatGPT-Codex",
+    "modes": ["app", "cli"],
+    "guides": {
+      "app": {
+        "title": "Add it in the ChatGPT-Codex app",
+        "steps": ["In a ChatGPT-Codex task, send this message."],
+        "code": "Add the Agent Consent Patterns plugin from https://github.com/mrchaarlie/agent-consent-patterns"
+      },
+      "cli": {
+        "title": "Install with Codex CLI",
+        "steps": ["Run this in a terminal. It adds the marketplace when needed, otherwise refreshes it before installing the plugin."],
+        "code": "(codex plugin marketplace add mrchaarlie/agent-consent-patterns || codex plugin marketplace upgrade agent-consent-patterns) && codex plugin add agent-consent-patterns@agent-consent-patterns"
+      }
+    }
+  },
+  {
+    "id": "gemini",
+    "label": "Gemini CLI",
+    "modes": ["cli"],
+    "guides": {
+      "app": null,
+      "cli": {
+        "title": "Install with Gemini CLI",
+        "steps": [],
+        "code": null,
+        "scopes": {
+          "project": {
+            "steps": ["Download the portable skill into this workspace's Gemini skills directory, then run /skills reload or start a new session."],
+            "code": "mkdir -p .gemini/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o .gemini/skills/agent-consent-patterns/SKILL.md"
+          },
+          "global": {
+            "steps": ["Download the portable skill into your personal Gemini skills directory, then run /skills reload or start a new session."],
+            "code": "mkdir -p ~/.gemini/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o ~/.gemini/skills/agent-consent-patterns/SKILL.md"
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "cursor",
+    "label": "Cursor",
+    "modes": ["cli"],
+    "guides": {
+      "app": null,
+      "cli": {
+        "title": "Add the guidance as a Cursor rule",
+        "steps": [],
+        "code": null,
+        "scopes": {
+          "project": {
+            "steps": ["Run this in the workspace. It creates an Agent Requested rule that Cursor can load when consent UX is relevant."],
+            "code": "mkdir -p .cursor/rules && { printf '%s\\n' '---' 'description: Design and review consent, permission, approval, and human-in-the-loop UX.' 'alwaysApply: false' '---' && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md | awk 'BEGIN { delimiters = 0 } { if (delimiters < 2 && /^---$/) { delimiters++; next } if (delimiters >= 2) print }'; } > .cursor/rules/agent-consent-patterns.mdc"
+          },
+          "global": {
+            "steps": ["Open Cursor Settings, then Rules. Copy the portable skill source into User Rules to apply it to every Cursor project."],
+            "code": null,
+            "sourceUrl": "https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md"
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "qwen",
+    "label": "Qwen Code",
+    "modes": ["cli"],
+    "guides": {
+      "app": null,
+      "cli": {
+        "title": "Add the skill to Qwen Code",
+        "steps": [],
+        "code": null,
+        "scopes": {
+          "project": {
+            "steps": ["Download the portable skill into this project's Qwen skills directory, then start a new session."],
+            "code": "mkdir -p .qwen/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o .qwen/skills/agent-consent-patterns/SKILL.md"
+          },
+          "global": {
+            "steps": ["Download the portable skill into your personal Qwen skills directory, then start a new session."],
+            "code": "mkdir -p ~/.qwen/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o ~/.qwen/skills/agent-consent-patterns/SKILL.md"
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "deepseek",
+    "label": "DeepSeek — Deep Code",
+    "modes": ["cli"],
+    "guides": {
+      "app": null,
+      "cli": {
+        "title": "Add the skill to Deep Code",
+        "steps": [],
+        "code": null,
+        "scopes": {
+          "project": {
+            "steps": ["Download the portable skill into this third-party DeepSeek integration's project skills directory, then start a new session."],
+            "code": "mkdir -p .deepcode/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o .deepcode/skills/agent-consent-patterns/SKILL.md"
+          },
+          "global": {
+            "steps": ["Download the portable skill into your personal Deep Code skills directory, then start a new session."],
+            "code": "mkdir -p ~/.agents/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o ~/.agents/skills/agent-consent-patterns/SKILL.md"
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "grok",
+    "label": "Grok",
+    "modes": ["cli"],
+    "guides": {
+      "app": null,
+      "cli": {
+        "title": "Add the skill to Grok Build",
+        "steps": [],
+        "code": null,
+        "scopes": {
+          "project": {
+            "steps": ["Download the portable skill into this project's Grok skills directory, then start a new Grok session."],
+            "code": "mkdir -p .grok/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o .grok/skills/agent-consent-patterns/SKILL.md"
+          },
+          "global": {
+            "steps": ["Download the portable skill into your personal Grok skills directory, then start a new Grok session."],
+            "code": "mkdir -p ~/.grok/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o ~/.grok/skills/agent-consent-patterns/SKILL.md"
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "copilot",
+    "label": "GitHub Copilot",
+    "modes": ["cli"],
+    "guides": {
+      "app": null,
+      "cli": {
+        "title": "Add the skill to GitHub Copilot",
+        "steps": [],
+        "code": null,
+        "scopes": {
+          "project": {
+            "steps": ["Download the portable skill into this repository's Copilot skills directory, then start a new Copilot session or run /skills reload."],
+            "code": "mkdir -p .github/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o .github/skills/agent-consent-patterns/SKILL.md"
+          },
+          "global": {
+            "steps": ["Download the portable skill into your personal Copilot skills directory, then start a new Copilot session or run /skills reload."],
+            "code": "mkdir -p ~/.copilot/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o ~/.copilot/skills/agent-consent-patterns/SKILL.md"
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "windsurf",
+    "label": "Windsurf",
+    "modes": ["cli"],
+    "guides": {
+      "app": null,
+      "cli": {
+        "title": "Add the guidance as a Windsurf rule",
+        "steps": ["Run this in the workspace. Windsurf's 6,000-character global-rule limit is too small for this 8,539-character guide, so use the workspace rule instead."],
+        "code": "mkdir -p .windsurf/rules && { printf '%s\\n' '---' 'trigger: model_decision' 'description: Design and review consent, permission, approval, and human-in-the-loop UX.' '---' && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md | awk 'BEGIN { delimiters = 0 } { if (delimiters < 2 && /^---$/) { delimiters++; next } if (delimiters >= 2) print }'; } > .windsurf/rules/agent-consent-patterns.md"
+      }
+    }
+  },
+  {
+    "id": "other",
+    "label": "Other compatible agent",
+    "modes": ["cli"],
+    "guides": {
+      "app": null,
+      "cli": {
+        "title": "Add the portable skill",
+        "steps": ["Download or copy this portable SKILL.md into your agent's documented skills location."],
+        "code": null,
+        "sourceUrl": "https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md"
+      }
+    }
+  }
+]
