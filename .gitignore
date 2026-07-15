@@ -9,6 +9,9 @@ playwright-report/
 .DS_Store
 .env*.local
 .tokensave/
-# agent workflow memory — never commit publicly
+# agent workflow memory
 private/
+.claude/
+.codex/
 CLAUDE.md
+AGENTS.md

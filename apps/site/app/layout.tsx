@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Analytics } from "@/components/analytics";
 import { ReadingLevelSwitch } from "@/components/reading-level";
+import { SiteHeader } from "@/components/site-header";
 import { ThemeSwitch } from "@/components/theme-switch";
 import "./globals.css";
 
@@ -77,7 +78,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <header className="border-b border-line">
+        <SiteHeader>
           <div className="mx-auto flex max-w-5xl flex-wrap items-baseline justify-between gap-x-8 gap-y-2 px-6 py-5">
             <Link href="/" className="flex items-baseline gap-3">
               <span className="font-mono text-xs text-ink-faint" aria-hidden>
@@ -105,7 +106,7 @@ export default function RootLayout({
               <ReadingLevelSwitch />
             </div>
           </div>
-        </header>
+        </SiteHeader>
         <main id="main" className="flex-1">
           {children}
         </main>
