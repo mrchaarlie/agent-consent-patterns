@@ -26,6 +26,8 @@ jobs:
         run: pnpm typecheck
       - name: Lint
         run: pnpm lint
+      - name: Install Playwright browsers
+        run: pnpm --filter @agentconsent/site exec playwright install --with-deps chromium
       - name: Test
         run: pnpm test
       - name: Check published package contents
