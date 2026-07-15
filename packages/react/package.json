@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Headless React components for AI agent consent UX patterns",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "homepage": "https://agentconsent.dev",
   "repository": {
     "type": "git",

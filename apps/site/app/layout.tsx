@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Analytics } from "@/components/analytics";
 import { ReadingLevelSwitch } from "@/components/reading-level";
 import { SiteHeader } from "@/components/site-header";
+import { SiteNavigation } from "@/components/site-navigation";
 import { ThemeSwitch } from "@/components/theme-switch";
 import "./globals.css";
 
@@ -53,12 +54,6 @@ export const metadata: Metadata = {
   },
 };
 
-const NAV = [
-  { href: "/patterns/", label: "Patterns" },
-  { href: "/principles/", label: "Principles" },
-  { href: "/glossary/", label: "Glossary" },
-];
-
 export default function RootLayout({
   children,
 }: {
@@ -79,7 +74,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <SiteHeader>
-          <div className="mx-auto flex max-w-5xl flex-wrap items-baseline justify-between gap-x-8 gap-y-2 px-6 py-5">
+          <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-8 gap-y-2 px-6 py-5 md:flex-nowrap md:pr-40">
             <Link href="/" className="flex items-baseline gap-3">
               <span className="font-mono text-xs text-ink-faint" aria-hidden>
                 ACP/
@@ -88,35 +83,29 @@ export default function RootLayout({
                 Agent Consent Patterns
               </span>
             </Link>
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
-              <nav aria-label="Site">
-                <ul className="flex gap-6 text-sm text-ink-muted">
-                  {NAV.map((item) => (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        className="hover:text-ink hover:underline hover:underline-offset-4"
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-              <ReadingLevelSwitch />
+            <div className="ml-auto">
+              <SiteNavigation />
             </div>
+          </div>
+          <div className="mx-auto mt-2 max-w-5xl px-6 pb-5 md:absolute md:right-6 md:top-1/2 md:mt-0 md:max-w-none md:-translate-y-1/2 md:px-0 md:pb-0">
+            <ReadingLevelSwitch />
           </div>
         </SiteHeader>
         <main id="main" className="flex-1">
           {children}
         </main>
-        <footer className="border-t border-line">
-          <div className="mx-auto flex max-w-5xl flex-wrap items-baseline justify-between gap-x-8 gap-y-4 px-6 py-8 text-xs text-ink-faint">
+        <footer className="relative border-t border-line">
+          <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-8 gap-y-4 px-6 py-8 text-xs text-ink-faint md:flex-nowrap md:pr-40">
             <p>
               MIT licensed. Components:{" "}
-              <span className="font-mono">@agentconsent/react</span>
+              <Link
+                href="/library/"
+                className="font-mono underline underline-offset-4 hover:text-ink"
+              >
+                @agentconsent/react
+              </Link>
             </p>
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
+            <div className="ml-auto">
               <nav aria-label="More">
                 <ul className="flex flex-wrap gap-x-6 gap-y-2">
                   <li>
@@ -126,6 +115,14 @@ export default function RootLayout({
                     >
                       About
                     </Link>
+                  </li>
+                  <li>
+                    <a
+                      href="mailto:contact@agentconsent.dev"
+                      className="underline underline-offset-4 hover:text-ink"
+                    >
+                      Contact
+                    </a>
                   </li>
                   <li>
                     <a
@@ -145,8 +142,10 @@ export default function RootLayout({
                   </li>
                 </ul>
               </nav>
-              <ThemeSwitch />
             </div>
+          </div>
+          <div className="mx-auto px-6 pb-8 md:absolute md:right-6 md:top-1/2 md:max-w-none md:-translate-y-1/2 md:px-0 md:pb-0">
+            <ThemeSwitch />
           </div>
         </footer>
       </body>

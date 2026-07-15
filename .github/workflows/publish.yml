@@ -1,0 +1,58 @@
+name: Publish React library
+
+on:
+  push:
+    tags: ["react-v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: pnpm/action-setup@7088e561eb65bb68695d245aa206f005ef30921d # v4.1.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build library
+        run: pnpm --filter @agentconsent/react build
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Lint
+        run: pnpm lint
+      - name: Test
+        run: pnpm test
+      - name: Check published package contents
+        run: npm pack --dry-run
+        working-directory: packages/react
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: pnpm/action-setup@7088e561eb65bb68695d245aa206f005ef30921d # v4.1.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build library
+        run: pnpm --filter @agentconsent/react build
+      - name: Confirm tag matches package version
+        run: test "${GITHUB_REF_NAME#react-v}" = "$(node -p \"require('./package.json').version\")"
+        working-directory: packages/react
+      - name: Publish with npm Trusted Publishing
+        run: npm publish
+        working-directory: packages/react

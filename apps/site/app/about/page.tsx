@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Lvl } from "@/components/lvl";
 
 export const metadata: Metadata = {
@@ -22,7 +23,13 @@ export default function AboutPage() {
           </p>
           <p>
             Every pattern comes with a working piece in{" "}
-            <span className="font-mono text-ink">@agentconsent/react</span>:
+            <Link
+              href="/library/"
+              className="font-mono text-ink underline underline-offset-4 hover:text-ink-muted"
+            >
+              @agentconsent/react
+            </Link>
+            :
             plain bones, a swappable skin, screen reader friendly, free to
             take (MIT).
           </p>
@@ -48,7 +55,13 @@ export default function AboutPage() {
           <p>
             Each pattern ships with a working, accessible React implementation
             in{" "}
-            <span className="font-mono text-ink">@agentconsent/react</span>:
+            <Link
+              href="/library/"
+              className="font-mono text-ink underline underline-offset-4 hover:text-ink-muted"
+            >
+              @agentconsent/react
+            </Link>
+            :
             headless primitives plus a themeable default, WCAG 2.2 AA, MIT
             licensed.
           </p>
@@ -76,7 +89,13 @@ export default function AboutPage() {
           </p>
           <p>
             Each pattern is accompanied by a reference implementation in{" "}
-            <span className="font-mono text-ink">@agentconsent/react</span>:
+            <Link
+              href="/library/"
+              className="font-mono text-ink underline underline-offset-4 hover:text-ink-muted"
+            >
+              @agentconsent/react
+            </Link>
+            :
             headless primitives with a themeable default skin, WCAG 2.2 AA
             conformant, MIT licensed. The premise: a pattern without a
             runnable artifact is an opinion.

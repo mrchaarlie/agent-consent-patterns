@@ -1,0 +1,72 @@
+<div data-lvl="caveman">
+
+Give this teaching to a code-writing machine before it makes asking-screens. It helps the machine choose the right pattern and avoid dangerous yes-boxes.
+
+</div>
+
+<div data-lvl="human">
+
+The Agent Consent Patterns skill gives a coding agent the same vocabulary, selection guidance, review checklist, and accessibility rules used throughout this site. Use it when an agent is building or reviewing permissions, approvals, standing authority, credential handoff, or action receipts.
+
+</div>
+
+<div data-lvl="academic">
+
+The Agent Consent Patterns skill operationalizes this reference for coding agents: it supplies pattern-selection criteria, non-negotiable consent constraints, anti-patterns, and accessibility checks for delegated-authority interfaces.
+
+</div>
+
+## Claude Code
+
+```text
+/plugin marketplace add mrchaarlie/agent-consent-patterns
+/plugin install consent-ux@agent-consent-patterns
+```
+
+## Codex
+
+```sh
+codex plugin marketplace add mrchaarlie/agent-consent-patterns
+codex plugin add consent-ux@agent-consent-patterns
+```
+
+<div data-lvl="caveman">
+
+After it is installed, ask the agent to use it, or just ask it to build an asking-screen. The skill can wake up when it fits.
+
+</div>
+
+<div data-lvl="human">
+
+After installation, invoke the skill explicitly when needed or let the agent select it when a task matches its description. Use it before implementation, during design review, or when auditing an existing consent flow.
+
+</div>
+
+<div data-lvl="academic">
+
+Installed skills may be invoked explicitly or selected from their trigger descriptions. Apply this one at design time, implementation time, and review time so the consent contract remains consistent across the workflow rather than becoming a final-pass checklist.
+
+</div>
+
+## Other compatible agents
+
+<div data-lvl="caveman">
+
+Copy the whole skill folder, not just one file, into the place your agent looks for skills.
+
+</div>
+
+<div data-lvl="human">
+
+For another agent that supports the open `SKILL.md` format, copy the complete `plugins/agent-consent-patterns/skills/agent-consent-patterns/` directory into that agent's documented skills location. Preserve the directory name and front matter; installation locations differ by product.
+
+</div>
+
+<div data-lvl="academic">
+
+The skill is distributed in the interoperable `SKILL.md` directory format. Compatible agents can consume the complete `plugins/agent-consent-patterns/skills/agent-consent-patterns/` directory through their own documented discovery mechanism; platform-specific installation paths are intentionally not assumed to be interchangeable.
+
+</div>
+
+- [Read the skill source](https://github.com/mrchaarlie/agent-consent-patterns/blob/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md)
+- [Browse the patterns](/patterns/)

@@ -13,11 +13,17 @@ test.describe("Action Preview pattern page", () => {
     await expect(
       page.getByRole("heading", { level: 2, name: "Anatomy" })
     ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "View @agentconsent/react on npm" }).first(),
+    ).toHaveAttribute("href", "https://www.npmjs.com/package/@agentconsent/react");
   });
 
   test("demo approve flow records the decision", async ({ page }) => {
     await page.getByRole("button", { name: "Send email" }).click();
     await expect(page.getByText("Callback log")).toBeVisible();
+    await expect(page.getByRole("list", { name: "Callback log entries" })).toHaveClass(
+      /max-h-48/,
+    );
     await expect(page.getByText(/Approved · consequence: reversible/)).toBeVisible();
     await page.getByRole("button", { name: "Reset demo" }).click();
     await expect(page.getByRole("button", { name: "Send email" })).toBeVisible();
@@ -65,6 +71,9 @@ test("home page renders and has no axe violations", async ({ page }) => {
   await expect(
     page.getByRole("link", { name: "Browse the patterns", exact: true })
   ).toHaveAttribute("href", "/patterns/");
+  await expect(
+    page.getByRole("link", { name: "@agentconsent/react" }).first(),
+  ).toHaveAttribute("href", "/library/");
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
 });
