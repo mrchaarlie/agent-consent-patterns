@@ -209,6 +209,14 @@ function mdxToMarkdown(mdx, pattern) {
 /** Turn a standalone docs MDX file into its canonical Human Markdown mirror. */
 function renderSkillInstallations() {
   const lines = ["## Installation", ""];
+  const pushBody = (body) => {
+    if (body.steps.length === 1) lines.push(body.steps[0], "");
+    else if (body.steps.length > 1)
+      lines.push(...body.steps.map((step) => `1. ${step}`), "");
+    if (body.code) lines.push("```text", body.code, "```", "");
+    if (body.sourceUrl)
+      lines.push(`[Get the portable SKILL.md](${body.sourceUrl})`, "");
+  };
   for (const installation of installations) {
     for (const mode of installation.modes) {
       const guide = installation.guides[mode];
@@ -222,11 +230,14 @@ function renderSkillInstallations() {
           `### ${installation.label} — ${mode === "app" ? "App" : "CLI"}${scopeLabel}`,
           "",
         );
-        if (scopedGuide.steps.length === 1) lines.push(scopedGuide.steps[0], "");
-        else lines.push(...scopedGuide.steps.map((step) => `1. ${step}`), "");
-        if (scopedGuide.code) lines.push("```text", scopedGuide.code, "```", "");
-        if (scopedGuide.sourceUrl)
-          lines.push(`[Get the portable SKILL.md](${scopedGuide.sourceUrl})`, "");
+        if (scopedGuide.options) {
+          for (const option of scopedGuide.options) {
+            lines.push(`#### ${option.label}`, "");
+            pushBody(option);
+          }
+        } else {
+          pushBody(scopedGuide);
+        }
       }
     }
   }

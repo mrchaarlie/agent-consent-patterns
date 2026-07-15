@@ -7,11 +7,20 @@ import { CodeBlock } from "./code-block";
 type Mode = "app" | "cli";
 type Scope = "project" | "global";
 
+type GuideBody = {
+  steps: string[];
+  code?: string | null;
+  copyText?: string;
+  sourceUrl?: string;
+};
+
 type ScopedGuide = {
   steps: string[];
   code: string | null;
   sourceUrl?: string;
 };
+
+type GuideOption = GuideBody & { label: string };
 
 type Guide = {
   title: string;
@@ -19,6 +28,7 @@ type Guide = {
   code: string | null;
   copyText?: string;
   sourceUrl?: string;
+  options?: GuideOption[];
   scopes?: Record<Scope, ScopedGuide>;
 };
 
@@ -69,17 +79,46 @@ export function SkillInstaller() {
   const hasScopeChoice = guide.scopes !== undefined;
   const activeGuide = guide.scopes?.[scope] ?? guide;
 
-  function renderStep(step: string) {
-    if (!guide.copyText || !step.includes(guide.copyText)) return step;
-    const [before, after] = step.split(guide.copyText);
+  function renderStep(step: string, copyText?: string) {
+    if (!copyText || !step.includes(copyText)) return step;
+    const [before, after] = step.split(copyText);
     return (
       <>
         {before}
         <code className="rounded bg-surface-sunken px-1.5 py-0.5 font-mono text-[0.85em] text-ink">
-          {guide.copyText}
+          {copyText}
         </code>
-        <InlineCopyButton text={guide.copyText} />
+        <InlineCopyButton text={copyText} />
         {after}
+      </>
+    );
+  }
+
+  function renderGuideBody(body: GuideBody) {
+    return (
+      <>
+        {body.steps.length === 1 ? (
+          <p className="leading-relaxed text-ink-muted">
+            {renderStep(body.steps[0]!, body.copyText)}
+          </p>
+        ) : (
+          <ol className="list-decimal space-y-2 pl-5 leading-relaxed text-ink-muted">
+            {body.steps.map((step) => (
+              <li key={step}>{renderStep(step, body.copyText)}</li>
+            ))}
+          </ol>
+        )}
+        {body.code && <CodeBlock code={body.code} className="mt-4" />}
+        {body.sourceUrl && (
+          <a
+            href={body.sourceUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-4 inline-flex items-center rounded-md border border-line bg-surface px-3 py-2 text-sm font-medium text-ink underline underline-offset-4 hover:border-line-strong hover:text-agent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+          >
+            Get the portable SKILL.md
+          </a>
+        )}
       </>
     );
   }
@@ -199,25 +238,17 @@ export function SkillInstaller() {
       </div>
 
       <div className="mt-6 border-t border-line pt-5">
-        {activeGuide.steps.length === 1 ? (
-          <p className="leading-relaxed text-ink-muted">{renderStep(activeGuide.steps[0]!)}</p>
-        ) : (
-          <ol className="list-decimal space-y-2 pl-5 leading-relaxed text-ink-muted">
-            {activeGuide.steps.map((step) => (
-              <li key={step}>{renderStep(step)}</li>
+        {guide.options ? (
+          <div className="space-y-6">
+            {guide.options.map((option) => (
+              <div key={option.label}>
+                <h3 className="text-sm font-semibold text-ink">{option.label}</h3>
+                <div className="mt-3">{renderGuideBody(option)}</div>
+              </div>
             ))}
-          </ol>
-        )}
-        {activeGuide.code && <CodeBlock code={activeGuide.code} className="mt-4" />}
-        {activeGuide.sourceUrl && (
-          <a
-            href={activeGuide.sourceUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-flex items-center rounded-md border border-line bg-surface px-3 py-2 text-sm font-medium text-ink underline underline-offset-4 hover:border-line-strong hover:text-agent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
-          >
-            Get the portable SKILL.md
-          </a>
+          </div>
+        ) : (
+          renderGuideBody(activeGuide)
         )}
       </div>
     </section>

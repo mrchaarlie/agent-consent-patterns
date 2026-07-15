@@ -66,17 +66,19 @@ test.describe("Guides and site navigation", () => {
     await expect(installer.getByLabel("Choose your agent")).toHaveValue("claude");
     for (const name of [
       "Claude",
-      "ChatGPT-Codex",
+      "ChatGPT (Codex)",
       "Gemini CLI",
       "Cursor",
       "Qwen Code",
-      "DeepSeek — Deep Code",
+      "DeepSeek (Deep Code)",
       "Grok",
       "GitHub Copilot",
       "Windsurf",
       "Other compatible agent",
     ]) {
-      await expect(installer.getByRole("option", { name })).toBeVisible();
+      // Native <select> options report as hidden while the dropdown is closed;
+      // assert the option exists rather than that it is visible.
+      await expect(installer.getByRole("option", { name })).toHaveCount(1);
     }
     await expect(installer.getByRole("radio", { name: "CLI" })).toBeChecked();
     await expect(installer.getByRole("radio", { name: "Project" })).toBeChecked();
@@ -86,8 +88,22 @@ test.describe("Guides and site navigation", () => {
     await expect(installer.getByRole("button", { name: "Copy to clipboard" })).toBeVisible();
 
     await installer.getByText("App", { exact: true }).click();
+    // Natural-language option comes first, then the manual marketplace steps.
+    await expect(
+      installer.getByRole("heading", { level: 3 }).first(),
+    ).toHaveText("Ask in natural language");
+    await expect(
+      installer.getByText("In any Claude chat, send this message."),
+    ).toBeVisible();
+    await expect(
+      installer.getByText(
+        "Add the Agent Consent Patterns plugin from https://github.com/mrchaarlie/agent-consent-patterns",
+      ),
+    ).toBeVisible();
+    await expect(
+      installer.getByRole("heading", { name: "Or, add it from the marketplace" }),
+    ).toBeVisible();
     await expect(installer.getByText("Customize, then Plugins.")).toBeVisible();
-    await expect(installer.getByText("Add marketplace.")).toBeVisible();
     await expect(
       installer.getByText("Select agent-consent-patterns from the marketplace"),
     ).toBeVisible();
@@ -97,12 +113,24 @@ test.describe("Guides and site navigation", () => {
 
     await installer.getByLabel("Choose your agent").selectOption("chatgpt-codex");
     await expect(installer.getByRole("radio", { name: "App" })).toBeChecked();
+    // Natural-language option comes first, then the Plugins page search.
     await expect(
-      installer.getByText("In a ChatGPT-Codex task, send this message."),
+      installer.getByRole("heading", { level: 3 }).first(),
+    ).toHaveText("Ask in natural language");
+    await expect(
+      installer.getByText("In a ChatGPT (Codex) task, send this message."),
     ).toBeVisible();
     await expect(
       installer.getByText(
         "Add the Agent Consent Patterns plugin from https://github.com/mrchaarlie/agent-consent-patterns",
+      ),
+    ).toBeVisible();
+    await expect(
+      installer.getByRole("heading", { name: "Find it in the Plugins page" }),
+    ).toBeVisible();
+    await expect(
+      installer.getByText(
+        "Open the Plugins page, search for \"Agent Consent Patterns\", then install the official plugin.",
       ),
     ).toBeVisible();
     await installer.getByText("CLI", { exact: true }).click();
@@ -111,7 +139,11 @@ test.describe("Guides and site navigation", () => {
     ).toBeVisible();
 
     await installer.getByLabel("Choose your agent").selectOption("other");
-    await expect(installer.getByText("Add the portable skill")).toBeVisible();
+    await expect(
+      installer.getByText(
+        "Download or copy this portable SKILL.md into your agent's documented skills location.",
+      ),
+    ).toBeVisible();
     await expect(installer.getByText("Install with")).toHaveCount(0);
     await expect(installer.getByRole("radio")).toHaveCount(0);
 

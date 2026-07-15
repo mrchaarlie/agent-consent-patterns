@@ -6,14 +6,25 @@
     "guides": {
       "app": {
         "title": "Add it in the Claude app",
-        "steps": [
-          "Open Customize, then Plugins.",
-          "In Personal plugins, select +, then Add marketplace.",
-          "Choose Add from a repository, paste https://github.com/mrchaarlie/agent-consent-patterns, then add the marketplace.",
-          "Select agent-consent-patterns from the marketplace, then select Install."
-        ],
+        "steps": [],
         "code": null,
-        "copyText": "https://github.com/mrchaarlie/agent-consent-patterns"
+        "options": [
+          {
+            "label": "Ask in natural language",
+            "steps": ["In any Claude chat, send this message."],
+            "code": "Add the Agent Consent Patterns plugin from https://github.com/mrchaarlie/agent-consent-patterns"
+          },
+          {
+            "label": "Or, add it from the marketplace",
+            "steps": [
+              "Open Customize, then Plugins.",
+              "In Personal plugins, select +, then Add marketplace.",
+              "Choose Add from a repository, paste https://github.com/mrchaarlie/agent-consent-patterns, then add the marketplace.",
+              "Select agent-consent-patterns from the marketplace, then select Install."
+            ],
+            "copyText": "https://github.com/mrchaarlie/agent-consent-patterns"
+          }
+        ]
       },
       "cli": {
         "title": "Install with Claude Code",
@@ -34,13 +45,24 @@
   },
   {
     "id": "chatgpt-codex",
-    "label": "ChatGPT-Codex",
+    "label": "ChatGPT (Codex)",
     "modes": ["app", "cli"],
     "guides": {
       "app": {
-        "title": "Add it in the ChatGPT-Codex app",
-        "steps": ["In a ChatGPT-Codex task, send this message."],
-        "code": "Add the Agent Consent Patterns plugin from https://github.com/mrchaarlie/agent-consent-patterns"
+        "title": "Add it in the ChatGPT (Codex) app",
+        "steps": [],
+        "code": null,
+        "options": [
+          {
+            "label": "Ask in natural language",
+            "steps": ["In a ChatGPT (Codex) task, send this message."],
+            "code": "Add the Agent Consent Patterns plugin from https://github.com/mrchaarlie/agent-consent-patterns"
+          },
+          {
+            "label": "Find it in the Plugins page",
+            "steps": ["Open the Plugins page, search for \"Agent Consent Patterns\", then install the official plugin."]
+          }
+        ]
       },
       "cli": {
         "title": "Install with Codex CLI",
@@ -121,7 +143,7 @@
   },
   {
     "id": "deepseek",
-    "label": "DeepSeek — Deep Code",
+    "label": "DeepSeek (Deep Code)",
     "modes": ["cli"],
     "guides": {
       "app": null,
