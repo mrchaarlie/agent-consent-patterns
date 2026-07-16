@@ -4,7 +4,7 @@ import SkillContent from "@/content/skill.mdx";
 export const metadata: Metadata = {
   title: "Agent Skill",
   description:
-    "Install the Agent Consent Patterns skill for Claude Code, Codex, or another compatible coding agent.",
+    "Install the Agent Consent Patterns skill for Claude, ChatGPT (Codex), Gemini CLI, and other compatible coding agents.",
 };
 
 export default function SkillPage() {

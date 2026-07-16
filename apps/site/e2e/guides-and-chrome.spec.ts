@@ -55,17 +55,136 @@ test.describe("Guides and site navigation", () => {
     expect(results.violations).toEqual([]);
   });
 
-  test("skill guide gives Claude, Codex, and portable setup paths", async ({
+  test("skill guide selects installation instructions for popular agents", async ({
     page,
   }) => {
     await page.goto("/skill/");
     await expect(
       page.getByRole("heading", { level: 1, name: "Agent skill" }),
     ).toBeVisible();
+    const installer = page.locator('[data-acp="skill-installer"]');
+    await expect(installer.getByLabel("Choose your agent")).toHaveValue("claude");
+    for (const name of [
+      "Claude",
+      "ChatGPT (Codex)",
+      "Gemini CLI",
+      "Cursor",
+      "Qwen Code",
+      "DeepSeek (Deep Code)",
+      "Grok",
+      "GitHub Copilot",
+      "Windsurf",
+      "Other compatible agent",
+    ]) {
+      // Native <select> options report as hidden while the dropdown is closed;
+      // assert the option exists rather than that it is visible.
+      await expect(installer.getByRole("option", { name })).toHaveCount(1);
+    }
+    await expect(installer.getByRole("radio", { name: "CLI" })).toBeChecked();
+    await expect(installer.getByRole("radio", { name: "Project" })).toBeChecked();
     await expect(
-      page.getByText("codex plugin marketplace add mrchaarlie/agent-consent-patterns"),
+      installer.getByText("claude plugin marketplace add mrchaarlie/agent-consent-patterns"),
     ).toBeVisible();
-    await expect(page.getByText("Other compatible agents")).toBeVisible();
+    await expect(installer.getByRole("button", { name: "Copy to clipboard" })).toBeVisible();
+
+    await installer.getByText("App", { exact: true }).click();
+    // Natural-language option comes first, then the manual marketplace steps.
+    await expect(
+      installer.getByRole("heading", { level: 3 }).first(),
+    ).toHaveText("Ask in natural language");
+    await expect(
+      installer.getByText("In any Claude chat, send this message."),
+    ).toBeVisible();
+    await expect(
+      installer.getByText(
+        "Add the Agent Consent Patterns plugin from https://github.com/mrchaarlie/agent-consent-patterns",
+      ),
+    ).toBeVisible();
+    await expect(
+      installer.getByRole("heading", { name: "Or, add it from the Customize page" }),
+    ).toBeVisible();
+    await expect(installer.getByText("Customize, then Plugins.")).toBeVisible();
+    await expect(
+      installer.getByText("Select agent-consent-patterns from the marketplace"),
+    ).toBeVisible();
+    await expect(
+      installer.getByRole("button", { name: "Copy repository URL" }),
+    ).toBeVisible();
+
+    await installer.getByLabel("Choose your agent").selectOption("chatgpt-codex");
+    await expect(installer.getByRole("radio", { name: "App" })).toBeChecked();
+    // Natural-language option comes first, then the Plugins page search.
+    await expect(
+      installer.getByRole("heading", { level: 3 }).first(),
+    ).toHaveText("Ask in natural language");
+    await expect(
+      installer.getByText("In a ChatGPT (Codex) task, send this message."),
+    ).toBeVisible();
+    await expect(
+      installer.getByText(
+        "Add the Agent Consent Patterns plugin from https://github.com/mrchaarlie/agent-consent-patterns",
+      ),
+    ).toBeVisible();
+    await expect(
+      installer.getByRole("heading", { name: "Or, add it from the Plugins page" }),
+    ).toBeVisible();
+    await expect(
+      installer.getByText(
+        "Open the Plugins page, search for \"Agent Consent Patterns\", then install the official plugin.",
+      ),
+    ).toBeVisible();
+    await installer.getByText("CLI", { exact: true }).click();
+    await expect(
+      installer.getByText("codex plugin marketplace add mrchaarlie/agent-consent-patterns"),
+    ).toBeVisible();
+
+    await installer.getByLabel("Choose your agent").selectOption("other");
+    await expect(
+      installer.getByText(
+        "Download or copy this portable SKILL.md into your agent's documented skills location.",
+      ),
+    ).toBeVisible();
+    await expect(installer.getByText("Install with")).toHaveCount(0);
+    await expect(installer.getByRole("radio")).toHaveCount(0);
+
+    await installer.getByLabel("Choose your agent").selectOption("grok");
+    await expect(installer.getByRole("radio", { name: "Project" })).toBeChecked();
+    await expect(
+      installer.getByText("mkdir -p .grok/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o .grok/skills/agent-consent-patterns/SKILL.md"),
+    ).toBeVisible();
+    await installer.getByText("Global", { exact: true }).click();
+    await expect(
+      installer.getByText("mkdir -p ~/.grok/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o ~/.grok/skills/agent-consent-patterns/SKILL.md"),
+    ).toBeVisible();
+
+    await installer.getByLabel("Choose your agent").selectOption("copilot");
+    await expect(
+      installer.getByText("mkdir -p .github/skills/agent-consent-patterns && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md -o .github/skills/agent-consent-patterns/SKILL.md"),
+    ).toBeVisible();
+
+    await installer.getByLabel("Choose your agent").selectOption("windsurf");
+    await expect(
+      installer.getByText("Windsurf's 6,000-character global-rule limit"),
+    ).toBeVisible();
+    await expect(installer.locator("ol")).toHaveCount(0);
+
+    await installer.getByLabel("Choose your agent").selectOption("cursor");
+    await expect(installer.getByRole("radio", { name: "Project" })).toBeChecked();
+    await expect(
+      installer.getByText("mkdir -p .cursor/rules && { printf '%s\\n' '---' 'description: Design and review consent, permission, approval, and human-in-the-loop UX.' 'alwaysApply: false' '---' && curl -fsSL https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md | awk 'BEGIN { delimiters = 0 } { if (delimiters < 2 && /^---$/) { delimiters++; next } if (delimiters >= 2) print }'; } > .cursor/rules/agent-consent-patterns.mdc"),
+    ).toBeVisible();
+    await installer.getByText("Global", { exact: true }).click();
+    await expect(installer.getByRole("radio", { name: "Global" })).toBeChecked();
+    await expect(
+      installer.getByText("Open Cursor Settings, then Rules."),
+    ).toBeVisible();
+    await expect(
+      installer.getByRole("link", { name: "Get the portable SKILL.md" }),
+    ).toHaveAttribute(
+      "href",
+      "https://raw.githubusercontent.com/mrchaarlie/agent-consent-patterns/main/plugins/agent-consent-patterns/skills/agent-consent-patterns/SKILL.md",
+    );
+    await expect(installer.getByText(".cursor/skills", { exact: false })).toHaveCount(0);
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations).toEqual([]);
   });

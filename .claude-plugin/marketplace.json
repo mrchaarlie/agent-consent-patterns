@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "UX patterns and best practices for AI agent permissions, consent, and human-in-the-loop control.",
-    "version": "1.0.0"
+    "version": "0.1.1"
   },
   "plugins": [
     {
-      "name": "consent-ux",
+      "name": "agent-consent-patterns",
       "source": "./plugins/agent-consent-patterns",
       "description": "A skill that teaches your agent the 12 agent-consent UX patterns and 10 design principles, so it applies them when building or reviewing consent flows, approval dialogs, permission settings, and activity logs.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": { "name": "Charles Wu" }
     }
   ]

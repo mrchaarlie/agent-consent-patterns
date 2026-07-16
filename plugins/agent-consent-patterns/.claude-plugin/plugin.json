@@ -1,6 +1,6 @@
 {
-  "name": "consent-ux",
+  "name": "agent-consent-patterns",
   "description": "Best practices for AI agent consent UX: 12 named patterns and 10 principles for permission grants, action approval, standing authority, and trust surfaces.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": { "name": "Charles Wu" }
 }

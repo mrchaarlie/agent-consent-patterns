@@ -5,7 +5,7 @@
   },
   "plugins": [
     {
-      "name": "consent-ux",
+      "name": "agent-consent-patterns",
       "source": {
         "source": "local",
         "path": "./plugins/agent-consent-patterns"

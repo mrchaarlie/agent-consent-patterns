@@ -14,6 +14,7 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import installations from "../lib/skill-installation.json" with { type: "json" };
 
 const SITE_DIR = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_DIR = join(SITE_DIR, "out");
@@ -206,6 +207,43 @@ function mdxToMarkdown(mdx, pattern) {
 }
 
 /** Turn a standalone docs MDX file into its canonical Human Markdown mirror. */
+function renderSkillInstallations() {
+  const lines = ["## Installation", ""];
+  const pushBody = (body) => {
+    if (body.steps.length === 1) lines.push(body.steps[0], "");
+    else if (body.steps.length > 1)
+      lines.push(...body.steps.map((step) => `1. ${step}`), "");
+    if (body.code) lines.push("```text", body.code, "```", "");
+    if (body.sourceUrl)
+      lines.push(`[Get the portable SKILL.md](${body.sourceUrl})`, "");
+  };
+  for (const installation of installations) {
+    for (const mode of installation.modes) {
+      const guide = installation.guides[mode];
+      if (guide === null) continue;
+      const scopedGuides = guide.scopes
+        ? Object.entries(guide.scopes)
+        : [[null, guide]];
+      for (const [scope, scopedGuide] of scopedGuides) {
+        const scopeLabel = scope === null ? "" : ` — ${scope[0].toUpperCase()}${scope.slice(1)}`;
+        lines.push(
+          `### ${installation.label} — ${mode === "app" ? "App" : "CLI"}${scopeLabel}`,
+          "",
+        );
+        if (scopedGuide.options) {
+          for (const option of scopedGuide.options) {
+            lines.push(`#### ${option.label}`, "");
+            pushBody(option);
+          }
+        } else {
+          pushBody(scopedGuide);
+        }
+      }
+    }
+  }
+  return lines.join("\n");
+}
+
 function docsMdxToMarkdown(mdx, { title, path }) {
   const lines = mdx.split("\n");
   const out = [];
@@ -231,6 +269,11 @@ function docsMdxToMarkdown(mdx, { title, path }) {
       continue;
     }
     if (lvlBlock !== null && lvlBlock !== "human") continue;
+    if (/^import\s/.test(line)) continue;
+    if (/^<SkillInstaller\s*\/>\s*$/.test(line)) {
+      out.push(renderSkillInstallations());
+      continue;
+    }
     out.push(line);
   }
   const body = out.join("\n").replace(/\n{3,}/g, "\n\n").trim();
@@ -389,7 +432,7 @@ function renderLlmsTxt(patterns, categories) {
     "## Build",
     "",
     `- [React library](${url("/library.md")}): install and compose the accessible React primitives.`,
-    `- [Agent skill](${url("/skill.md")}): install the consent-UX guidance in Claude Code, Codex, or another compatible agent.`,
+    `- [Agent skill](${url("/skill.md")}): install the Agent Consent Patterns skill in Claude Code, Codex, or another compatible agent.`,
     "",
     "## Optional",
     "",

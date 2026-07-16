@@ -78,22 +78,29 @@ primitive from the [pattern index](https://agentconsent.dev/patterns/) rather th
 
 ## Use the skill with a coding agent
 
-The included `consent-ux` skill gives coding agents the pattern vocabulary, selection guidance,
+The included `agent-consent-patterns` skill gives coding agents the pattern vocabulary, selection guidance,
 anti-patterns, and accessibility checks behind this reference. Use it when an agent is designing,
 building, or reviewing consent flows.
 
+### Claude app
+
+1. Open **Customize** > **Plugins**.
+2. In **Personal plugins**, select **+** > **Add marketplace**.
+3. Choose **Add from a repository**, paste `https://github.com/mrchaarlie/agent-consent-patterns`, then add the marketplace.
+4. Select **agent-consent-patterns** from the marketplace and click **Install**.
+
 ### Claude Code
 
-```text
-/plugin marketplace add mrchaarlie/agent-consent-patterns
-/plugin install consent-ux@agent-consent-patterns
+Run this in a terminal. It refreshes the marketplace first when you have already added it:
+
+```sh
+(claude plugin marketplace add mrchaarlie/agent-consent-patterns || claude plugin marketplace update agent-consent-patterns) && claude plugin install agent-consent-patterns@agent-consent-patterns
 ```
 
 ### Codex
 
 ```sh
-codex plugin marketplace add mrchaarlie/agent-consent-patterns
-codex plugin add consent-ux@agent-consent-patterns
+(codex plugin marketplace add mrchaarlie/agent-consent-patterns || codex plugin marketplace upgrade agent-consent-patterns) && codex plugin add agent-consent-patterns@agent-consent-patterns
 ```
 
 For other compatible agents, copy the complete
@@ -121,7 +128,7 @@ without parsing the rendered application.
 ```text
 packages/react/   Published @agentconsent/react component library
 apps/site/        Next.js static reference site and live pattern demos
-plugins/          Claude Code / Codex marketplace plugin and portable skill
+plugins/          Claude / Codex plugin and portable skill
 ```
 
 ## Development
