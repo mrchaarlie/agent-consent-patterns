@@ -280,6 +280,50 @@ function docsMdxToMarkdown(mdx, { title, path }) {
   return `# ${title}\n\n> Human page: ${url(path)}\n\n${body}\n`;
 }
 
+async function loadLearnings() {
+  const src = await readFile(join(SITE_DIR, "lib/learnings.ts"), "utf8");
+  return {
+    topics: evalLiteral(extractArrayLiteral(src, "TOPICS")),
+    sources: evalLiteral(extractArrayLiteral(src, "SOURCES")),
+  };
+}
+
+/**
+ * Turn a learnings topic MDX into its Markdown mirror. The topic pages are
+ * plain Markdown apart from a single styled lede <p>; the attribution footer
+ * lives in lib/learnings.ts data, so it is re-rendered here from the same
+ * source the human page uses.
+ */
+function learningMdxToMarkdown(mdx, topic, sources) {
+  const out = [];
+  for (const line of mdx.split("\n")) {
+    if (/^import\s/.test(line)) continue;
+    const lede = line.match(/^<p\s+className="[^"]*">([\s\S]*)<\/p>\s*$/);
+    if (lede) {
+      out.push(decodeEntities(lede[1].trim()));
+      continue;
+    }
+    out.push(line);
+  }
+  const body = out.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  const cited = topic.sourceIds
+    .map((id) => sources.find((s) => s.id === id))
+    .filter(Boolean);
+  const sourceLines = [
+    "## Sources",
+    "",
+    ...cited.map(
+      (s) =>
+        `- [${s.title}](${s.url}) — ${s.author ? `${s.author}, ` : ""}${s.org} (${s.date})`,
+    ),
+  ];
+  const header =
+    `# ${topic.name}\n\n` +
+    `> Learnings · updated ${topic.updated} · part of Agent Consent Patterns.\n` +
+    `> Human page: ${url(`/learnings/${topic.slug}/`)}\n`;
+  return `${header}\n${body}\n\n${sourceLines.join("\n")}\n`;
+}
+
 /** Extract principles (name, lede, body prose) + stubs + intro from the page. */
 async function loadPrinciples() {
   const src = await readFile(join(SITE_DIR, "app/principles/page.tsx"), "utf8");
@@ -402,7 +446,7 @@ function renderIndexMd(patterns, categories) {
   return lines.join("\n") + "\n";
 }
 
-function renderLlmsTxt(patterns, categories) {
+function renderLlmsTxt(patterns, categories, learningTopics) {
   const lines = [
     "# Agent Consent Patterns",
     "",
@@ -419,6 +463,12 @@ function renderLlmsTxt(patterns, categories) {
         `- [${p.name}](${url(`/patterns/${p.slug}.md`)}): ${p.problem}`,
       );
     }
+  }
+  lines.push("", "## Learnings", "");
+  for (const t of learningTopics) {
+    lines.push(
+      `- [${t.name}](${url(`/learnings/${t.slug}.md`)}): ${t.summary}`,
+    );
   }
   lines.push(
     "",
@@ -476,6 +526,21 @@ async function main() {
     patternDocs.push(md);
   }
 
+  // Per-learning-topic Markdown.
+  const { topics: learningTopics, sources: learningSources } =
+    await loadLearnings();
+  const learningDocs = [];
+  await mkdir(join(OUT_DIR, "learnings"), { recursive: true });
+  for (const t of learningTopics) {
+    const mdx = await readFile(
+      join(SITE_DIR, "content/learnings", `${t.slug}.mdx`),
+      "utf8",
+    );
+    const md = learningMdxToMarkdown(mdx, t, learningSources);
+    await writeFile(join(OUT_DIR, "learnings", `${t.slug}.md`), md);
+    learningDocs.push(md);
+  }
+
   // Standalone page mirrors.
   const glossary = renderGlossary(await loadGlossary());
   const principles = renderPrinciples(await loadPrinciples());
@@ -498,11 +563,15 @@ async function main() {
   await writeFile(join(OUT_DIR, "index.md"), indexMd);
 
   // llms.txt index + concatenated full text.
-  await writeFile(join(OUT_DIR, "llms.txt"), renderLlmsTxt(patterns, CATEGORIES));
+  await writeFile(
+    join(OUT_DIR, "llms.txt"),
+    renderLlmsTxt(patterns, CATEGORIES, learningTopics),
+  );
   const full = [
     indexMd,
     principles,
     ...patternDocs,
+    ...learningDocs,
     glossary,
     about,
     library,
@@ -511,7 +580,7 @@ async function main() {
   await writeFile(join(OUT_DIR, "llms-full.txt"), full);
 
   console.log(
-    `[agent-view] wrote llms.txt, llms-full.txt, index.md, and ${patterns.length} pattern + 5 page mirrors to out/`,
+    `[agent-view] wrote llms.txt, llms-full.txt, index.md, and ${patterns.length} pattern + ${learningTopics.length} learning + 5 page mirrors to out/`,
   );
 }
 

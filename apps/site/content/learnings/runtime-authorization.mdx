@@ -1,0 +1,32 @@
+<p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Provisioning-time permissions can't govern an agent that composes its own actions at runtime. Authorization has to become a live decision, enforced at every layer the agent's work passes through.</p>
+
+## What it is
+
+Runtime authorization moves the permission check from "what was this identity provisioned with?" to "is *this* action, on *this* resource, in *this* context, allowed *right now*?" Krista Case (theCUBE Research) frames it as identity governance evolving "from a back-office function into a real-time control system," and warns that visibility and monitoring alone aren't enforcement — runtime controls are where authorization, accountability, and remediation actually happen.
+
+Gabriel L. Manor's **Four Perimeter Framework** (Permit.io) is the most concrete layering of this idea, applying fine-grained authorization at four stages of an AI interaction:
+
+1. **Prompt filtering** — policy checks on input before it reaches the model, blunting prompt injection and permission overreach at the door.
+2. **RAG data protection** — pre- and post-query filtering so retrieval only surfaces documents the requesting user (and agent) is authorized to see.
+3. **Secure external access** — machine identities and per-operation policies on every API call, transaction, or tool invocation, with human approval available for critical actions.
+4. **Response enforcement** — output filtering so the final answer can't leak data the requester was never entitled to.
+
+## Why it matters
+
+- **Agents synthesize across sources.** A model that retrieved a document it shouldn't have will happily paraphrase it; checking only at the API perimeter misses the leak inside the context window (Permit.io's rationale for perimeters 2 and 4).
+- **Static roles can't express agent behavior.** An agent's next action is generated, not enumerated at provisioning time — so the decision must be evaluated when the action exists (theCUBE Research).
+- **Centralized runtime decisions enable instant revocation.** Okta's Cross App Access routes each agent connection through the IdP's policy check, so a revocation propagates everywhere immediately instead of waiting for each app's grant to be cleaned up.
+
+## Best practices
+
+- **Enforce at every perimeter, not just the API call** — input, retrieval, action, and output each get a policy decision (Permit.io).
+- **Filter retrieval by the *user's* live permissions**, so RAG respects the same fine-grained rules as the source systems — permission mirroring extended into the vector store (Permit.io; consistent with Oso's delegated-access model in [Delegated Authority](/learnings/delegated-authority/)).
+- **Make decisions context-aware**: device trust, location, time, and behavioral signals feed the allow/deny, not just identity and resource (Oso's context-aware restrictions).
+- **Mind the latency budget.** Oso flags the real tradeoff: aggressive caching of authorization decisions is fast but risks staleness; strict per-action validation is safer but slower. Decide per action class — cache reads, validate writes.
+- **Route cross-app connections through the IdP** (Cross App Access) so runtime decisions and their logs live in one governable place (Okta).
+
+## Examples
+
+- A RAG-backed HR assistant answers a manager's compensation question using only the records that manager can already see — the retriever filtered by relationship-based policy before the model ever saw a row (Permit.io's RAG perimeter).
+- An agent's attempt to call a payments API is evaluated against its machine identity's fine-grained policy; the transfer operation requires an approval step, while the balance read sails through — see [Human-in-the-Loop Oversight](/learnings/human-in-the-loop/) (Permit.io).
+- A healthcare deployment uses Cross App Access so every agent aggregation of patient data is IdP-authorized and HIPAA-logged at the moment it happens (Okta).

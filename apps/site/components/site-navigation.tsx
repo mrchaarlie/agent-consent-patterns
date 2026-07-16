@@ -9,6 +9,7 @@ const NAV = [
     items: [
       { href: "/patterns/", label: "Patterns" },
       { href: "/principles/", label: "Principles" },
+      { href: "/learnings/", label: "Learnings" },
       { href: "/glossary/", label: "Glossary" },
     ],
   },
