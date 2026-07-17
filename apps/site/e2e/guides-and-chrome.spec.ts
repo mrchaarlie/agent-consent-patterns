@@ -195,43 +195,43 @@ test.describe("Guides and site navigation", () => {
       "mailto:contact@agentconsent.dev",
     );
 
-    // The reading-level control is compact (sr-only label), so assert its
-    // accessible name rather than visible-label geometry.
-    const readingSelect = page.locator('[data-acp="reading-level"] select');
-    await expect(readingSelect).toHaveAccessibleName("Reading level");
+    // The reading-level control collapses to an icon button; its accessible
+    // name spells out the current level so it reads clearly without a visible
+    // label. It lives in the left cluster, beside the brand.
+    const readingControl = page.locator('[data-acp="reading-level"] > button');
+    await expect(readingControl).toHaveAccessibleName(/Reading level/);
+    const searchTrigger = page.locator('[data-acp="site-search"] > button');
+    const github = page.locator("header").getByRole("link", { name: /github/i });
 
-    for (const width of [780, 1024]) {
+    for (const width of [1024, 1280]) {
       await page.setViewportSize({ width, height: 800 });
+      const readingBox = await readingControl.boundingBox();
+      const searchBox = await searchTrigger.boundingBox();
       const buildBox = await page.getByText("Build", { exact: true }).boundingBox();
-      const searchBox = await page
-        .locator('[data-acp="site-search"] input')
-        .boundingBox();
-      const readingBox = await page.locator('[data-acp="reading-level"]').boundingBox();
-      expect(buildBox).not.toBeNull();
-      expect(searchBox).not.toBeNull();
+      const githubBox = await github.boundingBox();
       expect(readingBox).not.toBeNull();
-      // One header row ≥md: nav, then search, then the reading-level control.
-      expect(buildBox!.x + buildBox!.width + 16).toBeLessThanOrEqual(searchBox!.x);
-      expect(searchBox!.x + searchBox!.width).toBeLessThanOrEqual(readingBox!.x);
-      expect(buildBox!.y + buildBox!.height).toBeGreaterThan(readingBox!.y);
-      expect(readingBox!.y + readingBox!.height).toBeGreaterThan(buildBox!.y);
+      expect(searchBox).not.toBeNull();
+      expect(buildBox).not.toBeNull();
+      expect(githubBox).not.toBeNull();
+      // One header row ≥lg: reading level sits left; the right cluster runs
+      // search → nav links → GitHub.
+      expect(readingBox!.x + readingBox!.width).toBeLessThanOrEqual(searchBox!.x);
+      expect(searchBox!.x + searchBox!.width).toBeLessThanOrEqual(buildBox!.x);
+      expect(buildBox!.x + buildBox!.width).toBeLessThanOrEqual(githubBox!.x);
+      // …all on the same row.
+      expect(readingBox!.y + readingBox!.height).toBeGreaterThan(githubBox!.y);
+      expect(githubBox!.y + githubBox!.height).toBeGreaterThan(readingBox!.y);
     }
 
     await page.setViewportSize({ width: 375, height: 800 });
-    const mobileBuildBox = await page.getByText("Build", { exact: true }).boundingBox();
-    const mobileSearchBox = await page
-      .locator('[data-acp="site-search"] input')
-      .boundingBox();
-    const mobileReadingBox = await page.locator('[data-acp="reading-level"]').boundingBox();
-    expect(mobileBuildBox).not.toBeNull();
-    expect(mobileSearchBox).not.toBeNull();
-    expect(mobileReadingBox).not.toBeNull();
-    // Mobile: nav row first, then a full-width row with search + reading level.
-    expect(mobileBuildBox!.y + mobileBuildBox!.height).toBeLessThanOrEqual(mobileSearchBox!.y);
-    expect(mobileSearchBox!.x + mobileSearchBox!.width).toBeLessThanOrEqual(mobileReadingBox!.x);
-    expect(mobileSearchBox!.y + mobileSearchBox!.height).toBeGreaterThan(mobileReadingBox!.y);
-    expect(mobileReadingBox!.y + mobileReadingBox!.height).toBeGreaterThan(mobileSearchBox!.y);
-    await expect(page.getByText("Agent Consent Patterns", { exact: true })).toBeHidden();
+    // The full brand name collapses to the "ACP/" mark on narrow screens; the
+    // controls wrap rather than overflow, so each stays reachable.
+    await expect(
+      page.getByText("Agent Consent Patterns", { exact: true }),
+    ).toBeHidden();
+    expect(await readingControl.boundingBox()).not.toBeNull();
+    expect(await searchTrigger.boundingBox()).not.toBeNull();
+    expect(await github.boundingBox()).not.toBeNull();
 
     const licenseBox = await page.getByText("MIT licensed.", { exact: false }).boundingBox();
     const moreNavBox = await page.getByRole("navigation", { name: "More" }).boundingBox();
