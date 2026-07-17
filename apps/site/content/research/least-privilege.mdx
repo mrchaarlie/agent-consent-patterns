@@ -10,15 +10,15 @@ Fine-grained authorization (FGA) is the enforcement vocabulary: Permit.io's AI A
 
 - **The blast radius is no longer human-bounded.** A person with excess permissions misuses them slowly; an agent exercises the full grant at machine speed, unattended. Oso cites the Replit incident, where an AI coding agent deleted a production database — the canonical example of an over-permissioned agent without guardrails.
 - **Over-provisioning is the default failure mode.** Agents "inherit permissions through APIs and dynamic workflows" (BigID), and broad grants accumulate silently unless scoping is deliberate.
-- **Coarse grants can't be audited meaningfully.** If everything was allowed, the audit trail explains nothing. Narrow grants make [Auditability](/learnings/auditability/) informative.
+- **Coarse grants can't be audited meaningfully.** If everything was allowed, the audit trail explains nothing. Narrow grants make [Auditability](/research/auditability/) informative.
 
 ## Best practices
 
 - **Scope by compartment and start from the least-privileged member.** Claude's agent-identity model configures each channel's access profile to match the lowest-privileged member of that channel — the compartment's floor, not its ceiling.
 - **Then audit and adjust.** Anthropic's operational advice is to grant a workable baseline, watch actual usage, and pare back where access goes unused — least privilege as a continuous process, not a one-time setup.
-- **Express permissions as fine-grained policy** (which operation, on which resource, under which conditions) using ABAC/ReBAC-style models rather than binary tool on/off switches (Permit.io). Enforce them at runtime — see [Runtime Authorization](/learnings/runtime-authorization/).
-- **Cap agency, not just access.** Define which decisions the agent may take alone, which require policy checks, and which require a human — AEGIS's least agency, operationalized in [Human-in-the-Loop Oversight](/learnings/human-in-the-loop/).
-- **Make elevation temporary.** When a task genuinely needs more, grant it just-in-time and let it expire — see [Just-in-Time Access](/learnings/just-in-time-access/).
+- **Express permissions as fine-grained policy** (which operation, on which resource, under which conditions) using ABAC/ReBAC-style models rather than binary tool on/off switches (Permit.io). Enforce them at runtime — see [Runtime Authorization](/research/runtime-authorization/).
+- **Cap agency, not just access.** Define which decisions the agent may take alone, which require policy checks, and which require a human — AEGIS's least agency, operationalized in [Human-in-the-Loop Oversight](/research/human-in-the-loop/).
+- **Make elevation temporary.** When a task genuinely needs more, grant it just-in-time and let it expire — see [Just-in-Time Access](/research/just-in-time-access/).
 
 ## Examples
 

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { TOPICS } from "@/lib/learnings";
+import { TOPICS } from "@/lib/research";
 import { PATTERNS } from "@/lib/patterns";
 
 // Required for `output: "export"` — emit a static sitemap.xml at build time.
@@ -17,13 +17,12 @@ const ROUTES = [
   "/library/",
   "/skill/",
   "/principles/",
-  "/glossary/",
   "/about/",
-  "/learnings/",
+  "/research/",
   ...PATTERNS.filter((p) => p.status === "live").map(
     (p) => `/patterns/${p.slug}/`,
   ),
-  ...TOPICS.map((t) => `/learnings/${t.slug}/`),
+  ...TOPICS.map((t) => `/research/${t.slug}/`),
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

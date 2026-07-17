@@ -20,7 +20,7 @@ Gabriel L. Manor's **Four Perimeter Framework** (Permit.io) is the most concrete
 ## Best practices
 
 - **Enforce at every perimeter, not just the API call** — input, retrieval, action, and output each get a policy decision (Permit.io).
-- **Filter retrieval by the *user's* live permissions**, so RAG respects the same fine-grained rules as the source systems — permission mirroring extended into the vector store (Permit.io; consistent with Oso's delegated-access model in [Delegated Authority](/learnings/delegated-authority/)).
+- **Filter retrieval by the *user's* live permissions**, so RAG respects the same fine-grained rules as the source systems — permission mirroring extended into the vector store (Permit.io; consistent with Oso's delegated-access model in [Delegated Authority](/research/delegated-authority/)).
 - **Make decisions context-aware**: device trust, location, time, and behavioral signals feed the allow/deny, not just identity and resource (Oso's context-aware restrictions).
 - **Mind the latency budget.** Oso flags the real tradeoff: aggressive caching of authorization decisions is fast but risks staleness; strict per-action validation is safer but slower. Decide per action class — cache reads, validate writes.
 - **Route cross-app connections through the IdP** (Cross App Access) so runtime decisions and their logs live in one governable place (Okta).
@@ -28,5 +28,5 @@ Gabriel L. Manor's **Four Perimeter Framework** (Permit.io) is the most concrete
 ## Examples
 
 - A RAG-backed HR assistant answers a manager's compensation question using only the records that manager can already see — the retriever filtered by relationship-based policy before the model ever saw a row (Permit.io's RAG perimeter).
-- An agent's attempt to call a payments API is evaluated against its machine identity's fine-grained policy; the transfer operation requires an approval step, while the balance read sails through — see [Human-in-the-Loop Oversight](/learnings/human-in-the-loop/) (Permit.io).
+- An agent's attempt to call a payments API is evaluated against its machine identity's fine-grained policy; the transfer operation requires an approval step, while the balance read sails through — see [Human-in-the-Loop Oversight](/research/human-in-the-loop/) (Permit.io).
 - A healthcare deployment uses Cross App Access so every agent aggregation of patient data is IdP-authorized and HIPAA-logged at the moment it happens (Okta).

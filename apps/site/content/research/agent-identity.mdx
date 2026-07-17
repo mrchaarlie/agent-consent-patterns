@@ -10,17 +10,17 @@ Claude's engineering team describes the concrete shift: replacing the question *
 
 - **"Act as the user" breaks down in multiplayer and autonomous settings.** When several people interact with one agent, or the agent keeps working long after the request, there is no single user whose permissions cleanly apply (Claude/Anthropic).
 - **Scale makes borrowed identity ungovernable.** Krista Case (theCUBE Research) cites projections of agents outnumbering human workers up to 100-to-1 in some environments; identity governance built around per-human accounts cannot absorb that.
-- **Invisible identity means invisible risk.** BigID's Neil Patel notes agents often "inherit permissions through APIs and dynamic workflows" and remain unseen by security teams — a distinct identity is the prerequisite for seeing, auditing, and revoking anything. See [Discovery & Governance](/learnings/discovery-and-governance/).
+- **Invisible identity means invisible risk.** BigID's Neil Patel notes agents often "inherit permissions through APIs and dynamic workflows" and remain unseen by security teams — a distinct identity is the prerequisite for seeing, auditing, and revoking anything. See [Discovery & Governance](/research/discovery-and-governance/).
 
 ## Best practices
 
 - **Register every agent in a directory** with an owner, a purpose, and lifecycle events (create, rotate, retire) — Okta's guidance for its identity fabric, echoed by AEGIS's "build inventory systems" step.
 - **Scope identity to a compartment, not a person.** Claude's channel model gives each private channel its own identity with boundary enforcement; public channels share a workspace identity. Configure each compartment to the lowest-privileged member's needs.
-- **Keep personal contexts personal.** Direct, single-user interactions can stay on the user's own delegated identity — see [Delegated Authority](/learnings/delegated-authority/) for that model.
+- **Keep personal contexts personal.** Direct, single-user interactions can stay on the user's own delegated identity — see [Delegated Authority](/research/delegated-authority/) for that model.
 - **Govern human and non-human identities together** with consistent, data-centric policies rather than a separate, weaker regime for machines (BigID).
 
 ## Examples
 
 - An engineering channel's agent identity holds GitHub and data-warehouse write access; the legal channel's identity cannot reach code repositories at all; DMs stay on the individual's own accounts (Claude/Anthropic).
 - A CRM agent is confined to a single private space, so a prompt from any other context simply has no credential path to customer data (Claude/Anthropic).
-- An enterprise IdP registers each agent and applies [Cross App Access](/learnings/runtime-authorization/) so every app-to-app connection the agent makes is centrally visible and revocable (Okta).
+- An enterprise IdP registers each agent and applies [Cross App Access](/research/runtime-authorization/) so every app-to-app connection the agent makes is centrally visible and revocable (Okta).

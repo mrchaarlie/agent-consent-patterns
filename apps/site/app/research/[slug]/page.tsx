@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ComponentType } from "react";
-import { TOPICS, getSource, getTopic } from "@/lib/learnings";
+import { TOPICS, getSource, getTopic } from "@/lib/research";
 
 /**
  * Explicit content map (not a dynamic template-string import) so the
@@ -10,19 +10,19 @@ import { TOPICS, getSource, getTopic } from "@/lib/learnings";
  * never silently miss one.
  */
 const CONTENT: Record<string, () => Promise<{ default: ComponentType }>> = {
-  "agent-identity": () => import("@/content/learnings/agent-identity.mdx"),
+  "agent-identity": () => import("@/content/research/agent-identity.mdx"),
   "delegated-authority": () =>
-    import("@/content/learnings/delegated-authority.mdx"),
-  "least-privilege": () => import("@/content/learnings/least-privilege.mdx"),
+    import("@/content/research/delegated-authority.mdx"),
+  "least-privilege": () => import("@/content/research/least-privilege.mdx"),
   "just-in-time-access": () =>
-    import("@/content/learnings/just-in-time-access.mdx"),
+    import("@/content/research/just-in-time-access.mdx"),
   "human-in-the-loop": () =>
-    import("@/content/learnings/human-in-the-loop.mdx"),
+    import("@/content/research/human-in-the-loop.mdx"),
   "runtime-authorization": () =>
-    import("@/content/learnings/runtime-authorization.mdx"),
-  auditability: () => import("@/content/learnings/auditability.mdx"),
+    import("@/content/research/runtime-authorization.mdx"),
+  auditability: () => import("@/content/research/auditability.mdx"),
   "discovery-and-governance": () =>
-    import("@/content/learnings/discovery-and-governance.mdx"),
+    import("@/content/research/discovery-and-governance.mdx"),
 };
 
 export const dynamicParams = false;
@@ -67,7 +67,7 @@ export default async function LearningTopicPage({
   return (
     <article className="mx-auto max-w-3xl px-6 py-12">
       <header>
-        <p className="eyebrow">Learnings · Updated {topic.updated}</p>
+        <p className="eyebrow">Research · Updated {topic.updated}</p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
           {topic.name}
         </h1>
@@ -105,7 +105,7 @@ export default async function LearningTopicPage({
             {related.map((t) => (
               <li key={t.slug}>
                 <Link
-                  href={`/learnings/${t.slug}/`}
+                  href={`/research/${t.slug}/`}
                   className="block h-full rounded-lg border border-line bg-surface-raised p-4 transition-colors hover:border-line-strong"
                 >
                   <span className="font-semibold tracking-tight">
@@ -122,10 +122,10 @@ export default async function LearningTopicPage({
       )}
       <footer className="mt-16 border-t border-line pt-6 text-sm text-ink-muted">
         <Link
-          href="/learnings/"
+          href="/research/"
           className="underline underline-offset-4 hover:text-ink"
         >
-          ← All learnings
+          ← All research
         </Link>
       </footer>
     </article>

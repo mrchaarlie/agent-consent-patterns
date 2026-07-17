@@ -58,27 +58,34 @@ function setDocumentLevel(next: ReadingLevel) {
 }
 
 /**
- * Labelled dropdown that sets the site-wide reading level. Persists in
- * localStorage; a pre-hydration inline script in the root layout applies the
- * stored level before first paint, so there is no flash. Content switching is
- * pure CSS keyed off <html data-level>, so hydration never mismatches.
+ * Compact dropdown that sets the site-wide reading level. The visible cue is
+ * an "Aa" glyph; the accessible name stays "Reading level" via the sr-only
+ * label. Persists in localStorage; a pre-hydration inline script in the root
+ * layout applies the stored level before first paint, so there is no flash.
+ * Content switching is pure CSS keyed off <html data-level>, so hydration
+ * never mismatches.
  */
 export function ReadingLevelSwitch() {
   const level = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   return (
-    <div data-acp="reading-level" className="flex w-full items-center justify-between gap-2 md:w-auto md:justify-start">
-      <label
-        htmlFor="reading-level"
-        className="font-mono text-[0.6875rem] uppercase tracking-[0.1em] text-ink-faint"
-      >
+    <div data-acp="reading-level" className="flex shrink-0 items-center gap-1.5">
+      <label htmlFor="reading-level" className="sr-only">
         Reading level
       </label>
+      <span
+        aria-hidden
+        className="font-mono text-[0.6875rem] text-ink-faint"
+        title="Reading level"
+      >
+        Aa
+      </span>
       <select
         id="reading-level"
         value={level}
         onChange={(e) => setDocumentLevel(e.target.value as ReadingLevel)}
-        className="cursor-pointer rounded-md border border-line bg-surface-raised px-1.5 py-1 text-[0.6875rem] text-ink hover:border-line-strong md:px-2 md:text-xs"
+        title="Reading level"
+        className="h-8 cursor-pointer rounded-md border border-line bg-surface-raised px-1.5 text-xs text-ink hover:border-line-strong"
       >
         {READING_LEVELS.map(({ value, label }) => (
           <option key={value} value={value}>

@@ -1,14 +1,14 @@
 /**
- * The Learnings knowledge base: summarized lessons from industry thinkers on
+ * The Research knowledge base: summarized lessons from industry thinkers on
  * agent permissions, organized by topic (not by author). Every topic page
  * cites entries from the SOURCES registry so attribution is never optional.
  *
  * Updating: add new sources to SOURCES, reference their ids from the topic's
- * `sourceIds`, and extend the topic MDX in content/learnings/. Bump `updated`
+ * `sourceIds`, and extend the topic MDX in content/research/. Bump `updated`
  * on the topic you touched.
  */
 
-export interface LearningSource {
+export interface ResearchSource {
   id: string;
   /** Person credited, when the piece has a named author. */
   author?: string;
@@ -20,7 +20,7 @@ export interface LearningSource {
   date: string;
 }
 
-export interface LearningTopic {
+export interface ResearchTopic {
   slug: string;
   name: string;
   /** One-sentence definition shown on index cards and page metadata. */
@@ -35,7 +35,7 @@ export interface LearningTopic {
   updated: string;
 }
 
-export const SOURCES: LearningSource[] = [
+export const SOURCES: ResearchSource[] = [
   {
     id: "bigid-aam",
     author: "Neil Patel",
@@ -117,7 +117,7 @@ export const SOURCES: LearningSource[] = [
   },
 ];
 
-export const TOPICS: LearningTopic[] = [
+export const TOPICS: ResearchTopic[] = [
   {
     slug: "agent-identity",
     name: "Agent Identity",
@@ -282,10 +282,10 @@ export const TOPICS: LearningTopic[] = [
   },
 ];
 
-export function getTopic(slug: string): LearningTopic | undefined {
+export function getTopic(slug: string): ResearchTopic | undefined {
   return TOPICS.find((t) => t.slug === slug);
 }
 
-export function getSource(id: string): LearningSource | undefined {
+export function getSource(id: string): ResearchSource | undefined {
   return SOURCES.find((s) => s.id === id);
 }

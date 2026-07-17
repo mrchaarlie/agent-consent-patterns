@@ -9,13 +9,13 @@ Technically, the mainstream mechanism is **delegated access via token exchange**
 ## Why it matters
 
 - **Permission mirroring prevents data leaks by construction.** If the agent can only see what its invoking user can see, it cannot exfiltrate protected data on that user's behalf — Oso's baseline rule for agent permissions.
-- **One-time consent checkboxes don't fit long-running agents.** Maler argues humans need "a real, enforceable say that persists throughout long-running interactions" — consent must be revocable and inspectable mid-flight, not collected once at connection time. See [Human-in-the-Loop Oversight](/learnings/human-in-the-loop/).
-- **Service accounts hide the human.** When agents share an over-privileged service identity, the delegation chain — who asked for this? — is erased, breaking both least privilege and [Auditability](/learnings/auditability/).
+- **One-time consent checkboxes don't fit long-running agents.** Maler argues humans need "a real, enforceable say that persists throughout long-running interactions" — consent must be revocable and inspectable mid-flight, not collected once at connection time. See [Human-in-the-Loop Oversight](/research/human-in-the-loop/).
+- **Service accounts hide the human.** When agents share an over-privileged service identity, the delegation chain — who asked for this? — is erased, breaking both least privilege and [Auditability](/research/auditability/).
 
 ## Best practices
 
 - **Prefer delegated access over service accounts** so the agent inherits the user's live permissions through token exchange, and loses them the moment the user does (Oso).
-- **Attenuate on every hop.** A delegated token should carry equal-or-narrower scope than the grant it came from, and expire; pair with [Just-in-Time Access](/learnings/just-in-time-access/) so nothing stands ready to be abused.
+- **Attenuate on every hop.** A delegated token should carry equal-or-narrower scope than the grant it came from, and expire; pair with [Just-in-Time Access](/research/just-in-time-access/) so nothing stands ready to be abused.
 - **Centralize the delegation decision at the identity provider**, not in each app's own consent screen, so policy and revocation apply enterprise-wide and instantly (Okta).
 - **Design for the absent human.** Maler notes identity must keep functioning "even after the person anchoring it becomes unavailable" — delegation records, expirations, and revocation paths need to outlive any single session.
 

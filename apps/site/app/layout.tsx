@@ -4,6 +4,7 @@ import { Analytics } from "@/components/analytics";
 import { ReadingLevelSwitch } from "@/components/reading-level";
 import { SiteHeader } from "@/components/site-header";
 import { SiteNavigation } from "@/components/site-navigation";
+import { SiteSearch } from "@/components/site-search";
 import { ThemeSwitch } from "@/components/theme-switch";
 import "./globals.css";
 
@@ -74,19 +75,22 @@ export default function RootLayout({
           Skip to content
         </a>
         <SiteHeader>
-          <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-4 gap-y-3 px-6 py-4 md:flex-nowrap md:gap-x-6 md:py-5">
+          <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-4 gap-y-3 px-6 py-4 md:flex-nowrap md:gap-x-5 md:py-5">
             <Link href="/" className="flex shrink-0 items-baseline gap-3">
               <span className="font-mono text-xs text-ink-faint" aria-hidden>
                 ACP/
               </span>
-              <span className="hidden font-semibold tracking-tight md:inline">
+              <span className="hidden font-semibold tracking-tight lg:inline">
                 Agent Consent Patterns
               </span>
             </Link>
             <div className="ml-auto shrink-0">
               <SiteNavigation />
             </div>
-            <div className="flex w-full border-t border-line pt-3 md:ml-auto md:w-auto md:border-t-0 md:pt-0">
+            <div className="flex w-full items-center gap-3 border-t border-line pt-3 md:ml-0 md:w-auto md:border-t-0 md:pt-0">
+              <div className="min-w-0 flex-1 md:w-52 md:flex-none">
+                <SiteSearch />
+              </div>
               <ReadingLevelSwitch />
             </div>
           </div>

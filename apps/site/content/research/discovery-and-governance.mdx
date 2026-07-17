@@ -15,13 +15,13 @@ Two named frameworks anchor this topic. **Forrester's AEGIS** (Agentic AI Guardr
 ## Best practices
 
 - **Start with GRC, not tooling.** AEGIS's roadmap: establish governance and acceptable-use policy, build the inventory, *then* invest in IAM and data security, then DevSecOps and threat management, then Zero Trust optimization (Forrester).
-- **Detect and register running agents** in a directory with owners and lifecycle management — Okta's platform guidance, and the precondition for [Agent Identity](/learnings/agent-identity/).
+- **Detect and register running agents** in a directory with owners and lifecycle management — Okta's platform guidance, and the precondition for [Agent Identity](/research/agent-identity/).
 - **Classify the data before the agent touches it.** DSPM-style discovery of sensitive data gives access decisions their context; policies then govern *data*, uniformly, whoever — human or agent — requests it (BigID).
 - **Make policies machine-executable.** AEGIS's GRC domain calls for modernizing policy into context-aware, machine-enforceable form, so governance operates at the speed agents do.
-- **Respond at machine speed.** Automated remediation — token suspension, access revocation — has to match the tempo of the actors it governs (BigID; theCUBE Research's runtime-controls argument in [Runtime Authorization](/learnings/runtime-authorization/)).
+- **Respond at machine speed.** Automated remediation — token suspension, access revocation — has to match the tempo of the actors it governs (BigID; theCUBE Research's runtime-controls argument in [Runtime Authorization](/research/runtime-authorization/)).
 
 ## Examples
 
 - An AAM program overlays DSPM classification on the agent inventory and immediately surfaces the riskiest combination: an unregistered workflow agent with inherited read access to a customer-PII store (BigID's convergence model).
 - An AEGIS-aligned rollout writes the acceptable-use policy and agent inventory before any enforcement tech is bought — "minimal tech for maximum impact" in the framework's first phase (Forrester).
-- Cross App Access gives the IdP a live registry of agent-to-app connections, turning shadow integrations into governed, revocable, [audited](/learnings/auditability/) ones (Okta).
+- Cross App Access gives the IdP a live registry of agent-to-app connections, turning shadow integrations into governed, revocable, [audited](/research/auditability/) ones (Okta).

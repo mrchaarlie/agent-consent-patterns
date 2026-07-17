@@ -2,31 +2,29 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 test.describe("Guides and site navigation", () => {
-  test("Reference and Build menus expose their grouped destinations", async ({
+  test("primary nav links are flat and Build stays a menu", async ({
     page,
   }) => {
     await page.goto("/");
 
-    const reference = page.getByText("Reference", { exact: true });
-    await reference.click();
-    await expect(reference).toHaveAttribute("aria-expanded", "true");
-    await expect(page.getByRole("link", { name: "Patterns", exact: true })).toHaveAttribute(
-      "href",
-      "/patterns/",
-    );
-    await expect(page.getByRole("link", { name: "Principles", exact: true })).toHaveAttribute(
-      "href",
-      "/principles/",
-    );
-    await expect(page.getByRole("link", { name: "Glossary", exact: true })).toHaveAttribute(
-      "href",
-      "/glossary/",
-    );
+    const header = page.locator("header");
+    await expect(
+      header.getByRole("link", { name: "Patterns", exact: true }),
+    ).toHaveAttribute("href", "/patterns/");
+    await expect(
+      header.getByRole("link", { name: "Research", exact: true }),
+    ).toHaveAttribute("href", "/research/");
+    await expect(
+      header.getByRole("link", { name: "Principles", exact: true }),
+    ).toHaveAttribute("href", "/principles/");
+    // Glossary merged into the Research page; no standalone nav entry.
+    await expect(
+      header.getByRole("link", { name: "Glossary", exact: true }),
+    ).toHaveCount(0);
 
-    const build = page.getByText("Build", { exact: true });
+    const build = header.getByText("Build", { exact: true });
     await build.focus();
     await page.keyboard.press("Enter");
-    await expect(reference).toHaveAttribute("aria-expanded", "false");
     await expect(build).toHaveAttribute("aria-expanded", "true");
     await expect(
       page.getByRole("link", { name: "React library" }),
@@ -39,9 +37,10 @@ test.describe("Guides and site navigation", () => {
     await page.locator("#main").click({ position: { x: 8, y: 8 } });
     await expect(build).toHaveAttribute("aria-expanded", "false");
 
-    await reference.click();
+    await build.click();
+    await expect(build).toHaveAttribute("aria-expanded", "true");
     await page.keyboard.press("Escape");
-    await expect(reference).toHaveAttribute("aria-expanded", "false");
+    await expect(build).toHaveAttribute("aria-expanded", "false");
   });
 
   test("library guide gives install and composition guidance", async ({ page }) => {
@@ -196,30 +195,42 @@ test.describe("Guides and site navigation", () => {
       "mailto:contact@agentconsent.dev",
     );
 
-    const readingLabel = page.getByText("Reading level", { exact: true });
+    // The reading-level control is compact (sr-only label), so assert its
+    // accessible name rather than visible-label geometry.
     const readingSelect = page.locator('[data-acp="reading-level"] select');
-    const labelBox = await readingLabel.boundingBox();
-    const selectBox = await readingSelect.boundingBox();
-    expect(labelBox?.x).toBeLessThan(selectBox?.x ?? 0);
+    await expect(readingSelect).toHaveAccessibleName("Reading level");
 
     for (const width of [780, 1024]) {
       await page.setViewportSize({ width, height: 800 });
       const buildBox = await page.getByText("Build", { exact: true }).boundingBox();
+      const searchBox = await page
+        .locator('[data-acp="site-search"] input')
+        .boundingBox();
       const readingBox = await page.locator('[data-acp="reading-level"]').boundingBox();
       expect(buildBox).not.toBeNull();
+      expect(searchBox).not.toBeNull();
       expect(readingBox).not.toBeNull();
-      expect(buildBox!.x + buildBox!.width + 16).toBeLessThanOrEqual(readingBox!.x);
+      // One header row ≥md: nav, then search, then the reading-level control.
+      expect(buildBox!.x + buildBox!.width + 16).toBeLessThanOrEqual(searchBox!.x);
+      expect(searchBox!.x + searchBox!.width).toBeLessThanOrEqual(readingBox!.x);
       expect(buildBox!.y + buildBox!.height).toBeGreaterThan(readingBox!.y);
       expect(readingBox!.y + readingBox!.height).toBeGreaterThan(buildBox!.y);
     }
 
     await page.setViewportSize({ width: 375, height: 800 });
     const mobileBuildBox = await page.getByText("Build", { exact: true }).boundingBox();
+    const mobileSearchBox = await page
+      .locator('[data-acp="site-search"] input')
+      .boundingBox();
     const mobileReadingBox = await page.locator('[data-acp="reading-level"]').boundingBox();
     expect(mobileBuildBox).not.toBeNull();
+    expect(mobileSearchBox).not.toBeNull();
     expect(mobileReadingBox).not.toBeNull();
-    expect(mobileBuildBox!.y + mobileBuildBox!.height).toBeLessThanOrEqual(mobileReadingBox!.y);
-    await expect(page.getByText("Reading level", { exact: true })).toBeVisible();
+    // Mobile: nav row first, then a full-width row with search + reading level.
+    expect(mobileBuildBox!.y + mobileBuildBox!.height).toBeLessThanOrEqual(mobileSearchBox!.y);
+    expect(mobileSearchBox!.x + mobileSearchBox!.width).toBeLessThanOrEqual(mobileReadingBox!.x);
+    expect(mobileSearchBox!.y + mobileSearchBox!.height).toBeGreaterThan(mobileReadingBox!.y);
+    expect(mobileReadingBox!.y + mobileReadingBox!.height).toBeGreaterThan(mobileSearchBox!.y);
     await expect(page.getByText("Agent Consent Patterns", { exact: true })).toBeHidden();
 
     const licenseBox = await page.getByText("MIT licensed.", { exact: false }).boundingBox();
