@@ -1,0 +1,26 @@
+<p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">When an agent acts on a person's behalf, the person's consent, the scope of what was handed over, and the accountability trail must all survive the handoff — including long after the person has left the room.</p>
+
+## What it is
+
+Delegated authority is the transfer of a bounded slice of a human's power to an agent acting for them. Eve Maler — who has worked on delegation architectures since the early days of User-Managed Access (UMA) in 2008 — frames the coming decade of customer identity as "authorizing agents acting for humans who aren't present," and names the core challenge as "getting consent, scope, and accountability right when delegation is the default rather than the exception."
+
+Technically, the mainstream mechanism is **delegated access via token exchange**: the agent presents the user's identity and receives the user's real-time permissions, rather than running on an application-wide service account with universal privileges (Oso). Okta's Cross App Access extends OAuth so the enterprise IdP — not each individual app — decides and records what an agent may reach, while "maintaining both user and agent context across systems."
+
+## Why it matters
+
+- **Permission mirroring prevents data leaks by construction.** If the agent can only see what its invoking user can see, it cannot exfiltrate protected data on that user's behalf — Oso's baseline rule for agent permissions.
+- **One-time consent checkboxes don't fit long-running agents.** Maler argues humans need "a real, enforceable say that persists throughout long-running interactions" — consent must be revocable and inspectable mid-flight, not collected once at connection time. See [Human-in-the-Loop Oversight](/research/human-in-the-loop/).
+- **Service accounts hide the human.** When agents share an over-privileged service identity, the delegation chain — who asked for this? — is erased, breaking both least privilege and [Auditability](/research/auditability/).
+
+## Best practices
+
+- **Prefer delegated access over service accounts** so the agent inherits the user's live permissions through token exchange, and loses them the moment the user does (Oso).
+- **Attenuate on every hop.** A delegated token should carry equal-or-narrower scope than the grant it came from, and expire; pair with [Just-in-Time Access](/research/just-in-time-access/) so nothing stands ready to be abused.
+- **Centralize the delegation decision at the identity provider**, not in each app's own consent screen, so policy and revocation apply enterprise-wide and instantly (Okta).
+- **Design for the absent human.** Maler notes identity must keep functioning "even after the person anchoring it becomes unavailable" — delegation records, expirations, and revocation paths need to outlive any single session.
+
+## Examples
+
+- A sales assistant agent exchanges the rep's session for a scoped token to the CRM: it reads that rep's accounts, and nothing more; when the rep's role changes, the agent's reach changes in the same instant (Oso's delegated-access model).
+- Under Cross App Access, an agent requests access via the IdP, which checks policy for both the user and the agent, grants with full logging, and can revoke everywhere at once (Okta).
+- UMA-style user-managed authorization lets a person set standing rules for what any agent acting for them may share — the architecture Maler points to as the basis for agentic delegation.

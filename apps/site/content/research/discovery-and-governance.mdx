@@ -1,0 +1,27 @@
+<p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Every framework in this knowledge base starts from the same premise: you cannot scope, gate, or audit an agent you don't know exists. Discovery, inventory, and unified governance come first.</p>
+
+## What it is
+
+Discovery and governance is the program layer of agent permissions: finding every agent operating in the organization (including shadow AI nobody registered), understanding what data and systems each can reach, and governing human and non-human identities under one consistent policy.
+
+Two named frameworks anchor this topic. **Forrester's AEGIS** (Agentic AI Guardrails for Information Security, by Jeff Pollard) spans six domains — GRC; identity and access management; data security and privacy; application security; threat management; and Zero Trust — and tells CISOs to start with governance: define acceptable use, build inventory, then build IAM and data security. **BigID's Agent Access Management (AAM)**, articulated by Neil Patel, defines the practice of controlling how non-human identities gain access to enterprise data, arguing it demands a *data-first* convergence of data security posture management (DSPM), data access governance, and data activity monitoring.
+
+## Why it matters
+
+- **Traditional IAM's assumptions are all violated.** It assumes human users, role-based and relatively static permissions, and after-the-fact review; agents are autonomous, inherit permissions dynamically, and are "often invisible to security teams" (BigID).
+- **Identity-only governance can't answer the data question.** Knowing an agent's roles doesn't tell you *what sensitive data it can actually reach* or whether that access is still appropriate — the gap AAM's data-first model exists to close (BigID).
+- **Ungoverned agents multiply.** Okta's case for Cross App Access starts from shadow AI: IT teams lack visibility into which autonomous tools are connecting to which apps. With 100-to-1 agent-to-human ratios projected (theCUBE Research), manual tracking is already over.
+
+## Best practices
+
+- **Start with GRC, not tooling.** AEGIS's roadmap: establish governance and acceptable-use policy, build the inventory, *then* invest in IAM and data security, then DevSecOps and threat management, then Zero Trust optimization (Forrester).
+- **Detect and register running agents** in a directory with owners and lifecycle management — Okta's platform guidance, and the precondition for [Agent Identity](/research/agent-identity/).
+- **Classify the data before the agent touches it.** DSPM-style discovery of sensitive data gives access decisions their context; policies then govern *data*, uniformly, whoever — human or agent — requests it (BigID).
+- **Make policies machine-executable.** AEGIS's GRC domain calls for modernizing policy into context-aware, machine-enforceable form, so governance operates at the speed agents do.
+- **Respond at machine speed.** Automated remediation — token suspension, access revocation — has to match the tempo of the actors it governs (BigID; theCUBE Research's runtime-controls argument in [Runtime Authorization](/research/runtime-authorization/)).
+
+## Examples
+
+- An AAM program overlays DSPM classification on the agent inventory and immediately surfaces the riskiest combination: an unregistered workflow agent with inherited read access to a customer-PII store (BigID's convergence model).
+- An AEGIS-aligned rollout writes the acceptable-use policy and agent inventory before any enforcement tech is bought — "minimal tech for maximum impact" in the framework's first phase (Forrester).
+- Cross App Access gives the IdP a live registry of agent-to-app connections, turning shadow integrations into governed, revocable, [audited](/research/auditability/) ones (Okta).

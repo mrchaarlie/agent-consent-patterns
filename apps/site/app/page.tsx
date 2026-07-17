@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Lvl } from "@/components/lvl";
 import { CATEGORIES, CATEGORY_BLURB, PATTERNS } from "@/lib/patterns";
+import { TOPICS } from "@/lib/research";
 
 export default function HomePage() {
   return (
@@ -251,6 +252,66 @@ export default function HomePage() {
             );
           })}
         </ul>
+      </section>
+
+      <section className="border-t border-line py-14">
+        <div className="mb-2 flex items-baseline justify-between gap-4">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            The research behind the patterns
+          </h2>
+          <Link
+            href="/research/"
+            className="text-sm text-ink-muted underline underline-offset-4 hover:text-ink"
+          >
+            All research →
+          </Link>
+        </div>
+        <p className="max-w-2xl leading-relaxed text-ink-muted">
+          <Lvl level="caveman" as="span">
+            What the wise ones say about machine keys, boiled down, sorted by
+            subject, every saying marked with who said it. The shared
+            word-list lives there too.
+          </Lvl>
+          <Lvl level="human" as="span">
+            Summarized, attributed lessons on agent permissions from industry
+            thinkers — organized by topic and paired with the shared
+            glossary.
+          </Lvl>
+          <Lvl level="academic" as="span">
+            Attributed digests of the industry literature on agent
+            authorization, organized topically and colocated with the
+            collection&rsquo;s controlled vocabulary.
+          </Lvl>
+        </p>
+        <ul className="mt-8 grid gap-4 sm:grid-cols-3">
+          {TOPICS.slice(0, 3).map((topic) => (
+            <li key={topic.slug}>
+              <Link
+                href={`/research/${topic.slug}/`}
+                className="block h-full rounded-lg border border-line bg-surface-raised p-5 transition-colors hover:border-line-strong"
+              >
+                <h3 className="font-semibold tracking-tight">{topic.name}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+                  {topic.summary}
+                </p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-6 flex flex-wrap items-center gap-4 text-sm">
+          <Link
+            href="/research/"
+            className="text-ink underline underline-offset-4 hover:text-ink-muted"
+          >
+            Browse the research →
+          </Link>
+          <Link
+            href="/research/#glossary"
+            className="text-ink-muted underline underline-offset-4 hover:text-ink"
+          >
+            Glossary
+          </Link>
+        </div>
       </section>
 
       <section className="flex flex-wrap items-center justify-between gap-4 py-12">

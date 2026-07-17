@@ -1,0 +1,25 @@
+<p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Standing permissions are standing risk. Issue agents short-lived, task-scoped credentials at the moment of need, and let them evaporate when the work is done.</p>
+
+## What it is
+
+Just-in-time (JIT) access replaces durable grants with **short-lived credentials issued at runtime and revoked immediately after task completion** (Oso). The end state is what Krista Case (theCUBE Research) calls **zero standing privilege**: an agent holds no persistent access rights at all — only whatever the current, authorized task momentarily requires. Forrester's AEGIS framework prescribes the same posture for its IAM domain: agents are hybrid identities operating on "just-in-time privileges with human oversight."
+
+## Why it matters
+
+- **Standing credentials are the attack surface.** An always-valid token held by an always-on agent can be stolen, replayed, or triggered by a prompt injection at any hour. A credential that lives for minutes shrinks that exposure window to nearly nothing (Oso).
+- **Agents don't need durable access — they need momentary access, often.** Unlike an employee's role, an agent's tasks are discrete and machine-mediated, so runtime issuance is actually practical at scale (theCUBE Research's "real-time control system" framing).
+- **Expiry is the cheapest revocation.** Revoking a compromised standing grant requires detection first; an expired token revokes itself. This complements — not replaces — the instant revocation paths in [Delegated Authority](/research/delegated-authority/).
+
+## Best practices
+
+- **Issue credentials at task start, revoke at task end** — never provision an agent's access at deployment time (Oso).
+- **Bind the credential to the task's scope**, combining JIT with [Least Privilege](/research/least-privilege/): short-lived *and* narrow, not short-lived but omnipotent.
+- **Add behavioral guardrails that revoke early.** Oso recommends automatically revoking tokens when an agent's activity pattern turns anomalous — expiry is the ceiling, not the only exit.
+- **Use predictive permissioning for scheduled needs.** Grant time-limited elevation for known events (a reporting window, a migration) rather than permanent elevated roles (Oso).
+- **Layer context conditions on issuance** — device trust, network, time of day — so the same request can be denied in an unexpected context (Oso). Enforcement lives in [Runtime Authorization](/research/runtime-authorization/).
+
+## Examples
+
+- A data-analysis agent requests warehouse credentials when its job starts; the token is scoped to the three tables in the query plan and expires in fifteen minutes — a stolen copy an hour later is worthless (Oso's JIT model).
+- Under zero standing privilege, an idle agent enumerated by an attacker has literally nothing to steal: its directory entry exists, its access does not (theCUBE Research).
+- AEGIS-aligned deployments pair the JIT grant with a human approval step for sensitive elevations, so the "just in time" moment is also the [oversight](/research/human-in-the-loop/) moment (Forrester).

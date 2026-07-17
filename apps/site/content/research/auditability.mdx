@@ -1,0 +1,27 @@
+<p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">When an autonomous system acts, someone must be able to answer: what happened, which identity did it, and under whose authority. Without that record, delegation to agents is unaccountable by construction.</p>
+
+## What it is
+
+Auditability for agents means every action leaves a durable record binding the *effect* to the *agent identity* that performed it and the *authority* (human grant, policy, approval) it exercised. Krista Case (theCUBE Research) calls the identity half **immutable ownership** — permanent audit trails establishing accountability for autonomous actions. Forrester's AEGIS makes **explainable outcomes** one of its three foundational principles: it must be possible to reconstruct why an agent did what it did, not merely that it did it.
+
+Eve Maler adds the delegation half: accountability is one of the three things (with consent and scope) that must be gotten right "when delegation is the default rather than the exception" — the trail has to lead back through the agent to the human relationship that empowered it.
+
+## Why it matters
+
+- **Post-hoc review is the only oversight that scales to everything.** Human approval gates cover the consequential slice ([Human-in-the-Loop](/research/human-in-the-loop/)); audit covers the rest. Traditional IAM assumed permissions "reviewable after the fact" — BigID's point is that agents break the *assumptions* of that review, not the need for it.
+- **Compliance already demands it.** Centralized, complete logs of agent access are what make SOC 2, HIPAA, and GDPR obligations satisfiable in agentic deployments (Okta).
+- **Attribution deters and diagnoses.** When something goes wrong at machine speed, the difference between an incident and a catastrophe is often how fast you can answer "which agent, which grant, which owner" (theCUBE Research's remediation framing).
+
+## Best practices
+
+- **Give every agent a distinct identity first.** Shared service accounts make attribution impossible — audit quality is downstream of [Agent Identity](/research/agent-identity/).
+- **Log the authorization, not just the action.** Record which policy or human approval permitted the act, so the trail explains authority as well as behavior (AEGIS's explainable outcomes; Permit.io's "auditable decision chain" for approvals).
+- **Preserve the delegation chain.** Protocols like Okta's Cross App Access maintain "both user and agent context across systems," so an action in a downstream app still shows the human principal behind the agent.
+- **Make ownership immutable and assigned at creation.** Every agent gets a named human owner in the registry before it acts; the record can't be edited away (theCUBE Research).
+- **Monitor actual data activity against the recorded grants.** BigID pairs access governance with data activity monitoring so drift between what an agent *may* do and what it *does* becomes an alert, not an archaeology project.
+
+## Examples
+
+- An agent's write to a finance system logs: agent identity, invoking user, the Cross App Access grant used, timestamp, and the IdP policy decision — a regulator-ready trail with no per-app log stitching (Okta).
+- A quarterly access review lists each agent alongside its human owner, granted scopes, and last-used dates; unused scopes are pared back — closing the loop with [Least Privilege](/research/least-privilege/) (Claude/Anthropic's audit-and-restrict practice).
+- Data activity monitoring flags an agent reading a sensitive table its task profile never touched before; the token is suspended pending review (BigID's monitoring convergence; Oso's behavioral guardrails).

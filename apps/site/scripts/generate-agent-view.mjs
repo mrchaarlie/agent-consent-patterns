@@ -130,7 +130,7 @@ async function loadPatterns() {
 }
 
 async function loadGlossary() {
-  const src = await readFile(join(SITE_DIR, "app/glossary/page.tsx"), "utf8");
+  const src = await readFile(join(SITE_DIR, "lib/glossary.ts"), "utf8");
   const terms = evalLiteral(extractArrayLiteral(src, "TERMS"));
   // Terms carry all three reading levels; `human` is the canonical mirror copy.
   return terms.map((t) => ({
@@ -280,6 +280,50 @@ function docsMdxToMarkdown(mdx, { title, path }) {
   return `# ${title}\n\n> Human page: ${url(path)}\n\n${body}\n`;
 }
 
+async function loadResearch() {
+  const src = await readFile(join(SITE_DIR, "lib/research.ts"), "utf8");
+  return {
+    topics: evalLiteral(extractArrayLiteral(src, "TOPICS")),
+    sources: evalLiteral(extractArrayLiteral(src, "SOURCES")),
+  };
+}
+
+/**
+ * Turn a research topic MDX into its Markdown mirror. The topic pages are
+ * plain Markdown apart from a single styled lede <p>; the attribution footer
+ * lives in lib/research.ts data, so it is re-rendered here from the same
+ * source the human page uses.
+ */
+function researchMdxToMarkdown(mdx, topic, sources) {
+  const out = [];
+  for (const line of mdx.split("\n")) {
+    if (/^import\s/.test(line)) continue;
+    const lede = line.match(/^<p\s+className="[^"]*">([\s\S]*)<\/p>\s*$/);
+    if (lede) {
+      out.push(decodeEntities(lede[1].trim()));
+      continue;
+    }
+    out.push(line);
+  }
+  const body = out.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  const cited = topic.sourceIds
+    .map((id) => sources.find((s) => s.id === id))
+    .filter(Boolean);
+  const sourceLines = [
+    "## Sources",
+    "",
+    ...cited.map(
+      (s) =>
+        `- [${s.title}](${s.url}) — ${s.author ? `${s.author}, ` : ""}${s.org} (${s.date})`,
+    ),
+  ];
+  const header =
+    `# ${topic.name}\n\n` +
+    `> Research · updated ${topic.updated} · part of Agent Consent Patterns.\n` +
+    `> Human page: ${url(`/research/${topic.slug}/`)}\n`;
+  return `${header}\n${body}\n\n${sourceLines.join("\n")}\n`;
+}
+
 /** Extract principles (name, lede, body prose) + stubs + intro from the page. */
 async function loadPrinciples() {
   const src = await readFile(join(SITE_DIR, "app/principles/page.tsx"), "utf8");
@@ -350,7 +394,7 @@ function renderGlossary(terms) {
   const body = terms
     .map((t) => `## ${t.term}\n\n${t.definition}`)
     .join("\n\n");
-  return `# Glossary — Agent Consent Patterns\n\n> Human page: ${url("/glossary/")}\n\nShared vocabulary used across the patterns.\n\n${body}\n`;
+  return `# Glossary — Agent Consent Patterns\n\n> Human page: ${url("/research/#glossary")}\n\nShared vocabulary used across the patterns.\n\n${body}\n`;
 }
 
 function renderPrinciples({ intro, principles, stubs }) {
@@ -402,7 +446,7 @@ function renderIndexMd(patterns, categories) {
   return lines.join("\n") + "\n";
 }
 
-function renderLlmsTxt(patterns, categories) {
+function renderLlmsTxt(patterns, categories, researchTopics) {
   const lines = [
     "# Agent Consent Patterns",
     "",
@@ -419,6 +463,12 @@ function renderLlmsTxt(patterns, categories) {
         `- [${p.name}](${url(`/patterns/${p.slug}.md`)}): ${p.problem}`,
       );
     }
+  }
+  lines.push("", "## Research", "");
+  for (const t of researchTopics) {
+    lines.push(
+      `- [${t.name}](${url(`/research/${t.slug}.md`)}): ${t.summary}`,
+    );
   }
   lines.push(
     "",
@@ -476,6 +526,21 @@ async function main() {
     patternDocs.push(md);
   }
 
+  // Per-research-topic Markdown.
+  const { topics: researchTopics, sources: researchSources } =
+    await loadResearch();
+  const researchDocs = [];
+  await mkdir(join(OUT_DIR, "research"), { recursive: true });
+  for (const t of researchTopics) {
+    const mdx = await readFile(
+      join(SITE_DIR, "content/research", `${t.slug}.mdx`),
+      "utf8",
+    );
+    const md = researchMdxToMarkdown(mdx, t, researchSources);
+    await writeFile(join(OUT_DIR, "research", `${t.slug}.md`), md);
+    researchDocs.push(md);
+  }
+
   // Standalone page mirrors.
   const glossary = renderGlossary(await loadGlossary());
   const principles = renderPrinciples(await loadPrinciples());
@@ -498,11 +563,15 @@ async function main() {
   await writeFile(join(OUT_DIR, "index.md"), indexMd);
 
   // llms.txt index + concatenated full text.
-  await writeFile(join(OUT_DIR, "llms.txt"), renderLlmsTxt(patterns, CATEGORIES));
+  await writeFile(
+    join(OUT_DIR, "llms.txt"),
+    renderLlmsTxt(patterns, CATEGORIES, researchTopics),
+  );
   const full = [
     indexMd,
     principles,
     ...patternDocs,
+    ...researchDocs,
     glossary,
     about,
     library,
@@ -511,7 +580,7 @@ async function main() {
   await writeFile(join(OUT_DIR, "llms-full.txt"), full);
 
   console.log(
-    `[agent-view] wrote llms.txt, llms-full.txt, index.md, and ${patterns.length} pattern + 5 page mirrors to out/`,
+    `[agent-view] wrote llms.txt, llms-full.txt, index.md, and ${patterns.length} pattern + ${researchTopics.length} research + 5 page mirrors to out/`,
   );
 }
 

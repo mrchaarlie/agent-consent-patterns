@@ -1,7 +1,19 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "@playwright/test";
+import { type Page, expect, test } from "@playwright/test";
 
 const SWITCH = '[data-acp="reading-level"]';
+
+/** Open the reading-level menu and pick a level by its visible label. */
+async function setLevel(page: Page, label: string) {
+  await page
+    .locator(SWITCH)
+    .getByRole("button", { name: /Reading level/ })
+    .click();
+  await page
+    .locator(SWITCH)
+    .getByRole("menuitemradio", { name: label })
+    .click();
+}
 
 test.describe("Reading level switcher", () => {
   test("defaults to Human: exactly the human variants are visible", async ({
@@ -16,7 +28,7 @@ test.describe("Reading level switcher", () => {
 
   test("switching level swaps the visible copy", async ({ page }) => {
     await page.goto("/patterns/scoped-grant/");
-    await page.locator(SWITCH).locator("select").selectOption("caveman");
+    await setLevel(page, "Caveman");
     await expect(page.locator("html")).toHaveAttribute("data-level", "caveman");
     await expect(page.locator('[data-lvl="caveman"]').first()).toBeVisible();
     await expect(page.locator('[data-lvl="human"]').first()).toBeHidden();
@@ -24,10 +36,12 @@ test.describe("Reading level switcher", () => {
 
   test("level persists across navigation and reload", async ({ page }) => {
     await page.goto("/patterns/scoped-grant/");
-    await page.locator(SWITCH).locator("select").selectOption("academic");
+    await setLevel(page, "Academic");
 
-    await page.getByText("Reference", { exact: true }).click();
-    await page.getByRole("link", { name: "Glossary", exact: true }).click();
+    await page
+      .locator("header")
+      .getByRole("link", { name: "Research", exact: true })
+      .click();
     await expect(page.locator("html")).toHaveAttribute(
       "data-level",
       "academic",
@@ -39,9 +53,9 @@ test.describe("Reading level switcher", () => {
       "data-level",
       "academic",
     );
-    await expect(page.locator(SWITCH).locator("select")).toHaveValue(
-      "academic",
-    );
+    await expect(
+      page.locator(SWITCH).getByRole("button", { name: /Reading level/ }),
+    ).toHaveAccessibleName(/Academic/);
   });
 
   for (const level of ["Caveman", "Default", "Academic"] as const) {
@@ -49,10 +63,7 @@ test.describe("Reading level switcher", () => {
       page,
     }) => {
       await page.goto("/patterns/scoped-grant/");
-      await page
-        .locator(SWITCH)
-        .locator("select")
-        .selectOption({ label: level });
+      await setLevel(page, level);
       const results = await new AxeBuilder({ page }).analyze();
       expect(results.violations).toEqual([]);
     });

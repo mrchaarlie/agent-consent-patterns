@@ -1,0 +1,27 @@
+<p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Autonomy is a dial, not a switch. For consequential actions — deletions, payments, access to sensitive data — a human decision belongs in the execution path, and the human's consent must remain live and enforceable for as long as the agent keeps working.</p>
+
+## What it is
+
+Human-in-the-loop (HITL) oversight inserts explicit human verification before an agent performs sensitive operations. Oso lists it as a core safeguard for actions like bulk data access and destructive changes; Permit.io's external-access perimeter "can require human approval for critical actions, creating an auditable decision chain"; Forrester's AEGIS pairs agents' just-in-time privileges with human oversight as a package.
+
+Eve Maler pushes the concept beyond the approval dialog: humans need "a real, enforceable say that persists throughout long-running interactions" — oversight is a standing relationship with the agent, not a checkbox at the start of it.
+
+## Why it matters
+
+- **Some actions are irreversible at machine speed.** The Replit incident — an agent deleting a production database — is the recurring cautionary tale (cited by Oso). No retrospective audit un-deletes data; only a gate in front of the action helps.
+- **Approval is where accountability is minted.** A recorded human decision converts "the agent did X" into "person P authorized X for reason R" — the raw material of [Auditability](/research/auditability/).
+- **One-time consent decays.** An agent that runs for weeks under a consent granted in one moment is operating on stale authority; persistent, revocable consent keeps the delegation honest (Maler). See [Delegated Authority](/research/delegated-authority/).
+
+## Best practices
+
+- **Gate by consequence, not by category.** Require approval for destructive, irreversible, or sensitive-data operations; let routine reads flow. Uniform friction trains users to click through.
+- **Let agents request access rather than fail.** Permit.io's access-request pattern has the agent escalate to a human owner when it hits a permission wall — the human grants (or denies) a scoped, recorded exception instead of the agent being silently over-provisioned upfront.
+- **Make the approval a real decision.** Show the human the actual parameters of the pending action, the identity requesting it, and the authority it would exercise — an approval that shows nothing verifies nothing.
+- **Keep consent revocable mid-task.** Long-running work needs a live kill switch and a place to see what standing approvals exist (Maler's persistent-say principle).
+- **Treat cap-reached and anomaly events as re-consent moments.** When behavioral guardrails trip (Oso), the safe default is to pause and re-ask, not to proceed.
+
+## Examples
+
+- A finance agent can draft and categorize invoices autonomously, but any payment above a threshold routes to a named approver with the exact amount, payee, and justification attached (Permit.io's approval-chain model).
+- An agent blocked from a restricted dataset files an access request; the data owner grants read access scoped to one table for one week — recorded, expiring, and narrower than what a pre-provisioned role would have given (Permit.io Access Request MCP).
+- Oso's context-aware guardrails automatically suspend an agent's token on an unusual access pattern and page a human — oversight triggered by behavior, not just by action type.

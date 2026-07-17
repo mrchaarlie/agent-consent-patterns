@@ -2,31 +2,29 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 test.describe("Guides and site navigation", () => {
-  test("Reference and Build menus expose their grouped destinations", async ({
+  test("primary nav links are flat and Build stays a menu", async ({
     page,
   }) => {
     await page.goto("/");
 
-    const reference = page.getByText("Reference", { exact: true });
-    await reference.click();
-    await expect(reference).toHaveAttribute("aria-expanded", "true");
-    await expect(page.getByRole("link", { name: "Patterns", exact: true })).toHaveAttribute(
-      "href",
-      "/patterns/",
-    );
-    await expect(page.getByRole("link", { name: "Principles", exact: true })).toHaveAttribute(
-      "href",
-      "/principles/",
-    );
-    await expect(page.getByRole("link", { name: "Glossary", exact: true })).toHaveAttribute(
-      "href",
-      "/glossary/",
-    );
+    const header = page.locator("header");
+    await expect(
+      header.getByRole("link", { name: "Patterns", exact: true }),
+    ).toHaveAttribute("href", "/patterns/");
+    await expect(
+      header.getByRole("link", { name: "Research", exact: true }),
+    ).toHaveAttribute("href", "/research/");
+    await expect(
+      header.getByRole("link", { name: "Principles", exact: true }),
+    ).toHaveAttribute("href", "/principles/");
+    // Glossary merged into the Research page; no standalone nav entry.
+    await expect(
+      header.getByRole("link", { name: "Glossary", exact: true }),
+    ).toHaveCount(0);
 
-    const build = page.getByText("Build", { exact: true });
+    const build = header.getByText("Build", { exact: true });
     await build.focus();
     await page.keyboard.press("Enter");
-    await expect(reference).toHaveAttribute("aria-expanded", "false");
     await expect(build).toHaveAttribute("aria-expanded", "true");
     await expect(
       page.getByRole("link", { name: "React library" }),
@@ -39,9 +37,10 @@ test.describe("Guides and site navigation", () => {
     await page.locator("#main").click({ position: { x: 8, y: 8 } });
     await expect(build).toHaveAttribute("aria-expanded", "false");
 
-    await reference.click();
+    await build.click();
+    await expect(build).toHaveAttribute("aria-expanded", "true");
     await page.keyboard.press("Escape");
-    await expect(reference).toHaveAttribute("aria-expanded", "false");
+    await expect(build).toHaveAttribute("aria-expanded", "false");
   });
 
   test("library guide gives install and composition guidance", async ({ page }) => {
@@ -196,31 +195,43 @@ test.describe("Guides and site navigation", () => {
       "mailto:contact@agentconsent.dev",
     );
 
-    const readingLabel = page.getByText("Reading level", { exact: true });
-    const readingSelect = page.locator('[data-acp="reading-level"] select');
-    const labelBox = await readingLabel.boundingBox();
-    const selectBox = await readingSelect.boundingBox();
-    expect(labelBox?.x).toBeLessThan(selectBox?.x ?? 0);
+    // The reading-level control collapses to an icon button; its accessible
+    // name spells out the current level so it reads clearly without a visible
+    // label. It lives in the left cluster, beside the brand.
+    const readingControl = page.locator('[data-acp="reading-level"] > button');
+    await expect(readingControl).toHaveAccessibleName(/Reading level/);
+    const searchTrigger = page.locator('[data-acp="site-search"] > button');
+    const github = page.locator("header").getByRole("link", { name: /github/i });
 
-    for (const width of [780, 1024]) {
+    for (const width of [1024, 1280]) {
       await page.setViewportSize({ width, height: 800 });
+      const readingBox = await readingControl.boundingBox();
+      const searchBox = await searchTrigger.boundingBox();
       const buildBox = await page.getByText("Build", { exact: true }).boundingBox();
-      const readingBox = await page.locator('[data-acp="reading-level"]').boundingBox();
-      expect(buildBox).not.toBeNull();
+      const githubBox = await github.boundingBox();
       expect(readingBox).not.toBeNull();
-      expect(buildBox!.x + buildBox!.width + 16).toBeLessThanOrEqual(readingBox!.x);
-      expect(buildBox!.y + buildBox!.height).toBeGreaterThan(readingBox!.y);
-      expect(readingBox!.y + readingBox!.height).toBeGreaterThan(buildBox!.y);
+      expect(searchBox).not.toBeNull();
+      expect(buildBox).not.toBeNull();
+      expect(githubBox).not.toBeNull();
+      // One header row ≥lg: reading level sits left; the right cluster runs
+      // search → nav links → GitHub.
+      expect(readingBox!.x + readingBox!.width).toBeLessThanOrEqual(searchBox!.x);
+      expect(searchBox!.x + searchBox!.width).toBeLessThanOrEqual(buildBox!.x);
+      expect(buildBox!.x + buildBox!.width).toBeLessThanOrEqual(githubBox!.x);
+      // …all on the same row.
+      expect(readingBox!.y + readingBox!.height).toBeGreaterThan(githubBox!.y);
+      expect(githubBox!.y + githubBox!.height).toBeGreaterThan(readingBox!.y);
     }
 
     await page.setViewportSize({ width: 375, height: 800 });
-    const mobileBuildBox = await page.getByText("Build", { exact: true }).boundingBox();
-    const mobileReadingBox = await page.locator('[data-acp="reading-level"]').boundingBox();
-    expect(mobileBuildBox).not.toBeNull();
-    expect(mobileReadingBox).not.toBeNull();
-    expect(mobileBuildBox!.y + mobileBuildBox!.height).toBeLessThanOrEqual(mobileReadingBox!.y);
-    await expect(page.getByText("Reading level", { exact: true })).toBeVisible();
-    await expect(page.getByText("Agent Consent Patterns", { exact: true })).toBeHidden();
+    // The full brand name collapses to the "ACP/" mark on narrow screens; the
+    // controls wrap rather than overflow, so each stays reachable.
+    await expect(
+      page.getByText("Agent Consent Patterns", { exact: true }),
+    ).toBeHidden();
+    expect(await readingControl.boundingBox()).not.toBeNull();
+    expect(await searchTrigger.boundingBox()).not.toBeNull();
+    expect(await github.boundingBox()).not.toBeNull();
 
     const licenseBox = await page.getByText("MIT licensed.", { exact: false }).boundingBox();
     const moreNavBox = await page.getByRole("navigation", { name: "More" }).boundingBox();
