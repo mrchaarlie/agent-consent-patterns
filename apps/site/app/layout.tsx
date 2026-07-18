@@ -31,6 +31,12 @@ export const metadata: Metadata = {
     template: "%s · Agent Consent Patterns",
   },
   description: SITE_DESCRIPTION,
+  // Static PNG (not the app/apple-icon.tsx convention) so it's served with a
+  // real .png extension — GitHub Pages serves extension-less metadata routes
+  // as application/octet-stream, which iMessage's link preview won't render.
+  icons: {
+    apple: "/apple-touch-icon.png",
+  },
   // "./" resolves to the current route's URL (composed with metadataBase), so
   // every page self-canonicalizes instead of all pointing at the homepage.
   alternates: {

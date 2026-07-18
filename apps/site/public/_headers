@@ -1,0 +1,7 @@
+# Next's opengraph-image.tsx builds to an extension-less file under static
+# export (`output: "export"`), so Cloudflare Pages can't infer its MIME type
+# from the filename and falls back to application/octet-stream. Link-preview
+# crawlers (LinkedIn, iMessage, Slack, etc.) need a real image/* content-type
+# to render the thumbnail, so pin it explicitly.
+/opengraph-image
+  Content-Type: image/png
