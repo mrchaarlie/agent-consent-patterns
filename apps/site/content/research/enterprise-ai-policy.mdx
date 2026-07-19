@@ -1,0 +1,28 @@
+<p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">A policy that only says no produces shadow AI. A workable AI acceptable-use policy names the approved tools, classifies the data, and gives employees a fast path to yes.</p>
+
+## What it is
+
+An AI acceptable use policy (AUP) is the employee-facing rulebook for how staff and the agents acting on their behalf may use AI: which tools are approved, what data may enter them, and which uses are prohibited outright. Tenable's framing treats it as a living document with four working parts — scope and roles, data-handling rules, an approved-tool list, and a governance process for adding new tools — not a one-time memo.
+
+The policy sits upstream of every technical control in this knowledge base: it is the document that decides what "approved" means before [discovery and governance](/research/discovery-and-governance/) tooling enforces it, and the artifact regulators increasingly require outright (see [Regulation & Standards](/research/ai-regulation-standards/)).
+
+## Why it matters
+
+- **No policy is itself the exposure.** IBM's 2025 breach research found 63% of organizations with a shadow-AI-linked breach had no formal AI governance policy — the absence of a policy is a measured risk factor, not a paperwork gap.
+- **A ban without an alternative fails predictably.** Policies that forbid unapproved tools without shipping a sanctioned replacement drive usage underground and cost the organization visibility — the same dynamic covered in [Shadow AI](/research/shadow-ai/).
+- **Data classification is the load-bearing piece.** Most frameworks tier data (public, internal, confidential, restricted) and only the top tiers are ever allowed near an unreviewed AI tool — without that tiering, "acceptable use" has no way to be enforced consistently.
+- **Standards now expect a written policy to exist.** ISO/IEC 42001 and the NIST AI Risk Management Framework both treat a documented AI-use policy as a baseline governance artifact, not an optional extra.
+
+## Best practices
+
+- **Define scope, roles, and an approved-tool list**, including autonomous agents and embedded AI features, not just chatbots (Tenable). List examples of prohibited use alongside the approved list — ambiguity is where shadow use creeps in.
+- **Set data-handling rules by tier**, not by tool: PII, source code, and financial data never enter a public or unreviewed AI system regardless of which product it is.
+- **Build a fast, real approval path for new tools.** A governance process that takes months guarantees employees route around it — vet on security posture (SOC 2, encryption, data residency) but keep the intake queue short.
+- **Reference OWASP's LLM risk guidance when vetting agentic tools** — see [Prompt Injection & Untrusted Content](/research/prompt-injection/) for the specific risk class this matters most for.
+- **Train and get signed acknowledgment**, then repeat annually — a policy nobody has read enforces nothing.
+
+## Examples
+
+- A company publishes a red/yellow/green data-handling matrix alongside its approved-tool list, so an employee can check in seconds whether a document is safe to paste into a given assistant (Zscaler's simplified framework).
+- A fast-track intake form lets a team request approval for a new coding assistant within days instead of months, closing the gap that used to push the team toward an unsanctioned alternative.
+- An enterprise's AI AUP explicitly covers autonomous agents with system access, requiring the same [agent identity](/research/agent-identity/) and [least privilege](/research/least-privilege/) review as any new service account.

@@ -1,0 +1,28 @@
+<p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Employees are already running agents nobody approved, on accounts nobody can see, against data nobody classified. Banning the tools doesn't stop this — it just moves the risk somewhere darker.</p>
+
+## What it is
+
+Shadow AI is AI use — chatbots, browser extensions, coding assistants, autonomous agents — that runs outside an organization's sanctioned tools and visibility. It is the agent-era successor to shadow IT, and it is now mainstream: Verizon's 2026 Data Breach Investigations Report found regular employee use of unapproved AI tools tripled to 45% in a year, with 67% of that usage happening through personal, non-corporate accounts on corporate devices.
+
+The risk isn't the AI use itself — it's that unsanctioned tools sit outside every control this knowledge base describes. There is no [agent identity](/research/agent-identity/) to scope, no inventory to govern, no audit trail, and no way to enforce [least privilege](/research/least-privilege/) on a tool security never knew existed.
+
+## Why it matters
+
+- **It's already a measurable breach cost.** IBM's Cost of a Data Breach Report 2025 found organizations with high shadow AI use paid a $670,000 premium on the average breach, and one in five organizations had suffered a breach specifically caused by shadow AI.
+- **The data leaking out is valuable.** Verizon's DBIR found the most common data type submitted to external generative AI tools was company source code, followed by images, structured data, and technical documentation — intellectual property leaving through a channel with no [auditability](/research/auditability/).
+- **Governance is the exception, not the rule.** IBM found 63% of breached organizations had no formal AI governance policy in place at all, and shadow AI now ranks third among non-malicious insider actions in breach data (Verizon).
+- **Bans don't work.** Employees adopt unsanctioned tools because sanctioned ones are missing, slow to approve, or worse than the free alternative — the same pressure that has always driven shadow IT (Keeper Security).
+
+## Best practices
+
+- **Discover before you decide.** You can't scope, gate, or govern what you don't know exists — see [Discovery & Governance](/research/discovery-and-governance/) for the inventory-first playbook (Forrester's AEGIS, BigID's AAM).
+- **Replace the ban with a paved road.** Ship a sanctioned tool with the same convenience as the unsanctioned one, and usage shifts from shadow to governed — the consistent finding across shadow AI research (Keeper Security).
+- **Write the policy before buying the tooling.** See [Enterprise AI Policy & Acceptable Use](/research/enterprise-ai-policy/) for what that policy needs to cover.
+- **Treat personal-account use as a distinct risk surface.** Two-thirds of shadow AI traffic in Verizon's data bypassed corporate accounts entirely — DLP and access controls built around corporate SSO don't see it.
+- **Monitor for the behavior, not just the tool.** Unusual data egress toward AI-shaped endpoints is a detectable signal even before a specific tool is named and blocked.
+
+## Examples
+
+- A DLP program flags source code repeatedly pasted into a browser-based AI tool from a developer's corporate laptop — the leak Verizon's report identifies as the most common shadow AI exposure.
+- A security team runs an AAM-style inventory sweep and discovers a marketing workflow tool has accumulated read access to the customer database through an integration nobody in IT approved (BigID's convergence model, applied to shadow AI discovery).
+- After rolling out an approved, equally convenient AI assistant, an organization sees unauthorized tool use drop sharply — the "paved road beats the ban" pattern reports describe.

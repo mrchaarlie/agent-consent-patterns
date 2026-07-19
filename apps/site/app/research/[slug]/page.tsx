@@ -23,6 +23,12 @@ const CONTENT: Record<string, () => Promise<{ default: ComponentType }>> = {
   auditability: () => import("@/content/research/auditability.mdx"),
   "discovery-and-governance": () =>
     import("@/content/research/discovery-and-governance.mdx"),
+  "shadow-ai": () => import("@/content/research/shadow-ai.mdx"),
+  "enterprise-ai-policy": () =>
+    import("@/content/research/enterprise-ai-policy.mdx"),
+  "prompt-injection": () => import("@/content/research/prompt-injection.mdx"),
+  "ai-regulation-standards": () =>
+    import("@/content/research/ai-regulation-standards.mdx"),
 };
 
 export const dynamicParams = false;

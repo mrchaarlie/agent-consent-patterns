@@ -1,0 +1,28 @@
+<p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">Regulators and standards bodies are converging on the same demand this whole knowledge base makes: know what your agents can do, write it down, and be able to prove it.</p>
+
+## What it is
+
+A handful of frameworks now set the compliance floor that company AI policy gets built against. The EU AI Act, in force since August 2024 with obligations phasing in through 2026, is the first binding, cross-sector AI law with real penalties — up to €15 million or 3% of global revenue for high-risk-system violations. NIST's AI Risk Management Framework (AI RMF 1.0) and ISO/IEC 42001, the international standard for AI management systems, are the two most widely adopted voluntary frameworks organizations use to structure governance ahead of binding regulation.
+
+None of these frameworks specify UX. All of them specify outcomes this project's patterns exist to satisfy: documented acceptable use, bounded agent authority, human oversight of consequential decisions, and a durable record of what happened.
+
+## Why it matters
+
+- **"We didn't know our employees were using AI" is not a defense.** The EU AI Act's governance obligations apply regardless of whether use was sanctioned — making [discovery and governance](/research/discovery-and-governance/) a compliance requirement, not just a security best practice.
+- **Auditability stops being optional.** ISO/IEC 42001 requires organizations to demonstrate their AI management system is operating as documented — a requirement that only a real [audit trail](/research/auditability/) can satisfy.
+- **Human oversight is named explicitly.** The EU AI Act's high-risk obligations and NIST's AI RMF both call out human oversight of automated decisions as a required control, not a nice-to-have — the regulatory backing for [human-in-the-loop](/research/human-in-the-loop/) design.
+- **Standards compliance and shadow AI are directly opposed.** An unregistered agent operating outside any inventory cannot be brought into scope for any of these frameworks — another reason [shadow AI](/research/shadow-ai/) is now a governance priority, not just a security one.
+
+## Best practices
+
+- **Treat the written [AI acceptable-use policy](/research/enterprise-ai-policy/) as the compliance artifact**, not just an HR document — both ISO 42001 and NIST AI RMF expect one to exist and be enforced.
+- **Map agent capabilities to risk tiers**, the way the EU AI Act tiers AI systems by risk level — a support agent that can read tickets is a different risk class from one that can issue refunds.
+- **Keep the audit trail complete enough to reconstruct a decision** after the fact: identity, authority, action, and outcome, per [Auditability & Accountability](/research/auditability/).
+- **Build oversight into the product, not just the policy.** Regulatory human-oversight requirements are satisfied by real approval gates in the agent's execution path, not by a policy document nobody enforces technically.
+- **Revisit scope as obligations phase in.** The EU AI Act's staged timeline through 2026 means compliance requirements for a given agent can tighten after it's already shipped — design for revisable scope, not one-time sign-off.
+
+## Examples
+
+- An organization classifies its customer-service agent as limited-risk under the EU AI Act, but still implements a full audit trail and human escalation path because its refund-issuing capability crosses into higher-risk territory.
+- A company pursuing ISO/IEC 42001 certification uses its existing agent inventory and access logs as evidence for the audit, rather than building governance documentation from scratch after the fact.
+- A NIST AI RMF-aligned program requires every new agent deployment to document its risk tier, data access, and human-oversight point before it goes live — the same three questions [discovery and governance](/research/discovery-and-governance/) tooling already tracks.

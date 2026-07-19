@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/mrchaarlie/agent-consent-patterns/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mrchaarlie/agent-consent-patterns/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/%40agentconsent%2Freact?logo=npm&label=%40agentconsent%2Freact)](https://www.npmjs.com/package/@agentconsent/react)
+[![npm provenance](https://img.shields.io/badge/npm-provenance-brightgreen?logo=npm)](https://www.npmjs.com/package/@agentconsent/react)
 [![license](https://img.shields.io/github/license/mrchaarlie/agent-consent-patterns)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 
@@ -10,6 +11,11 @@ Patterns is a live reference site, an accessible React component library, and a 
 coding agents building products that act on a person's behalf.
 
 **Explore the reference at [agentconsent.dev](https://agentconsent.dev).**
+
+Every release is built and published from GitHub Actions with npm Trusted Publishing and provenance
+— verify with `npm audit signatures @agentconsent/react` — with no install scripts and WCAG 2.2 AA,
+axe-tested components. See [Quality and security](#quality-and-security) below and
+[SECURITY.md](SECURITY.md) for the vulnerability reporting process.
 
 ## Why this exists
 
