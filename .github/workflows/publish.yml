@@ -50,7 +50,11 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: pnpm
       - name: Install npm CLI for Trusted Publishing
-        run: npm install --global npm@11.5.1
+        run: |
+          curl -fsSL -o npm.tgz https://registry.npmjs.org/npm/-/npm-11.5.1.tgz
+          echo "83b06a00dae2a8e5d72dc951ddf56a2e0dbf2cc1  npm.tgz" | sha1sum -c -
+          npm install --global ./npm.tgz
+          rm npm.tgz
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build library
