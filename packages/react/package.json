@@ -51,11 +51,14 @@
     "react",
     "ai",
     "agent",
+    "agentic-ai",
     "consent",
     "permissions",
     "human-in-the-loop",
     "headless",
-    "accessibility"
+    "accessibility",
+    "wcag",
+    "security"
   ],
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.19"

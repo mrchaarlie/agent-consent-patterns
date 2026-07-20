@@ -1,0 +1,28 @@
+<p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">An agent that reads untrusted content and can also act on your behalf is one crafted sentence away from doing something you never asked for. Permission design is one of the few defenses that actually holds.</p>
+
+## What it is
+
+Prompt injection is when text an agent processes — a webpage, an email, a file, a tool's response — contains instructions the model follows as if they came from its principal. OWASP ranks it LLM01 in its Top 10 for LLM Applications 2025, the top-ranked risk for the second edition running, because large language models process instructions and data in the same channel with no reliable way to tell them apart.
+
+Simon Willison's "lethal trifecta" names the precondition that turns this from an annoyance into a serious breach: an agent becomes dangerous when it simultaneously has access to private data, exposure to untrusted content, and a way to communicate externally. Remove any one leg and injected instructions have nothing to exfiltrate or nowhere to send it.
+
+## Why it matters
+
+- **Indirect injection doesn't need the user to do anything wrong.** A user asks an agent to summarize an email; the email contains hidden instructions to forward the user's contacts elsewhere. Nobody typed a malicious prompt.
+- **There is no fool-proof filter.** OWASP is explicit that given the stochastic nature of language models, no prevention method is guaranteed — mitigation is defense-in-depth, not a single control.
+- **This is where consent UX becomes a security control, not just a courtesy.** [Human-in-the-loop](/research/human-in-the-loop/) review of consequential actions, and clear disclosure of what content influenced a decision, are two of the few mitigations that hold regardless of model behavior.
+- **Excessive agency compounds the risk.** OWASP's LLM06 (Excessive Agency) and the trifecta both point the same direction: an agent scoped to [least privilege](/research/least-privilege/) has less to lose even when injection succeeds.
+
+## Best practices
+
+- **Break at least one leg of the trifecta.** If an agent must read untrusted content, constrain its ability to reach private data or to communicate externally in that same session (Willison).
+- **Segregate external content from instructions**, and treat anything from a webpage, email, or third-party tool output as data, never as a new instruction, in system-level framing.
+- **Gate irreversible or high-consequence actions on human review**, especially ones that follow shortly after the agent ingested untrusted content — see [Human-in-the-Loop Oversight](/research/human-in-the-loop/).
+- **Show your work.** Surfacing exactly what the agent is about to do, and why, before it acts lets a human catch an instruction that didn't come from them — the premise behind an injection-flag or action-preview style control.
+- **Apply runtime authorization, not just design-time review.** Static prompt filtering catches known patterns; policy enforced at the point of action catches what filtering misses (see [Runtime Authorization](/research/runtime-authorization/)).
+
+## Examples
+
+- A support agent summarizing an inbound ticket encounters a hidden instruction telling it to email a customer list to an external address; because the agent has no standing ability to send email without approval, the instruction has nowhere to go.
+- A research agent browsing the web hits a page with white-text-on-white instructions attempting to override its system prompt; output filtering and a subsequent human review catch the anomaly before any action executes.
+- A coding agent pulls in a third-party file containing a comment instructing it to add a backdoor; because code changes route through review before merge, the injected instruction never becomes a shipped change.

@@ -151,6 +151,14 @@ export default function RootLayout({
                   </li>
                   <li>
                     <a
+                      href="https://github.com/mrchaarlie/agent-consent-patterns/blob/main/SECURITY.md"
+                      className="underline underline-offset-4 hover:text-ink"
+                    >
+                      Security
+                    </a>
+                  </li>
+                  <li>
+                    <a
                       href="https://github.com/mrchaarlie/agent-consent-patterns"
                       className="underline underline-offset-4 hover:text-ink"
                     >

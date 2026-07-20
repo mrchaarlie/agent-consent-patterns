@@ -133,7 +133,8 @@ export default function HomePage() {
                   @agentconsent/react
                 </Link>
                 : headless primitives plus a themeable default. WCAG 2.2 AA,
-                axe-clean, MIT.
+                axe-clean, MIT, and published with npm provenance so you can
+                verify what you installed.
               </Lvl>
               <Lvl level="academic" as="span">
                 A reference implementation of every pattern in{" "}
@@ -144,8 +145,9 @@ export default function HomePage() {
                   @agentconsent/react
                 </Link>
                 : headless primitives with a themeable default skin, WCAG 2.2
-                AA, MIT. The premise: a pattern without a runnable artifact is
-                an opinion.
+                AA, MIT, built and published entirely from GitHub Actions with
+                npm provenance attestation. The premise: a pattern without a
+                runnable artifact is an opinion.
               </Lvl>
             </p>
             <Link
