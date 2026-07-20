@@ -1,6 +1,7 @@
 # Agent Consent Patterns
 
 [![CI](https://github.com/mrchaarlie/agent-consent-patterns/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mrchaarlie/agent-consent-patterns/actions/workflows/ci.yml)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13665/badge)](https://www.bestpractices.dev/projects/13665)
 [![npm version](https://img.shields.io/npm/v/%40agentconsent%2Freact?logo=npm&label=%40agentconsent%2Freact)](https://www.npmjs.com/package/@agentconsent/react)
 [![npm provenance](https://img.shields.io/badge/npm-provenance-brightgreen?logo=npm)](https://www.npmjs.com/package/@agentconsent/react)
 [![license](https://img.shields.io/github/license/mrchaarlie/agent-consent-patterns)](LICENSE)
