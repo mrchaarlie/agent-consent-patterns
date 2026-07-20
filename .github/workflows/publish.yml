@@ -40,6 +40,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      attestations: write
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
@@ -49,7 +50,11 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: pnpm
       - name: Install npm CLI for Trusted Publishing
-        run: npm install --global npm@11.5.1
+        run: |
+          curl -fsSL -o npm.tgz https://registry.npmjs.org/npm/-/npm-11.5.1.tgz
+          echo "83b06a00dae2a8e5d72dc951ddf56a2e0dbf2cc1  npm.tgz" | sha1sum -c -
+          npm install --global ./npm.tgz
+          rm npm.tgz
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build library
@@ -62,3 +67,7 @@ jobs:
       - name: Publish with npm Trusted Publishing
         run: npm publish
         working-directory: packages/react
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
+        with:
+          subject-path: packages/react/dist/**
