@@ -55,6 +55,17 @@ html[data-level="academic"] [data-lvl="academic"] {
   display: revert;
 }
 
+/* The reading-level switch only does anything on pages that author leveled
+   prose, so hide it on pages with none — a live control that changes nothing
+   reads as broken. All variants sit in the DOM regardless of display, so
+   :has([data-lvl]) is a reliable, SSR-correct probe with no hydration flash. */
+[data-acp="reading-level"] {
+  display: none;
+}
+body:has([data-lvl]) [data-acp="reading-level"] {
+  display: revert;
+}
+
 /* Header search: expand from the icon on the right when revealed. Reduced
    motion skips the animation (the input still appears instantly). */
 @keyframes acp-search-expand {

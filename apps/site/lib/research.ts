@@ -174,6 +174,14 @@ export const SOURCES: ResearchSource[] = [
     date: "2023-12-18",
   },
   {
+    id: "yocco-agentic-ux-lifecycle",
+    author: "Victor Yocco",
+    org: "Smashing Magazine",
+    title: "Designing For Agentic AI: Practical UX Patterns For Control, Consent, And Accountability",
+    url: "https://www.smashingmagazine.com/2026/02/designing-agentic-ai-practical-ux-patterns/",
+    date: "2026-02-11",
+  },
+  {
     id: "eu-ai-act",
     org: "European Commission",
     title: "AI Act — Regulatory framework on AI",
@@ -273,7 +281,7 @@ export const TOPICS: ResearchTopic[] = [
       "access request",
       "sensitive operations",
     ],
-    related: ["delegated-authority", "auditability", "prompt-injection"],
+    related: ["delegated-authority", "auditability", "conversation-flow"],
     sourceIds: [
       "oso-agent-permissions",
       "permit-four-perimeters",
@@ -408,6 +416,28 @@ export const TOPICS: ResearchTopic[] = [
     related: ["enterprise-ai-policy", "auditability", "discovery-and-governance"],
     sourceIds: ["eu-ai-act", "nist-ai-rmf", "iso-42001", "verizon-dbir-2026"],
     updated: "2026-07-19",
+  },
+  {
+    slug: "conversation-flow",
+    name: "Conversation Flow",
+    summary:
+      "Consent isn't a single checkbox at the start of a session — it's a lifecycle that has to hold across the happy path, escalation, fallback, repair, and closing.",
+    tags: [
+      "conversation lifecycle",
+      "escalation",
+      "graceful degradation",
+      "fail closed",
+      "undo",
+      "recovery",
+    ],
+    related: ["human-in-the-loop", "delegated-authority", "auditability"],
+    sourceIds: [
+      "yocco-agentic-ux-lifecycle",
+      "maler-ciam-interview",
+      "oso-agent-permissions",
+      "willison-lethal-trifecta",
+    ],
+    updated: "2026-07-23",
   },
 ];
 

@@ -1,0 +1,27 @@
+<p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">A conversation with an agent is an arc, not a single act of consent: a happy path, a moment where the agent goes off it, an escalation, a fallback, and a repair. Design for the whole arc or the rest of it will surface as bugs.</p>
+
+## What it is
+
+Most agent-permission work optimizes one moment — the initial grant, the confirmation dialog — and treats everything else as plumbing. Victor Yocco's three-phase framework (Smashing Magazine) argues the opposite: pre-action, in-action, and post-action are each their own design surface, with the Intent Preview acting as "the conversational pause before action, transforming a black box of autonomous processes into a transparent, reviewable plan," and the Escalation Pathway and Undo/Audit log forming "a safety net for errors or high-ambiguity moments."
+
+Eve Maler's framing of delegation makes the same point from the authority side: consent has to be "a real, enforceable say" that "persists throughout long-running interactions," not a checkbox collected once at connection time. A conversation flow is the sequencing of these surfaces across a full interaction, not any one of them alone.
+
+## Why it matters
+
+- **The happy path is a consent surface too.** A smooth run that hides what the agent did is not the same as a legible one — nominal execution still needs a narration and a record, not just a result. See [Action Receipt](/patterns/action-receipt/).
+- **Escalation is humility, not failure.** Yocco frames handing a decision back to the human as "respecting the user's authority in ambiguous situations," and benchmarks healthy agents at a 5-15% escalation rate with better than 90% recovery once escalated.
+- **Fallback should fail closed, not silent.** Oso's baseline rule — an agent should only be able to do what its invoking user could do — applies just as hard when a tool call fails or a permission check comes back ambiguous: stop and ask, don't retry with broader scope.
+- **Undo is what makes delegation feel safe to grant.** Yocco calls the audit-and-undo pattern "foundational," because a persistent, reversible action log "dramatically lowers the perceived risk of granting autonomy" — the safety net is what earns the initial trust, not just what repairs a mistake after the fact.
+
+## Best practices
+
+- **Design the escalation trigger, not just the escalation screen.** Decide up front what confidence threshold sends a task back to the human, and say so in the interface (Yocco).
+- **Keep delegation working when the person who granted it steps away.** Maler notes identity has to keep functioning "even after the person anchoring it becomes unavailable" — expirations, revocation paths, and audit trails need to outlive any single session.
+- **Batch the repair, not just the request.** A single receipt after a multi-step run lets a person catch a misfire once, cheaply, instead of parsing a wall of individual confirmations. See [Batch Approval](/patterns/batch-approval/).
+- **Treat untrusted content as an off-path trigger.** Simon Willison's "lethal trifecta" — private data, untrusted content, and an exfiltration path in one agent — means content the agent reads mid-task can try to steer it; the safe response is to flag and ask, not comply silently.
+
+## Examples
+
+- An agent narrates each step as it executes a multi-part task, then ends with a single itemized receipt — the happy path stays visible without turning into a wall of confirmations.
+- A spend-limited agent's next tool call would exceed its budget; rather than requesting a broader grant automatically, it stops and surfaces the choice to the person who set the limit.
+- After an agent takes an action a user didn't intend, a visible, time-boxed undo option reverses it and logs the correction — closing the loop instead of leaving the user to notice and fix it manually.

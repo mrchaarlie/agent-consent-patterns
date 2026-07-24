@@ -29,6 +29,8 @@ const CONTENT: Record<string, () => Promise<{ default: ComponentType }>> = {
   "prompt-injection": () => import("@/content/research/prompt-injection.mdx"),
   "ai-regulation-standards": () =>
     import("@/content/research/ai-regulation-standards.mdx"),
+  "conversation-flow": () =>
+    import("@/content/research/conversation-flow.mdx"),
 };
 
 export const dynamicParams = false;
