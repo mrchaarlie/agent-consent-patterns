@@ -52,7 +52,9 @@ export function ResearchSearch({
 
   const queryTerms = query.toLowerCase().split(/\s+/).filter(Boolean);
   const matches = (text: string) => queryTerms.every((t) => text.includes(t));
-  const topicResults = topicHaystacks.filter(({ text }) => matches(text));
+  const topicResults = topicHaystacks
+    .filter(({ text }) => matches(text))
+    .sort((a, b) => a.topic.name.localeCompare(b.topic.name));
   const termResults = termHaystacks.filter(({ text }) => matches(text));
 
   return (

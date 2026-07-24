@@ -100,6 +100,7 @@ export function ReadingLevelSwitch() {
         className="flex h-8 cursor-pointer items-center gap-1 rounded-md border border-line bg-surface-raised px-2 text-ink-muted hover:border-line-strong hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
       >
         <BookGlyph className="h-[1.05rem] w-[1.05rem]" />
+        <span className="hidden text-sm sm:inline">Reading level</span>
         <ChevronGlyph
           className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`}
         />
