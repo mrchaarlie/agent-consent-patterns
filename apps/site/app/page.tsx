@@ -11,28 +11,35 @@ export default function HomePage() {
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
           Consent patterns for AI&nbsp;agents
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">
+        {/* Plain-language definition of the project. Deliberately not leveled:
+            like the h1, it's the fixed anchor a first-time reader lands on, and
+            it should read the same at every reading level. */}
+        <p className="mt-5 max-w-2xl text-xl leading-relaxed text-ink">
+          A free reference of 12 UX patterns for how a product asks permission
+          before an AI agent acts on someone&rsquo;s behalf &mdash; each one
+          with accessible React code.
+        </p>
+        <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
           <Lvl level="caveman" as="span">
             Machines act for you now: they open accounts, send messages,
-            spend money. Every team building one is carving its own
-            asking-screens from nothing. This is the shared book: named ways
-            to hand over keys, say yes to a move, set standing rules, and
-            read the trail left behind.
+            spend money. Every team building one carves its own asking-screens
+            from nothing. Here are the named ways: hand over keys, say yes to
+            a move, set standing rules, read the trail left behind.
           </Lvl>
           <Lvl level="human" as="span">
             Agents act on your behalf: they connect to your accounts, send
-            your messages, spend your money. The consent UX for that
-            delegation is being improvised from scratch by every team that
-            ships an agent. This is the reference: a taxonomy of named
-            patterns for permissions, approval, standing authority, and
-            auditability, each with rationale and a production-quality React
-            implementation.
+            your messages, spend your money. Right now every team shipping an
+            agent designs those permission screens from scratch. This
+            reference names the ones that work: how to grant access, approve
+            an action, set standing rules, and show what the agent actually
+            did &mdash; each with the reasoning behind it and React code you
+            can drop in.
           </Lvl>
           <Lvl level="academic" as="span">
             Agents exercise delegated authority: they connect to accounts,
-            send messages, and spend money on a principal&rsquo;s behalf. The
-            consent UX for that delegation is being independently re-derived
-            by every team shipping one. This is the reference: a pattern
+            send messages, and spend money on a principal&rsquo;s behalf.
+            Every team shipping one independently re-derives the consent
+            interface for that delegation. This is the reference: a pattern
             language for permissions, approval, standing authority, and
             auditability, each pattern with its rationale, its anti-patterns,
             and a production-quality headless React implementation.

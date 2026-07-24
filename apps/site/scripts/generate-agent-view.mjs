@@ -429,9 +429,9 @@ function renderIndexMd(patterns, categories) {
   const lines = [
     "# Agent Consent Patterns",
     "",
-    "UX patterns for AI agent permissions, consent, and human-in-the-loop control — a reference and a headless React component library for teams building products where an agent acts on a user's behalf.",
+    "A free reference of 12 UX patterns for how a product asks permission before an AI agent acts on someone's behalf — each one with accessible React code.",
     "",
-    "Agents connect to accounts, send messages, and spend money on a user's behalf. The consent UX for that delegation is being improvised by every team shipping an agent. This is the reference: a taxonomy of named patterns for permissions, approval, standing authority, and auditability.",
+    "Agents act on your behalf: they connect to your accounts, send your messages, spend your money. Right now every team shipping an agent designs those permission screens from scratch. This reference names the ones that work: how to grant access, approve an action, set standing rules, and show what the agent actually did — each with the reasoning behind it and React code you can drop in.",
     "",
     "## The 12 patterns",
     "",
