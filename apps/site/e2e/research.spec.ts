@@ -14,7 +14,11 @@ test.describe("Research index with merged glossary", () => {
     ).toBeVisible();
 
     const input = page.locator("#research-search");
-    await expect(page.locator('p[role="status"]')).toHaveText("12 topics · 12 terms");
+    // Topic/term totals grow as content is added; assert the format, not an
+    // exact count that would need updating with every new research page.
+    await expect(page.locator('p[role="status"]')).toHaveText(
+      /^\d+ topics · \d+ terms$/,
+    );
 
     // "provenance" is a glossary term but not a topic (it also appears in a
     // few other terms' definitions, so only pin the topic count).
