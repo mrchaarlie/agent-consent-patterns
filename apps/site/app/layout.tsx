@@ -72,7 +72,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: READING_LEVEL_INIT }} />
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
       </head>
-      <body className="flex min-h-dvh flex-col">
+      <body className="flex min-h-dvh flex-col" suppressHydrationWarning>
         <Analytics />
         <a
           href="#main"
