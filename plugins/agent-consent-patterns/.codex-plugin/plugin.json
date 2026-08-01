@@ -1,6 +1,6 @@
 {
   "name": "agent-consent-patterns",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Practical security and UX guidance for building trustworthy AI agents that act with clear human control.",
   "author": {
     "name": "Charles Wu",

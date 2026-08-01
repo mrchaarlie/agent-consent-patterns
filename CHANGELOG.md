@@ -16,6 +16,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Landing page, site metadata, OG image, and README now lead with a plain-language description of
   the project instead of the jargon-heavy tagline.
+- Agent plugin bumped to 0.1.2 in the `.claude-plugin` and `.codex-plugin` manifests, for the two
+  added principles. `@agentconsent/react` is unchanged and stays at 0.1.1.
 
 ### Fixed
 
