@@ -89,20 +89,18 @@ export default function HomePage() {
             </h3>
             <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
               <Lvl level="caveman" as="span">
-                Twelve patterns, four piles. Each names a recurring trouble
-                and shows the fix: parts, when to use it, screen reader talk,
-                wrong turns, code.
+                Each names a recurring trouble and shows the fix: parts, when
+                to use it, screen reader talk, wrong turns, code.
               </Lvl>
               <Lvl level="human" as="span">
-                Twelve patterns across four categories. Each documents a
-                recurring consent problem: anatomy, when (not) to use it,
-                real-world examples, accessibility, anti-patterns, and code.
+                Each pattern documents a recurring consent problem: anatomy,
+                when (not) to use it, real-world examples, accessibility,
+                anti-patterns, and code.
               </Lvl>
               <Lvl level="academic" as="span">
-                Twelve patterns across four categories, each documenting a
-                recurring problem and its resolution: anatomy, applicability,
-                accessibility semantics, anti-patterns, and a reference
-                implementation.
+                Each pattern documents a recurring problem and its resolution:
+                anatomy, applicability, accessibility semantics,
+                anti-patterns, and a reference implementation.
               </Lvl>
             </p>
             <Link

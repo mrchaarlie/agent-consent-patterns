@@ -6,7 +6,7 @@ import { CATEGORIES, PATTERNS } from "@/lib/patterns";
 export const metadata: Metadata = {
   title: "Patterns",
   description:
-    "Twelve recurring problems in agent consent, each with a working solution: granting access, approving actions, standing authority, and trust & transparency.",
+    "Common problems in agent consent, each with a solution that works: granting access, approving actions, standing authority, and trust & transparency.",
 };
 
 export default function PatternsIndexPage() {
@@ -16,15 +16,14 @@ export default function PatternsIndexPage() {
       <h1 className="mt-3 text-3xl font-semibold tracking-tight">Patterns</h1>
       <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
         <Lvl level="caveman" as="span">
-          Twelve troubles that keep coming back, each with a fix that works.
+          Troubles that keep coming back, each with a fix that works.
         </Lvl>
         <Lvl level="human" as="span">
-          Twelve recurring problems in agent consent, each with a working
-          solution.
+          Common problems in agent consent, each with a solution that works.
         </Lvl>
         <Lvl level="academic" as="span">
-          Twelve recurring problems in agent consent design, each with its
-          resolution and a reference implementation.
+          Recurring problems in agent consent design, each with its resolution
+          and a reference implementation.
         </Lvl>
       </p>
       {CATEGORIES.map((category) => (
