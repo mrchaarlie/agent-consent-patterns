@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HeroConsentMock } from "@/components/hero-consent-mock";
 import { Lvl } from "@/components/lvl";
 import { CATEGORIES, CATEGORY_BLURB, PATTERNS } from "@/lib/patterns";
 import { TOPICS } from "@/lib/research";
@@ -6,52 +7,61 @@ import { TOPICS } from "@/lib/research";
 export default function HomePage() {
   return (
     <div className="mx-auto max-w-5xl px-6">
-      <section className="border-b border-line py-16 sm:py-24">
-        <p className="eyebrow">A pattern reference · v0.1</p>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-          Consent patterns for AI&nbsp;agents
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">
-          <Lvl level="caveman" as="span">
-            Machines act for you now: they open accounts, send messages,
-            spend money. Every team building one is carving its own
-            asking-screens from nothing. This is the shared book: named ways
-            to hand over keys, say yes to a move, set standing rules, and
-            read the trail left behind.
-          </Lvl>
-          <Lvl level="human" as="span">
-            Agents act on your behalf: they connect to your accounts, send
-            your messages, spend your money. The consent UX for that
-            delegation is being improvised from scratch by every team that
-            ships an agent. This is the reference: a taxonomy of named
-            patterns for permissions, approval, standing authority, and
-            auditability, each with rationale and a production-quality React
-            implementation.
-          </Lvl>
-          <Lvl level="academic" as="span">
-            Agents exercise delegated authority: they connect to accounts,
-            send messages, and spend money on a principal&rsquo;s behalf. The
-            consent UX for that delegation is being independently re-derived
-            by every team shipping one. This is the reference: a pattern
-            language for permissions, approval, standing authority, and
-            auditability, each pattern with its rationale, its anti-patterns,
-            and a production-quality headless React implementation.
-          </Lvl>
-        </p>
-        <div className="mt-8 flex flex-wrap items-center gap-4">
-          <Link
-            href="/patterns/"
-            className="rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-surface transition-opacity hover:opacity-85"
-          >
-            Browse the patterns
-          </Link>
-          <Link
-            href="/principles/"
-            className="text-sm text-ink-muted underline underline-offset-4 hover:text-ink"
-          >
-            Read the principles
-          </Link>
+      <section className="grid items-center gap-12 border-b border-line py-16 sm:py-24 lg:grid-cols-[1fr_auto]">
+        <div>
+          <p className="eyebrow">A pattern reference · v0.1</p>
+          <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+            Consent patterns for AI&nbsp;agents
+          </h1>
+          {/* Plain-language definition of the project. Deliberately not
+              leveled: like the h1, it's the fixed anchor a first-time reader
+              lands on, and it should read the same at every reading level. */}
+          <p className="mt-5 max-w-2xl text-xl leading-relaxed text-ink">
+            The &ldquo;Allow&rdquo; dialog, rethought for agents that act on
+            your behalf.
+          </p>
+          <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
+            <Lvl level="caveman" as="span">
+              Machines open your accounts, send your messages, spend your
+              money. Every team building one carves its own asking-screens
+              from nothing. Here are the named ways: hand over keys, say yes
+              to a move, set standing rules, read the trail left behind
+              &mdash; each with the why behind it, and working parts to build
+              it.
+            </Lvl>
+            <Lvl level="human" as="span">
+              Agents connect to your accounts, send your messages, spend your
+              money. Right now every team shipping an agent designs those
+              permission screens from scratch. This reference names the ones
+              that work: how to grant access, approve an action, set standing
+              rules, and show what the agent actually did &mdash; each with
+              the reasoning behind it and React code you can drop in.
+            </Lvl>
+            <Lvl level="academic" as="span">
+              Agents exercise delegated authority over accounts, messages, and
+              money. Every team shipping one independently re-derives the
+              consent interface for that delegation. This is the reference: a
+              pattern language for permissions, approval, standing authority,
+              and auditability, each pattern with its rationale, its
+              anti-patterns, and a headless React implementation.
+            </Lvl>
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <Link
+              href="/patterns/"
+              className="rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-surface transition-opacity hover:opacity-85"
+            >
+              Browse the patterns
+            </Link>
+            <Link
+              href="/principles/"
+              className="text-sm text-ink-muted underline underline-offset-4 hover:text-ink"
+            >
+              Read the principles
+            </Link>
+          </div>
         </div>
+        <HeroConsentMock />
       </section>
 
       <section className="border-b border-line py-14">
@@ -65,7 +75,7 @@ export default function HomePage() {
             teaching for the machines that write your code.
           </Lvl>
           <Lvl level="human" as="span">
-            A documented taxonomy, a working implementation of every pattern,
+            A documented set of patterns, a working implementation of each,
             and a skill that teaches coding agents to apply them.
           </Lvl>
           <Lvl level="academic" as="span">
@@ -78,25 +88,21 @@ export default function HomePage() {
         <ul className="mt-8 grid gap-4 sm:grid-cols-3">
           <li className="rounded-lg border border-line bg-surface-raised p-5">
             <span className="eyebrow">01 · Read</span>
-            <h3 className="mt-2 font-semibold tracking-tight">
-              The pattern taxonomy
-            </h3>
+            <h3 className="mt-2 font-semibold tracking-tight">The patterns</h3>
             <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
               <Lvl level="caveman" as="span">
-                Twelve patterns, four piles. Each names a recurring trouble
-                and shows the fix: parts, when to use it, screen reader talk,
-                wrong turns, code.
+                Each names a recurring trouble and shows the fix: parts, when
+                to use it, screen reader talk, wrong turns, code.
               </Lvl>
               <Lvl level="human" as="span">
-                Twelve patterns across four categories. Each documents a
-                recurring consent problem: anatomy, when (not) to use it,
-                real-world examples, accessibility, anti-patterns, and code.
+                Each pattern documents a recurring consent problem: anatomy,
+                when (not) to use it, real-world examples, accessibility,
+                anti-patterns, and code.
               </Lvl>
               <Lvl level="academic" as="span">
-                Twelve patterns across four categories, each documenting a
-                recurring problem and its resolution: anatomy, applicability,
-                accessibility semantics, anti-patterns, and a reference
-                implementation.
+                Each pattern documents a recurring problem and its resolution:
+                anatomy, applicability, accessibility semantics,
+                anti-patterns, and a reference implementation.
               </Lvl>
             </p>
             <Link
@@ -191,7 +197,7 @@ export default function HomePage() {
       <section className="border-line py-14">
         <div className="mb-2 flex items-baseline justify-between gap-4">
           <h2 className="text-2xl font-semibold tracking-tight">
-            The taxonomy at a glance
+            The categories at a glance
           </h2>
           <Link
             href="/patterns/"

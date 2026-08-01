@@ -22,7 +22,7 @@ const READING_LEVEL_INIT = `try{var l=localStorage.getItem("acp-reading-level");
 const THEME_INIT = `try{var t=localStorage.getItem("acp-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;}catch(e){}`;
 
 const SITE_DESCRIPTION =
-  "UX patterns for AI agent permissions, consent, and human-in-the-loop control. A reference site and React component library.";
+  "The \"Allow\" dialog, rethought for AI agents that act on your behalf. A free pattern reference plus an accessible React library.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://agentconsent.dev"),

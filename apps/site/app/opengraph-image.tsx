@@ -45,13 +45,13 @@ export default function OpengraphImage() {
             Agent Consent Patterns
           </div>
           <div style={{ fontSize: 32, color: "#4a4a45", lineHeight: 1.3 }}>
-            UX patterns for AI agent permissions, consent, and
-            human-in-the-loop control.
+            The &ldquo;Allow&rdquo; dialog, rethought for AI agents that act
+            on your behalf.
           </div>
         </div>
         <div style={{ display: "flex", gap: "48px" }}>
           {[
-            { n: "01", label: "Read", what: "The pattern taxonomy" },
+            { n: "01", label: "Read", what: "The patterns" },
             { n: "02", label: "Build", what: "@agentconsent/react" },
             { n: "03", label: "Delegate", what: "A skill for coding agents" },
           ].map((item) => (

@@ -29,7 +29,7 @@ const PAGES: SearchDoc[] = [
     kind: "page",
     title: "Patterns",
     description:
-      "The full taxonomy of agent consent UX patterns: granting access, approving actions, standing authority, and trust & transparency.",
+      "Common problems in agent consent — granting access, approving actions, standing authority, trust & transparency — each with a solution and the code to build it.",
     href: "/patterns/",
     keywords: ["index", "taxonomy", "ux"],
   },

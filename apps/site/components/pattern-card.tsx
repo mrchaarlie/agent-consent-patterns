@@ -30,7 +30,7 @@ export function PatternCard({ pattern }: { pattern: PatternMeta }) {
 
   if (pattern.status === "planned") {
     return (
-      <div className="rounded-lg border border-dashed border-line p-5">
+      <div className="h-full rounded-lg border border-dashed border-line p-5">
         {body}
       </div>
     );
@@ -39,7 +39,7 @@ export function PatternCard({ pattern }: { pattern: PatternMeta }) {
   return (
     <Link
       href={`/patterns/${pattern.slug}/`}
-      className="block rounded-lg border border-line bg-surface-raised p-5 transition-colors hover:border-line-strong"
+      className="block h-full rounded-lg border border-line bg-surface-raised p-5 transition-colors hover:border-line-strong"
     >
       {body}
     </Link>

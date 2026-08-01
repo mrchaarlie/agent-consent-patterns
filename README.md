@@ -7,9 +7,9 @@
 [![license](https://img.shields.io/github/license/mrchaarlie/agent-consent-patterns)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 
-**UX patterns for AI-agent permissions, consent, and human-in-the-loop control.** Agent Consent
-Patterns is a live reference site, an accessible React component library, and a reusable skill for
-coding agents building products that act on a person's behalf.
+**The "Allow" dialog, rethought for AI agents that act on your behalf.** Agent Consent
+Patterns is a reference site, an accessible React component library, and a skill that teaches
+coding agents to build these flows.
 
 **Explore the reference at [agentconsent.dev](https://agentconsent.dev).**
 

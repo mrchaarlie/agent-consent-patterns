@@ -7,7 +7,7 @@ description: Security and UX best practices for building trustworthy AI agents t
 
 Distilled best practices for consent UX in agentic products, from
 [agent-consent-patterns](https://github.com/mrchaarlie/agent-consent-patterns). A taxonomy of
-12 named patterns with production React implementations (`@agentconsent/react`). Use this skill
+12 named patterns with a headless React implementation (`@agentconsent/react`). Use this skill
 to (a) pick the right pattern for a consent surface, (b) get its non-negotiable rules right, and
 (c) avoid the anti-patterns that make consent theater.
 
@@ -37,6 +37,14 @@ to (a) pick the right pattern for a consent surface, (b) get its non-negotiable 
    task-scoped grants; re-surface long-lived ones for reconfirmation.
 10. **Minimize what the agent can see.** Least privilege applies to data, not just actions.
     Scope to the narrowest resource (one label, one folder), not the whole account.
+11. **The acting agent must be identifiable.** Consent binds to a specific agent: the one whose
+    plan the user reviewed, whose name was on the request. Impersonation, silent model swaps, and
+    unlabeled sub-agents each void that binding. Carry the acting identity through every request
+    and every receipt.
+12. **The user can always interrupt.** A stop must bind mid-run (pause, cancel, take over), not
+    only at the boundaries between steps — for an agent that works in one long burst, that is
+    barely a stop. Interruptibility, and the latency it promises, is part of the authority model,
+    not a UI courtesy.
 
 ## The 12 patterns: pick by situation
 

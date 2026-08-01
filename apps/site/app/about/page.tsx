@@ -17,9 +17,9 @@ export default function AboutPage() {
         <Lvl level="caveman" className="space-y-5">
           <p>
             This site collects good ways to ask a human before a machine acts
-            for them. No shared book of these existed, so every tribe
-            building one, browser bots, tool-using helpers, was carving its
-            own asking-screens from nothing.
+            for them. No shared book of these existed, so every tribe building
+            one (page-crawlers, tool-using helpers) carves its own
+            asking-screens from nothing.
           </p>
           <p>
             Every pattern comes with a working piece in{" "}
@@ -39,8 +39,8 @@ export default function AboutPage() {
           </p>
           <p>
             Pictures of real products on pattern pages are shown to study and
-            judge them, with the product's name given. If one is yours and you
-            want it gone, open an issue and it goes.
+            judge them, with the product&rsquo;s name given. If one is yours
+            and you want it gone, open an issue and it goes.
           </p>
         </Lvl>
         <Lvl level="human" className="space-y-5">
