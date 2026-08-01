@@ -20,28 +20,27 @@ export default function HomePage() {
         </p>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
           <Lvl level="caveman" as="span">
-            Machines act for you now: they open accounts, send messages,
-            spend money. Every team building one carves its own asking-screens
-            from nothing. Here are the named ways: hand over keys, say yes to
-            a move, set standing rules, read the trail left behind.
+            Machines open your accounts, send your messages, spend your money.
+            Every team building one carves its own asking-screens from
+            nothing. Here are the named ways: hand over keys, say yes to a
+            move, set standing rules, read the trail left behind &mdash; each
+            with the why behind it, and working parts to build it.
           </Lvl>
           <Lvl level="human" as="span">
-            Agents act on your behalf: they connect to your accounts, send
-            your messages, spend your money. Right now every team shipping an
-            agent designs those permission screens from scratch. This
-            reference names the ones that work: how to grant access, approve
-            an action, set standing rules, and show what the agent actually
-            did &mdash; each with the reasoning behind it and React code you
-            can drop in.
+            Agents connect to your accounts, send your messages, spend your
+            money. Right now every team shipping an agent designs those
+            permission screens from scratch. This reference names the ones
+            that work: how to grant access, approve an action, set standing
+            rules, and show what the agent actually did &mdash; each with the
+            reasoning behind it and React code you can drop in.
           </Lvl>
           <Lvl level="academic" as="span">
-            Agents exercise delegated authority: they connect to accounts,
-            send messages, and spend money on a principal&rsquo;s behalf.
-            Every team shipping one independently re-derives the consent
-            interface for that delegation. This is the reference: a pattern
-            language for permissions, approval, standing authority, and
-            auditability, each pattern with its rationale, its anti-patterns,
-            and a production-quality headless React implementation.
+            Agents exercise delegated authority over accounts, messages, and
+            money. Every team shipping one independently re-derives the
+            consent interface for that delegation. This is the reference: a
+            pattern language for permissions, approval, standing authority,
+            and auditability, each pattern with its rationale, its
+            anti-patterns, and a headless React implementation.
           </Lvl>
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -71,7 +70,7 @@ export default function HomePage() {
             teaching for the machines that write your code.
           </Lvl>
           <Lvl level="human" as="span">
-            A documented taxonomy, a working implementation of every pattern,
+            A documented set of patterns, a working implementation of each,
             and a skill that teaches coding agents to apply them.
           </Lvl>
           <Lvl level="academic" as="span">
@@ -84,9 +83,7 @@ export default function HomePage() {
         <ul className="mt-8 grid gap-4 sm:grid-cols-3">
           <li className="rounded-lg border border-line bg-surface-raised p-5">
             <span className="eyebrow">01 · Read</span>
-            <h3 className="mt-2 font-semibold tracking-tight">
-              The pattern taxonomy
-            </h3>
+            <h3 className="mt-2 font-semibold tracking-tight">The patterns</h3>
             <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
               <Lvl level="caveman" as="span">
                 Each names a recurring trouble and shows the fix: parts, when
@@ -195,7 +192,7 @@ export default function HomePage() {
       <section className="border-line py-14">
         <div className="mb-2 flex items-baseline justify-between gap-4">
           <h2 className="text-2xl font-semibold tracking-tight">
-            The taxonomy at a glance
+            The categories at a glance
           </h2>
           <Link
             href="/patterns/"

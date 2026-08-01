@@ -431,7 +431,7 @@ function renderIndexMd(patterns, categories) {
     "",
     "The \"Allow\" dialog, rethought for AI agents that act on your behalf — UX patterns for agent permissions, with accessible React code for each.",
     "",
-    "Agents act on your behalf: they connect to your accounts, send your messages, spend your money. Right now every team shipping an agent designs those permission screens from scratch. This reference names the ones that work: how to grant access, approve an action, set standing rules, and show what the agent actually did — each with the reasoning behind it and React code you can drop in.",
+    "Agents connect to your accounts, send your messages, spend your money. Right now every team shipping an agent designs those permission screens from scratch. This reference names the ones that work: how to grant access, approve an action, set standing rules, and show what the agent actually did — each with the reasoning behind it and React code you can drop in.",
     "",
     "## The 12 patterns",
     "",

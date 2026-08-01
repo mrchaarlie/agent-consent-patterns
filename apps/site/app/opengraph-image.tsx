@@ -51,7 +51,7 @@ export default function OpengraphImage() {
         </div>
         <div style={{ display: "flex", gap: "48px" }}>
           {[
-            { n: "01", label: "Read", what: "The pattern taxonomy" },
+            { n: "01", label: "Read", what: "The patterns" },
             { n: "02", label: "Build", what: "@agentconsent/react" },
             { n: "03", label: "Delegate", what: "A skill for coding agents" },
           ].map((item) => (

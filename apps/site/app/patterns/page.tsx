@@ -6,7 +6,7 @@ import { CATEGORIES, PATTERNS } from "@/lib/patterns";
 export const metadata: Metadata = {
   title: "Patterns",
   description:
-    "Common problems in agent consent, each with a solution that works: granting access, approving actions, standing authority, and trust & transparency.",
+    "Common problems in agent consent — granting access, approving actions, standing authority, trust & transparency — each with a solution and the code to build it.",
 };
 
 export default function PatternsIndexPage() {
@@ -19,7 +19,8 @@ export default function PatternsIndexPage() {
           Troubles that keep coming back, each with a fix that works.
         </Lvl>
         <Lvl level="human" as="span">
-          Common problems in agent consent, each with a solution that works.
+          Common problems in agent consent, each with a solution and the code
+          to build it.
         </Lvl>
         <Lvl level="academic" as="span">
           Recurring problems in agent consent design, each with its resolution
