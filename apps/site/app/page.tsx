@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HeroConsentMock } from "@/components/hero-consent-mock";
 import { Lvl } from "@/components/lvl";
 import { CATEGORIES, CATEGORY_BLURB, PATTERNS } from "@/lib/patterns";
 import { TOPICS } from "@/lib/research";
@@ -6,57 +7,61 @@ import { TOPICS } from "@/lib/research";
 export default function HomePage() {
   return (
     <div className="mx-auto max-w-5xl px-6">
-      <section className="border-b border-line py-16 sm:py-24">
-        <p className="eyebrow">A pattern reference · v0.1</p>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-          Consent patterns for AI&nbsp;agents
-        </h1>
-        {/* Plain-language definition of the project. Deliberately not leveled:
-            like the h1, it's the fixed anchor a first-time reader lands on, and
-            it should read the same at every reading level. */}
-        <p className="mt-5 max-w-2xl text-xl leading-relaxed text-ink">
-          The &ldquo;Allow&rdquo; dialog, rethought for agents that act on
-          your behalf.
-        </p>
-        <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
-          <Lvl level="caveman" as="span">
-            Machines open your accounts, send your messages, spend your money.
-            Every team building one carves its own asking-screens from
-            nothing. Here are the named ways: hand over keys, say yes to a
-            move, set standing rules, read the trail left behind &mdash; each
-            with the why behind it, and working parts to build it.
-          </Lvl>
-          <Lvl level="human" as="span">
-            Agents connect to your accounts, send your messages, spend your
-            money. Right now every team shipping an agent designs those
-            permission screens from scratch. This reference names the ones
-            that work: how to grant access, approve an action, set standing
-            rules, and show what the agent actually did &mdash; each with the
-            reasoning behind it and React code you can drop in.
-          </Lvl>
-          <Lvl level="academic" as="span">
-            Agents exercise delegated authority over accounts, messages, and
-            money. Every team shipping one independently re-derives the
-            consent interface for that delegation. This is the reference: a
-            pattern language for permissions, approval, standing authority,
-            and auditability, each pattern with its rationale, its
-            anti-patterns, and a headless React implementation.
-          </Lvl>
-        </p>
-        <div className="mt-8 flex flex-wrap items-center gap-4">
-          <Link
-            href="/patterns/"
-            className="rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-surface transition-opacity hover:opacity-85"
-          >
-            Browse the patterns
-          </Link>
-          <Link
-            href="/principles/"
-            className="text-sm text-ink-muted underline underline-offset-4 hover:text-ink"
-          >
-            Read the principles
-          </Link>
+      <section className="grid items-center gap-12 border-b border-line py-16 sm:py-24 lg:grid-cols-[1fr_auto]">
+        <div>
+          <p className="eyebrow">A pattern reference · v0.1</p>
+          <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+            Consent patterns for AI&nbsp;agents
+          </h1>
+          {/* Plain-language definition of the project. Deliberately not
+              leveled: like the h1, it's the fixed anchor a first-time reader
+              lands on, and it should read the same at every reading level. */}
+          <p className="mt-5 max-w-2xl text-xl leading-relaxed text-ink">
+            The &ldquo;Allow&rdquo; dialog, rethought for agents that act on
+            your behalf.
+          </p>
+          <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
+            <Lvl level="caveman" as="span">
+              Machines open your accounts, send your messages, spend your
+              money. Every team building one carves its own asking-screens
+              from nothing. Here are the named ways: hand over keys, say yes
+              to a move, set standing rules, read the trail left behind
+              &mdash; each with the why behind it, and working parts to build
+              it.
+            </Lvl>
+            <Lvl level="human" as="span">
+              Agents connect to your accounts, send your messages, spend your
+              money. Right now every team shipping an agent designs those
+              permission screens from scratch. This reference names the ones
+              that work: how to grant access, approve an action, set standing
+              rules, and show what the agent actually did &mdash; each with
+              the reasoning behind it and React code you can drop in.
+            </Lvl>
+            <Lvl level="academic" as="span">
+              Agents exercise delegated authority over accounts, messages, and
+              money. Every team shipping one independently re-derives the
+              consent interface for that delegation. This is the reference: a
+              pattern language for permissions, approval, standing authority,
+              and auditability, each pattern with its rationale, its
+              anti-patterns, and a headless React implementation.
+            </Lvl>
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <Link
+              href="/patterns/"
+              className="rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-surface transition-opacity hover:opacity-85"
+            >
+              Browse the patterns
+            </Link>
+            <Link
+              href="/principles/"
+              className="text-sm text-ink-muted underline underline-offset-4 hover:text-ink"
+            >
+              Read the principles
+            </Link>
+          </div>
         </div>
+        <HeroConsentMock />
       </section>
 
       <section className="border-b border-line py-14">
