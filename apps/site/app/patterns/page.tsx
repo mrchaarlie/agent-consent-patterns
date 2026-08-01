@@ -6,7 +6,7 @@ import { CATEGORIES, PATTERNS } from "@/lib/patterns";
 export const metadata: Metadata = {
   title: "Patterns",
   description:
-    "The full taxonomy of agent consent UX patterns: granting access, approving actions, standing authority, and trust & transparency.",
+    "Twelve recurring problems in agent consent, each with a working solution: granting access, approving actions, standing authority, and trust & transparency.",
 };
 
 export default function PatternsIndexPage() {
@@ -16,22 +16,15 @@ export default function PatternsIndexPage() {
       <h1 className="mt-3 text-3xl font-semibold tracking-tight">Patterns</h1>
       <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
         <Lvl level="caveman" as="span">
-          Twelve ways, four piles. Each names a trouble that keeps coming
-          back, and shows the fix: the parts, when to use it, screen reader
-          talk, wrong turns, code.
+          Twelve troubles that keep coming back, each with a fix that works.
         </Lvl>
         <Lvl level="human" as="span">
-          Twelve patterns across four categories. Each pattern names a
-          recurring problem in agent consent design and documents a solution:
-          anatomy, when to use it, accessibility behavior, anti-patterns, and
-          code.
+          Twelve recurring problems in agent consent, each with a working
+          solution.
         </Lvl>
         <Lvl level="academic" as="span">
-          Twelve patterns across four categories: granting access, approving
-          actions, standing authority, trust &amp; transparency. Each names a
-          recurring problem in agent consent design and documents its
-          resolution: anatomy, applicability conditions, accessibility
-          semantics, anti-patterns, and a reference implementation.
+          Twelve recurring problems in agent consent design, each with its
+          resolution and a reference implementation.
         </Lvl>
       </p>
       {CATEGORIES.map((category) => (

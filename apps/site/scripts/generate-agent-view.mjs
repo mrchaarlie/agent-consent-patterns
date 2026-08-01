@@ -429,7 +429,7 @@ function renderIndexMd(patterns, categories) {
   const lines = [
     "# Agent Consent Patterns",
     "",
-    "A free reference of 12 UX patterns for how a product asks permission before an AI agent acts on someone's behalf — each one with accessible React code.",
+    "The \"Allow\" dialog, rethought for AI agents that act on your behalf — UX patterns for agent permissions, with accessible React code for each.",
     "",
     "Agents act on your behalf: they connect to your accounts, send your messages, spend your money. Right now every team shipping an agent designs those permission screens from scratch. This reference names the ones that work: how to grant access, approve an action, set standing rules, and show what the agent actually did — each with the reasoning behind it and React code you can drop in.",
     "",
@@ -474,7 +474,7 @@ function renderLlmsTxt(patterns, categories, researchTopics) {
     "",
     "## Reference",
     "",
-    `- [Principles of agent consent](${url("/principles.md")}): the ten principles the pattern library is built on.`,
+    `- [Principles of agent consent](${url("/principles.md")}): the twelve principles the pattern library is built on.`,
     `- [Glossary](${url("/glossary.md")}): shared vocabulary for agent consent UX.`,
     `- [About](${url("/about.md")}): why the project exists and how to contribute.`,
     `- [Overview](${url("/index.md")}): the full taxonomy on one page.`,

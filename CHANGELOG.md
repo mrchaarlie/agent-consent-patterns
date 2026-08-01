@@ -7,6 +7,20 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- Agent skill: core principles 11 ("The acting agent must be identifiable") and 12 ("The user can
+  always interrupt"), which the site documented but the skill omitted.
+
+### Changed
+
+- Landing page, site metadata, OG image, and README now lead with a plain-language description of
+  the project instead of the jargon-heavy tagline.
+
+### Fixed
+
+- Plugin manifests and the generated `llms.txt` claimed 10 principles; there are 12.
+
 ## [0.1.1] - 2026-07-15
 
 ### Added

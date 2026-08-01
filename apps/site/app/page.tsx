@@ -15,9 +15,8 @@ export default function HomePage() {
             like the h1, it's the fixed anchor a first-time reader lands on, and
             it should read the same at every reading level. */}
         <p className="mt-5 max-w-2xl text-xl leading-relaxed text-ink">
-          A free reference of 12 UX patterns for how a product asks permission
-          before an AI agent acts on someone&rsquo;s behalf &mdash; each one
-          with accessible React code.
+          The &ldquo;Allow&rdquo; dialog, rethought for agents that act on
+          your behalf.
         </p>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
           <Lvl level="caveman" as="span">
