@@ -8,9 +8,9 @@
  * gets one honest description rather than a set of buttons that don't do
  * anything. Nothing inside is focusable, for the same reason.
  *
- * The shell is deliberately the "Allow" dialog everyone already knows: floating
- * over a dimmed app, app icon on top, "<name> wants to <verb>", and a
- * two-button Don't Allow / Allow footer. The *contents* are the argument — a
+ * The shell is deliberately the "Allow" dialog everyone already knows: app icon
+ * on top, "<name> wants to <verb>", and a two-button Don't Allow / Allow
+ * footer, lifted off the page on a shadow. The *contents* are the argument — a
  * real permission prompt would stop at "wants to access your email", where this
  * one shows the actual recipients, subject and attachment, flags what can't be
  * undone, and leaves the safe answer the easy one. That is Action Preview and
@@ -20,13 +20,10 @@ export function HeroConsentMock() {
   return (
     <div
       role="img"
-      aria-label="A mock permission dialog floating over an app. An envelope icon, then: Inbox Assistant wants to send an email. It is labelled as an agent acting for you, and shows what it would send — to all-staff@ and 4,181 others, subject 're: re: re: FWD: URGENT!!', attaching salaries-final-FINAL-v3.xlsx. A warning reads 'Sending can't be undone.' The buttons are 'Don't Allow' and 'Allow'."
-      className="w-full max-w-md select-none rounded-xl border border-line bg-surface-sunken p-5 sm:p-7"
+      aria-label="A mock permission dialog. An envelope icon, then: Inbox Assistant wants to send an email. It is labelled as an agent acting for you, and shows what it would send — to all-staff@ and 4,181 others, subject 're: re: re: FWD: URGENT!!', attaching salaries-final-FINAL-v3.xlsx. A warning reads 'Sending can't be undone.' The buttons are 'Don't Allow' and 'Allow'."
+      className="w-full max-w-sm select-none rounded-lg border border-line-strong bg-surface-raised p-5 shadow-xl"
     >
-      <div
-        aria-hidden
-        className="rounded-lg border border-line-strong bg-surface-raised p-5 shadow-xl"
-      >
+      <div aria-hidden>
         <div className="flex flex-col items-center text-center">
           <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-surface text-ink-muted">
             <svg
