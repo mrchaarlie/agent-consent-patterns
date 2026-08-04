@@ -52,7 +52,7 @@ jobs:
       - name: Install npm CLI for Trusted Publishing
         run: |
           curl -fsSL -o npm.tgz https://registry.npmjs.org/npm/-/npm-11.5.1.tgz
-          echo "83b06a00dae2a8e5d72dc951ddf56a2e0dbf2cc1  npm.tgz" | sha1sum -c -
+          echo "f4c82fbff74154f73bd5ce5a2b749700d55eaddebda97b16076bf7033040de34  npm.tgz" | sha256sum -c -
           npm install --global ./npm.tgz
           rm npm.tgz
       - name: Install dependencies
