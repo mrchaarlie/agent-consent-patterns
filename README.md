@@ -65,7 +65,7 @@ Patterns use compound components, with a `Root` coordinating their shared behavi
 ```tsx
 import { ActionPreview } from "@agentconsent/react";
 
-<ActionPreview.Root>
+<ActionPreview.Root onApprove={sendEmail} onReject={cancel}>
   <ActionPreview.Header>
     <ActionPreview.Title>Send email?</ActionPreview.Title>
   </ActionPreview.Header>
@@ -74,8 +74,8 @@ import { ActionPreview } from "@agentconsent/react";
     <ActionPreview.Field label="Subject">Project update</ActionPreview.Field>
   </ActionPreview.Fields>
   <ActionPreview.Actions>
-    <ActionPreview.Button onClick={sendEmail}>Send email</ActionPreview.Button>
-    <ActionPreview.Button onClick={cancel}>Cancel</ActionPreview.Button>
+    <ActionPreview.Approve>Send email</ActionPreview.Approve>
+    <ActionPreview.Reject>Cancel</ActionPreview.Reject>
   </ActionPreview.Actions>
 </ActionPreview.Root>
 ```
