@@ -331,7 +331,7 @@ export default function HomePage() {
           >
             Action Preview
           </Link>
-          , the pattern the rest build on.
+          . If you only read one pattern, make it that one.
         </p>
         <p className="text-sm text-ink-faint">
           Reading as an agent?{" "}

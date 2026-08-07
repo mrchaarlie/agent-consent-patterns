@@ -21,7 +21,7 @@ export function HeroConsentMock() {
     <div
       role="img"
       aria-label="A mock permission dialog. An envelope icon, then: Inbox Assistant wants to send an email. It is labelled as an agent acting for you, and shows what it would send — to all-staff@ and 4,181 others, subject 're: re: re: FWD: URGENT!!', attaching salaries-final-FINAL-v3.xlsx. A warning reads 'Sending can't be undone.' The buttons are 'Don't Allow' and 'Allow'."
-      className="w-full max-w-sm select-none rounded-lg border border-line-strong bg-surface-raised p-5 shadow-xl"
+      className="mx-auto w-full max-w-sm select-none rounded-lg border border-line-strong bg-surface-raised p-5 shadow-xl lg:mx-0"
     >
       <div aria-hidden>
         <div className="flex flex-col items-center text-center">
@@ -73,8 +73,20 @@ export function HeroConsentMock() {
           </div>
         </dl>
 
-        <p className="mt-3 flex items-start gap-2 text-sm text-danger">
-          <span className="mt-px font-mono text-xs">!</span>
+        <p className="mt-3 flex items-start gap-2 rounded-md bg-danger-surface px-3 py-2 text-sm text-danger">
+          <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-danger">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="var(--acp-color-danger-ink)"
+              strokeWidth="3"
+              strokeLinecap="round"
+              className="h-3 w-3"
+            >
+              <path d="M12 5v9" />
+              <path d="M12 19h.01" />
+            </svg>
+          </span>
           Sending can&rsquo;t be undone.
         </p>
 
