@@ -1,0 +1,3 @@
+# Repository-wide ownership. The owner cannot independently approve their own PRs;
+# an additional trusted reviewer is needed for independent review enforcement.
+* @mrchaarlie
