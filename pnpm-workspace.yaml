@@ -7,6 +7,7 @@ allowBuilds:
   "@tailwindcss/oxide": true
   unrs-resolver: true
 overrides:
+  "minimatch@>=7 <11": 11.0.1
   postcss: 8.5.23
   esbuild: ">=0.28.1"
   "brace-expansion@1": ">=1.1.16"
